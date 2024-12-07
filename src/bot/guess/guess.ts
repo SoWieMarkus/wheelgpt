@@ -33,8 +33,6 @@ export const evaluateGuesses = (
 };
 
 export const buildGuessResultMessage = (currentMap: TrackmaniaMap | null, newBestTime: TrackmaniaTime, winners: Guess[]) => {
-    if (currentMap === null) return null;
-
     const message = buildPbMapResultMessage(currentMap, newBestTime);
     const guessResult = buildBestGuesserMessage(winners, newBestTime);
     return `${message} ${guessResult}`;
@@ -66,7 +64,10 @@ const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) 
 
 }
 
-const buildPbMapResultMessage = (currentMap: TrackmaniaMap, newBestTime: TrackmaniaTime) => {
+const buildPbMapResultMessage = (currentMap: TrackmaniaMap | null, newBestTime: TrackmaniaTime) => {
+    if (currentMap === null) return "YEK I got a new PB but I didn't know you are on a map?"
+
+
     const medal = currentMap.getMedal(newBestTime);
 
     const differenceToChampion = currentMap.getDifferenceToMedal(Medal.CHAMPION, newBestTime);
