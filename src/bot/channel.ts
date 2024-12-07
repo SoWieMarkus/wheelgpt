@@ -147,8 +147,6 @@ export class Channel {
         )
             return null;
 
-
-
         command.lastUsed = Date.now();
         return command.task(user, commandArguments.args);
     }

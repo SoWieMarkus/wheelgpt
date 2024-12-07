@@ -21,27 +21,19 @@ class WheelGPTBot extends Client {
         });
         this.channelMap = new Map();
         this.on("message", (channelId, chatUser, message, self) => {
-            console.log(channelId, chatUser, message, self)
-            //if (self) return;
 
             const commandArguments = getCommandArguments(message);
             if (commandArguments === null) return;
 
-            console.log("I got 1")
-
             const user = getUser(chatUser, channelId);
             if (user === null) return;
 
-            console.log("I got 2")
             console.log(this.channelMap.entries(), channelId)
             const channel = this.getChannel(channelId);
             if (channel === undefined) return;
 
-            console.log("I got 3")
-
             const response = channel.execute(user, commandArguments);
             if (response === null) return;
-            console.log("I got 4")
 
             this.say(channelId, response);
         })
