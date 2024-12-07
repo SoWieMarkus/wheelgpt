@@ -4,7 +4,7 @@ import { TrackmaniaExchange } from "../apis";
 import { WheelGPT } from "../bot/bot";
 import { GuessResultSchema, TrackmaniaTime } from "../bot/guess/time";
 import { TrackmaniaMap, TrackmaniaMapPostSchema } from "../bot/map/map";
-import { Validation } from "../utils";
+import { Log, Validation } from "../utils";
 
 export const updateMap: RequestHandler = async (request, response) => {
     const { map } = TrackmaniaMapPostSchema.parse(request.body);
@@ -15,7 +15,10 @@ export const updateMap: RequestHandler = async (request, response) => {
         throw createHttpError(400, "Channel not found.");
     }
 
+
+
     if (map === undefined) {
+        Log.complete(`Removed map on channel "${channelId}"`)
         channel.setMap(null);
         response.status(200).json({ message: "Successfully updated the map." });
         return;
@@ -27,6 +30,7 @@ export const updateMap: RequestHandler = async (request, response) => {
 
     newMap.setTrackmaniaExchangeId(tmxId);
     channel.setMap(newMap);
+    Log.complete(`New map on channel "${channelId}": "${newMap.toString()}"`)
     response.status(200).json({ message: "Successfully updated the map." });
 }
 
@@ -39,6 +43,8 @@ export const updatePersonalBest: RequestHandler = (request, response, next) => {
     if (channel === undefined) {
         throw createHttpError(400, `Channel with id ${channelId} not found.`);
     }
+
+    Log.complete(`New pb on channel "${channelId}" ("${time.toString()}")`)
 
     setTimeout(() => {
         const response = channel.guessResult(trackmaniaTime);

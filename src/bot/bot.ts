@@ -28,7 +28,6 @@ class WheelGPTBot extends Client {
             const user = getUser(chatUser, channelId);
             if (user === null) return;
 
-            console.log(this.channelMap.entries(), channelId)
             const channel = this.getChannel(channelId);
             if (channel === undefined) return;
 
