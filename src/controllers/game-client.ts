@@ -15,8 +15,6 @@ export const updateMap: RequestHandler = async (request, response) => {
         throw createHttpError(400, "Channel not found.");
     }
 
-
-
     if (map === undefined) {
         Log.complete(`Removed map on channel "${channelId}"`)
         channel.setMap(null);
@@ -45,13 +43,12 @@ export const updatePersonalBest: RequestHandler = (request, response, next) => {
     }
 
     Log.complete(`New pb on channel "${channelId}" ("${trackmaniaTime.toString()}")`)
-
     setTimeout(() => {
         const response = channel.guessResult(trackmaniaTime);
         console.log(response);
         if (response === null) return;
         WheelGPT.say(channelId, response);
-    }, channel.getGuessDelay() * 1000);
+    }, channel.getGuessDelay());
 
     response.status(200).json({ message: "Successfully updated personal best." });
 };
