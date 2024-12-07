@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TrackmaniaTime } from "../guess/time";
-import { assertIsDefined } from "../../utils";
+import { assertIsDefined } from "../../utils/assert-defined";
 
 export enum Medal {
     CHAMPION = 0,
