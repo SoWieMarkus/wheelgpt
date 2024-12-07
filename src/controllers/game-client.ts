@@ -44,10 +44,11 @@ export const updatePersonalBest: RequestHandler = (request, response, next) => {
         throw createHttpError(400, `Channel with id ${channelId} not found.`);
     }
 
-    Log.complete(`New pb on channel "${channelId}" ("${time.toString()}")`)
+    Log.complete(`New pb on channel "${channelId}" ("${trackmaniaTime.toString()}")`)
 
     setTimeout(() => {
         const response = channel.guessResult(trackmaniaTime);
+        console.log(response);
         if (response === null) return;
         WheelGPT.say(channelId, response);
     }, channel.getGuessDelay() * 1000);
