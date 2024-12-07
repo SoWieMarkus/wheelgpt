@@ -59,7 +59,7 @@ const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) 
     }
 
 
-    const usernames = winners.map(winner => winner.user.displayName).join(", ";)
+    const usernames = winners.map(winner => winner.user.displayName).join(", ");
     return hasPerfectGuess
         ? `@${usernames} the GIGACHAD 's  guessed it correctly! BWOAH`
         : `Nobody guessed it correctly but @${usernames} guessed ${bestGuessAsString} (${differenceAsString}) ok`
