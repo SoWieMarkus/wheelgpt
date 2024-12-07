@@ -21,19 +21,27 @@ class WheelGPTBot extends Client {
         });
         this.channelMap = new Map();
         this.on("message", (channelId, chatUser, message, self) => {
-            if (self) return;
+            console.log(channelId, chatUser, message, self)
+            //if (self) return;
 
             const commandArguments = getCommandArguments(message);
             if (commandArguments === null) return;
 
+            console.log("I got 1")
+
             const user = getUser(chatUser, channelId);
             if (user === null) return;
 
-            const channel = this.channelMap.get(channelId);
+            console.log("I got 2")
+            console.log(this.channelMap.entries(), channelId)
+            const channel = this.getChannel(channelId);
             if (channel === undefined) return;
+
+            console.log("I got 3")
 
             const response = channel.execute(user, commandArguments);
             if (response === null) return;
+            console.log("I got 4")
 
             this.say(channelId, response);
         })
@@ -44,8 +52,10 @@ class WheelGPTBot extends Client {
         const channels = await database.channel.findMany();
 
         for (const channel of channels) {
+            Log.info(`Joining channel "${channel.channelId}".`)
             this.channelMap.set(channel.channelId, new Channel(channel.channelId, channel.guessDelayTime));
-            this.join(channel.channelId);
+            await this.join(channel.channelId);
+            await this.say(channel.channelId, "Hello World HeyGuys")
         }
         return result;
     }
@@ -56,7 +66,8 @@ class WheelGPTBot extends Client {
             data: { token, channelId }
         });
         this.channelMap.set(channelId, new Channel(channel.channelId, channel.guessDelayTime));
-        this.join(channelId);
+        await this.join(channel.channelId);
+        await this.say(channel.channelId, "Hello World HeyGuys")
         Log.info(`Joining channel "${channelId}".`)
         return channel;
     }
@@ -64,12 +75,12 @@ class WheelGPTBot extends Client {
     public async remove(channelId: string) {
         await database.channel.delete({ where: { channelId } });
         this.channelMap.delete(channelId);
-        this.part(channelId);
+        await this.part(channelId);
         Log.info(`Removing channel "${channelId}".`);
     }
 
     public getChannel(channelId: string) {
-        return this.channelMap.get(channelId);
+        return this.channelMap.get(channelId.replace("#", ""));
     }
 
 }

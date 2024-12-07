@@ -142,10 +142,12 @@ export class Channel {
         const command = this.getCommand(commandArguments);
         if (
             command === null ||
-            user.accessLevel >= command.accessLevel ||
+            user.accessLevel < command.accessLevel ||
             isCommandOnCooldown(command)
         )
             return null;
+
+
 
         command.lastUsed = Date.now();
         return command.task(user, commandArguments.args);
