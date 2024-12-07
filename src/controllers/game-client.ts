@@ -41,7 +41,6 @@ export const updatePersonalBest: RequestHandler = (request, response, next) => {
     }
 
     setTimeout(() => {
-        // TODO new 
         const response = channel.guessResult(trackmaniaTime);
         if (response === null) return;
         WheelGPT.say(channelId, response);

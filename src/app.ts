@@ -7,7 +7,7 @@ import express, {
 } from "express";
 import createHttpError, { isHttpError } from "http-errors";
 import { Log } from "./utils";
-import { AuthenticationRouter } from "./routes";
+import { AuthenticationRouter, GameClientRouter } from "./routes";
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(cors());
 app.use(json());
 
 app.use("/authentication", AuthenticationRouter);
-app.use("/game", AuthenticationRouter);
+app.use("/game", GameClientRouter);
 
 
 // Handling of unknown endpoints
