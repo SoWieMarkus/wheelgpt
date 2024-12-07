@@ -44,7 +44,7 @@ class WheelGPTBot extends Client {
         const channels = await database.channel.findMany();
 
         for (const channel of channels) {
-            this.channelMap.set(channel.channelId, new Channel());
+            this.channelMap.set(channel.channelId, new Channel(channel.channelId, channel.guessDelayTime));
             this.join(channel.channelId);
         }
         return result;
@@ -55,7 +55,7 @@ class WheelGPTBot extends Client {
         const channel = await database.channel.create({
             data: { token, channelId }
         });
-        this.channelMap.set(channelId, new Channel());
+        this.channelMap.set(channelId, new Channel(channel.channelId, channel.guessDelayTime));
         this.join(channelId);
         Log.info(`Joining channel "${channelId}".`)
         return channel;
@@ -67,6 +67,11 @@ class WheelGPTBot extends Client {
         this.part(channelId);
         Log.info(`Removing channel "${channelId}".`);
     }
+
+    public getChannel(channelId: string) {
+        return this.channelMap.get(channelId);
+    }
+
 }
 
 export const WheelGPT = new WheelGPTBot();

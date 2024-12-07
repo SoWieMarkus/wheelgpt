@@ -1,5 +1,6 @@
 import { ChatUserstate } from "tmi.js";
 import { Log } from "../utils";
+import { prototype } from "events";
 
 export const AccessLevel = {
     STREAMER: 4,
@@ -43,3 +44,7 @@ export const getUser = (
     const accessLevel = getAccessLevel(chatUser, channelId);
     return { name, id, displayName, accessLevel, channelId };
 };
+
+export const mentionUser = (user: User, message: string) => {
+    return `@${user.displayName} ${message}`
+}

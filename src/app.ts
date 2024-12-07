@@ -14,8 +14,8 @@ const app = express();
 app.use(cors());
 app.use(json());
 
-app.use("/authentication", AuthenticationRouter)
-
+app.use("/authentication", AuthenticationRouter);
+app.use("/game", AuthenticationRouter);
 
 
 // Handling of unknown endpoints
