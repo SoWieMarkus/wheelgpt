@@ -16,6 +16,8 @@ datasource db {
 model Channel {
   channelId      String   @id @unique
   token          String
+  displayName    String
+  profileImage   String
   createdAt      DateTime @default(now())
   guessDelayTime Int      @default(2)
 }

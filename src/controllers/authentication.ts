@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 import { z } from "zod";
 import { Twitch } from "../apis";
 import { database } from "../database";
@@ -22,18 +22,29 @@ export const authenticate: RequestHandler = async (request, response) => {
     const { code } = AuthenticationBodySchema.parse(request.body);
 
     const accessToken = await Twitch.getAccessToken(code);
-    const channelId = await Twitch.getUser(accessToken);
+    const user = await Twitch.getUser(accessToken);
 
     const existingChannel = await database.channel.findUnique({
-        where: { channelId }
+        where: { channelId: user.login }
     });
 
+    const displayName = user.display_name;
+    const profileImage = user.profile_image_url;
+
     if (existingChannel === null) {
-        await WheelGPT.register(channelId);
+        await WheelGPT.register(user);
+    } else {
+        await database.channel.update({
+            where: { channelId: user.login },
+            data: {
+                displayName: user.display_name,
+                profileImage: user.profile_image_url
+            }
+        });
     }
 
-    const webToken = jwt.sign({ channelId: channelId }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
-    response.status(200).json({ webToken });
+    const webToken = jwt.sign({ channelId: user.login }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
+    response.status(200).json({ webToken, displayName, profileImage });
 }
 
 export const remove: RequestHandler = async (request, response) => {

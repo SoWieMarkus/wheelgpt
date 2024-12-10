@@ -10,7 +10,8 @@ const AccessTokenSchema = z.object({
     access_token: z.string(),
 });
 const UsersSchema = z.object({
-    data: z.array(z.object({ login: z.string() }))
+    data: z.array(z.object({ login: z.string(), display_name: z.string(), profile_image_url: z.string() })),
+
 });
 
 export const getAccessToken = async (code: string) => {
@@ -37,12 +38,10 @@ export const getUser = async (accessToken: string) => {
             "Client-Id": env.TWITCH_CLIENT_ID,
         },
     });
-
     const users = UsersSchema.parse(userResponse.data).data;
     if (users.length === 0) {
         throw createHttpError(400, "Illegal access token.");
     }
 
-    const { login } = users[0];
-    return login;
+    return users[0];
 };

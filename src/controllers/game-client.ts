@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import { TrackmaniaExchange } from "../apis";
 import { WheelGPT } from "../bot/bot";

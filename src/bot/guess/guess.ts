@@ -1,7 +1,6 @@
 import { TrackmaniaTime } from "./time";
 import type { User } from "../user";
-import { Medal, TrackmaniaMap } from "../map/map";
-import { time } from "console";
+import { Medal, type TrackmaniaMap } from "../map/map";
 
 export type Guess = {
     user: User;

@@ -51,14 +51,15 @@ class WheelGPTBot extends Client {
         return result;
     }
 
-    public async register(channelId: string) {
+    public async register(user: { login: string, display_name: string, profile_image_url: string }) {
         const token = uuid.v4();
+        const { login: channelId, display_name: displayName, profile_image_url: profileImage } = user;
         const channel = await database.channel.create({
-            data: { token, channelId }
+            data: { token, channelId, displayName, profileImage }
         });
         this.channelMap.set(channelId, new Channel(channel.channelId, channel.guessDelayTime));
-        await this.join(channel.channelId);
-        await this.say(channel.channelId, "Hello World HeyGuys")
+        await this.join(channelId);
+        await this.say(channelId, "Hello World HeyGuys")
         Log.info(`Joining channel "${channelId}".`)
         return channel;
     }
