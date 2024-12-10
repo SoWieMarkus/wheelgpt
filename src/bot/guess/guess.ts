@@ -14,13 +14,12 @@ export const evaluateGuesses = (
 
     let minDifference: number | null = null;
 
-    const winners: Guess[] = []
+    let winners: Guess[] = []
     for (const guess of guesses.values()) {
-        const difference = result.getDifference(guess.time);
+        const difference = Math.abs(result.getDifference(guess.time));
         if (minDifference === null || difference < minDifference) {
             minDifference = difference;
-            winners.length = 0;
-            winners.push(guess);
+            winners = [guess]
             continue;
         }
         if (difference === minDifference) {
@@ -51,14 +50,14 @@ const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) 
     if (winners.length === 0) {
         const username = bestGuess.user.displayName
         return hasPerfectGuess
-            ? `@${username} the GIGACHAD  guessed it correctly! BWOAH`
+            ? `@${username} the GIGACHAD guessed it correctly! BWOAH`
             : `Nobody guessed it correctly but @${username} guessed ${bestGuessAsString} (${differenceAsString}) ok`
     }
 
 
     const usernames = winners.map(winner => winner.user.displayName).join(", ");
     return hasPerfectGuess
-        ? `@${usernames} the GIGACHAD 's  guessed it correctly! BWOAH`
+        ? `@${usernames} the GIGACHAD 's guessed it correctly! BWOAH`
         : `Nobody guessed it correctly but @${usernames} guessed ${bestGuessAsString} (${differenceAsString}) ok`
 
 }
@@ -81,7 +80,7 @@ const buildPbMapResultMessage = (currentMap: TrackmaniaMap | null, newBestTime: 
                 const differenceAsTime = new TrackmaniaTime(Math.abs(differenceToChampion)).toString();
                 return `NEW PERSONAL BEST ${newBestTime.toString()} dinkDonk HAHAHAHAH HE MISSED CHAMPION BY ${differenceAsTime}s OMEGALUL ICANT PepePoint`;
             }
-            return `NEW PERSONAL BEST ${newBestTime.toString()} dinkDonk That's AuthorTime ok `
+            return `NEW PERSONAL BEST ${newBestTime.toString()} dinkDonk That's AuthorTime ok`
         case Medal.GOLD:
             if (differenceToAuthor < 10) {
                 const differenceAsTime = new TrackmaniaTime(Math.abs(differenceToAuthor)).toString();
