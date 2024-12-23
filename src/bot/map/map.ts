@@ -20,7 +20,7 @@ export const TrackmaniaMapSchema = z.object({
     silverTime: z.number().min(0),
     bronzeTime: z.number().min(0),
     championTime: z.number().min(0),
-    tmxId: z.string().optional(),
+    tmxId: z.number().optional(),
 });
 
 export const TrackmaniaMapPostSchema = z.object({
@@ -66,7 +66,7 @@ export class TrackmaniaMap {
         return this.data.tmxId !== undefined;
     }
 
-    public setTrackmaniaExchangeId(id: string | undefined) {
+    public setTrackmaniaExchangeId(id: number | undefined) {
         this.data.tmxId = id;
     }
 

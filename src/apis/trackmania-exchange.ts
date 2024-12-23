@@ -6,8 +6,9 @@ export const getTrackmaniaExchangeId = async (mapUid: string) => {
     const result = await axios.get(url);
     if (result.data === "") return undefined;
     const TrackmaniaExchangeMapSchema = z.object({
-        TrackID: z.string()
+        TrackID: z.number()
     });
+
     const { success, data } = TrackmaniaExchangeMapSchema.safeParse(result.data);
     return success ? data.TrackID : undefined;
 };

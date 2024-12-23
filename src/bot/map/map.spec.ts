@@ -11,7 +11,7 @@ describe("TrackmaniaMap", () => {
         silverTime: 3000,
         bronzeTime: 4000,
         championTime: 500,
-        tmxId: "12345",
+        tmxId: 12345,
     };
 
     const noChampionMapData = {
@@ -23,7 +23,7 @@ describe("TrackmaniaMap", () => {
         silverTime: 3000,
         bronzeTime: 4000,
         championTime: 0,
-        tmxId: "54321",
+        tmxId: 54321,
     };
 
     it("should clean the map name of styling characters", () => {
@@ -52,13 +52,13 @@ describe("TrackmaniaMap", () => {
 
     it("should set a new Trackmania Exchange ID", () => {
         const map = new TrackmaniaMap(validMapData);
-        map.setTrackmaniaExchangeId("67890");
-        expect(map.data.tmxId).toBe("67890");
+        map.setTrackmaniaExchangeId(67890);
+        expect(map.data.tmxId).toBe(67890);
     });
 
     it("should return the correct Trackmania Exchange link", () => {
         const mapWithTmx = new TrackmaniaMap(validMapData);
-        mapWithTmx.setTrackmaniaExchangeId("67890");
+        mapWithTmx.setTrackmaniaExchangeId(67890);
         const mapWithoutTmx = new TrackmaniaMap({
             ...validMapData,
             tmxId: undefined,

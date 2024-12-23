@@ -6,7 +6,7 @@ Log.info("Booting...");
 app.listen(env.PORT, () => {
     Log.complete(`Running on port "${env.PORT}"`);
     WheelGPT.connect().catch(console.error);
-    Log.complete(`Bot is running.`);
+    Log.complete("Bot is running.");
 });
 
 
