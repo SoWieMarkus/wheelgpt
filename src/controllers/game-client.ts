@@ -24,10 +24,11 @@ export const updateMap: RequestHandler = async (request, response) => {
 
     const newMap = new TrackmaniaMap(map);
     const mapUid = map.uid;
-    const tmxId = await TrackmaniaExchange.getTrackmaniaExchangeId(mapUid);
-
-    newMap.setTrackmaniaExchangeId(tmxId);
+    TrackmaniaExchange.getTrackmaniaExchangeId(mapUid).then((tmxId) => {
+        newMap.setTrackmaniaExchangeId(tmxId);
+    }).catch(error => console.error(error));
     channel.setMap(newMap);
+
     Log.complete(`New map on channel "${channelId}": "${newMap.toString()}"`)
     response.status(200).json({ message: "Successfully updated the map." });
 }
