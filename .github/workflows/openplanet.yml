@@ -1,0 +1,59 @@
+name: Release Openplanet Plugin
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for changes in openplanet directory
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            openplanet:
+              - 'openplanet/**'
+
+      - name: Stop if no changes in openplanet
+        if: steps.changes.outputs.openplanet != 'true'
+        run: |
+          echo "No changes in openplanet directory. Skipping release."
+          exit 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Zip Openplanet folder
+        run: |
+          cd openplanet
+          zip -r ../openplanet.zip .
+          cd ..
+
+      - name: Rename .zip to .op
+        run: mv openplanet.zip openplanet.op
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: openplanet.op
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.ref == 'refs/heads/main'
+
+      - name: Clean up
+        run: rm -f openplanet.op
