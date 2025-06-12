@@ -7,6 +7,5 @@ import { wheelgpt } from "./wheelgpt";
 
 // register webhooks
 
-
 logger.info("Starting the backend server...");
 app.listen(env.PORT, () => logger.info(`Running on port "${env.PORT}"`));

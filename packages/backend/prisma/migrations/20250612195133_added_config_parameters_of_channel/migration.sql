@@ -23,13 +23,6 @@ CREATE TABLE "Guess" (
     PRIMARY KEY ("channelId", "userId")
 );
 
--- CreateTable
-CREATE TABLE "Command" (
-    "commandId" TEXT NOT NULL PRIMARY KEY,
-    "accessLevel" INTEGER NOT NULL DEFAULT 0,
-    "cooldown" INTEGER NOT NULL DEFAULT 0
-);
-
 -- RedefineTables
 PRAGMA defer_foreign_keys=ON;
 PRAGMA foreign_keys=OFF;
@@ -50,6 +43,3 @@ ALTER TABLE "new_Channel" RENAME TO "Channel";
 CREATE UNIQUE INDEX "Channel_channelId_key" ON "Channel"("channelId");
 PRAGMA foreign_keys=ON;
 PRAGMA defer_foreign_keys=OFF;
-
--- CreateIndex
-CREATE UNIQUE INDEX "Command_commandId_key" ON "Command"("commandId");

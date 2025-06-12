@@ -1,29 +1,35 @@
 import { database } from "../../database";
 import type { User } from "../core";
-import { buildGuessResultMessage, Command, evaluateGuesses, EXAMPLE_FORMAT, TrackmaniaMap, TrackmaniaTime } from "../core";
+import {
+	Command,
+	EXAMPLE_FORMAT,
+	TrackmaniaMap,
+	TrackmaniaTime,
+	buildGuessResultMessage,
+	evaluateGuesses,
+} from "../core";
 
 export const guessResultHandler = async (channelId: string, time: TrackmaniaTime) => {
 	const guesses = await database.guess.findMany({
 		where: {
-			channelId
-		}
+			channelId,
+		},
 	});
 	const map = await database.trackmaniaMap.findUnique({
 		where: {
-			channelId
-		}
+			channelId,
+		},
 	});
 	const trackmaniaMap = map ? new TrackmaniaMap(map) : null;
 
 	const winners = evaluateGuesses(guesses, time);
 	await database.guess.deleteMany({
 		where: {
-			channelId
-		}
-	})
+			channelId,
+		},
+	});
 	return buildGuessResultMessage(trackmaniaMap, time, winners);
-}
-
+};
 
 export class GuessResultCommand extends Command {
 	protected async onExecute(user: User, args: string[]): Promise<string | null> {
@@ -35,10 +41,9 @@ export class GuessResultCommand extends Command {
 			return `@${user.displayName} smh granadyy mods are all degens. Wrong format you idiot. ${EXAMPLE_FORMAT}`;
 		}
 
-		return guessResultHandler(this.channelId, time)
+		return guessResultHandler(this.channelId, time);
 	}
 }
 function mentionUser(user: User, arg1: string): string | PromiseLike<string | null> | null {
 	throw new Error("Function not implemented.");
 }
-

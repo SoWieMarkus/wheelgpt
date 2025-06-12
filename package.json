@@ -1,55 +1,15 @@
 {
-  "name": "wheelgpt-backend",
-  "version": "1.0.0",
-  "main": "./dist/index.js",
-  "scripts": {
-    "setup": "npm install && npx prisma db push && npx prisma db seed",
-    "dev": "nodemon src/index.ts",
-    "build": "npx tsc",
-    "start": "node dist/index.js",
-    "lint": "npx @biomejs/biome format --write ./src",
-    "test": "jest"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "dist"
-    ]
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "@prisma/client": "^6.0.1",
-    "axios": "^1.7.9",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "envalid": "^8.0.0",
-    "express": "^5.0.1",
-    "http-errors": "^2.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "prisma": "^6.0.1",
-    "tmi.js": "^1.8.5",
-    "typescript": "^5.7.2",
-    "uuid": "^11.0.3",
-    "zod": "^3.23.8"
-  },
+  "name": "wheelgpt",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@types/axios": "^0.9.36",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/http-errors": "^2.0.4",
-    "@types/jest": "^29.5.14",
-    "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22.10.1",
-    "@types/tmi.js": "^1.8.6",
-    "jest": "^29.7.0",
-    "nodemon": "^3.1.7",
-    "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2"
+    "typescript": "^5.4.0",
+    "@biomejs/biome": "1.9.4"
+  },
+  "scripts": {
+    "lint": "npx @biomejs/biome check --write",
+    "test": "npm test --workspace=@wheelgpt/backend"
   }
 }

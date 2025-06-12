@@ -42,9 +42,3 @@ model Guess {
 
   @@id([channelId, userId])
 }
-
-model Command {
-  commandId   String @id @unique
-  accessLevel Int    @default(0)
-  cooldown    Int    @default(0)
-}

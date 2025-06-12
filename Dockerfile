@@ -1,19 +1,24 @@
-FROM node:20
+FROM node:24
 
 WORKDIR /usr/src/app
 
-ENV DATABASE_URL=file:/usr/src/app/wheelgpt.db
-COPY package*.json ./
-
-RUN npm install
-
 COPY . .
 
-RUN npx prisma generate
-RUN npm run build
+# Install dependencies
+RUN npm install && npm install -g @angular/cli && npm run build --workspace=@wheelgpt/shared
 
+# Build frontend (run ng build inside frontend workspace)
+WORKDIR /usr/src/app/packages/frontend
+RUN ng build --configuration=production
+
+# Setup Prisma in backend
+WORKDIR /usr/src/app/packages/backend
 ENV PORT=3000
+ENV DATABASE_URL=file:/usr/src/app/wheelgpt.db
+RUN npx prisma generate && npm run build
 
 EXPOSE $PORT
 
-CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
+# Entrypoint: deploy migrations and start backend
+RUN chmod +x /usr/src/app/packages/backend/entrypoint.sh
+CMD ["/usr/src/app/packages/backend/entrypoint.sh"]
