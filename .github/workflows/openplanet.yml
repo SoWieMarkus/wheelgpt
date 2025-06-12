@@ -36,10 +36,34 @@ jobs:
       - name: Rename .zip to .op
         run: mv openplanet.zip openplanet.op
 
+      - name: Install toml CLI
+        run: pip install toml
+
+      - name: Read version from info.toml
+        id: get_version
+        run: |
+          VERSION=$(python3 -c "import toml; print(toml.load('openplanet/info.toml')['meta']['version'])")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create tag if not exists
+        run: |
+          git fetch --tags
+          TAG="v${{ steps.get_version.outputs.version }}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: openplanet.op
+          tag_name: v${{ steps.get_version.outputs.version }}
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: github.ref == 'refs/heads/main'
