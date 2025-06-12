@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Channel {
+  channelId            String   @id @unique
+  token                String
+  displayName          String
+  profileImage         String
+  isLive               Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  guessDelayTime       Int      @default(2)
+  botActiveWhenOffline Boolean  @default(false)
+  usagePublic          Boolean  @default(true)
+}
+
+model TrackmaniaMap {
+  channelId    String @id
+  uid          String
+  name         String
+  author       String
+  authorTime   Int
+  goldTime     Int
+  silverTime   Int
+  bronzeTime   Int
+  championTime Int
+  tmxId        Int?
+  worldRecord  Int?
+}
+
+model Guess {
+  channelId   String
+  time        Int
+  userId      String
+  displayName String
+
+  @@id([channelId, userId])
+}
+
+model Command {
+  commandId   String @id @unique
+  accessLevel Int    @default(0)
+  cooldown    Int    @default(0)
+}
