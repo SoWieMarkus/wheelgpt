@@ -2,7 +2,7 @@ import path from "node:path";
 import cors from "cors";
 import express, { json, type NextFunction, type Request, type Response } from "express";
 import createHttpError, { isHttpError } from "http-errors";
-import { AuthenticationRouter, EmotesRouter, LandingRouter, MetricsRouter, TrackmaniaRouter } from "./routes";
+import { AuthenticationRouter, LandingRouter, MetricsRouter, TrackmaniaRouter } from "./routes";
 import { logger } from "./utils";
 
 const app = express();
@@ -13,7 +13,6 @@ app.use(json({ limit: "7mb" }));
 
 const apiRouter = express.Router();
 apiRouter.use("/metrics", MetricsRouter);
-apiRouter.use("/emotes", EmotesRouter);
 apiRouter.use("/authentication", AuthenticationRouter);
 apiRouter.use("/trackmania", TrackmaniaRouter);
 apiRouter.use("/landing", LandingRouter);
