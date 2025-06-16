@@ -1,6 +1,6 @@
 # WheelGPT
 
-More information on [wheelgpt.dev](https://wheelgpt.dev).
+More information on [wheelgpt.dev](https://wheelgpt.dev). Get the [OpenPlanet Plugin](https://openplanet.dev/plugin/wheelgpt-plugin).
 
 WheelGPT is a [Trackmania](https://www.trackmania.com/) Twitch bot that was originally developed for the Twitch channel of GranaDyy - the wheel guy. With the bot, viewers can ask for the current map of the streamer. They can also guess the next personal best time of the streamer. To automate the evaluation of the guesses and the updating of the map, this plugin was developed.
 
