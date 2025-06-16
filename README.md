@@ -1,4 +1,4 @@
-# WheelGPT
+![WheelGPT Banner](images/header.jpg)
 
 More information on [wheelgpt.dev](https://wheelgpt.dev). Get the [OpenPlanet Plugin](https://openplanet.dev/plugin/wheelgpt-plugin).
 
