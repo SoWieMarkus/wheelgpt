@@ -2,7 +2,6 @@ import axios from "axios";
 import { data } from "cheerio/dist/commonjs/api/attributes";
 import { Counter } from "prom-client";
 import { z } from "zod";
-import { database } from "../database";
 import { prometheus } from "../prometheus";
 import { env, logger } from "../utils";
 
