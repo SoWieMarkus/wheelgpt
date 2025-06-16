@@ -1,5 +1,5 @@
-import { TrackmaniaTime } from "./time";
 import { Medal, TrackmaniaMap } from "./map";
+import { TrackmaniaTime } from "./time";
 
 describe("TrackmaniaMap", () => {
 	const validMapData = {
@@ -33,7 +33,7 @@ describe("TrackmaniaMap", () => {
 	const mapWithoutTmxId = {
 		...validMapData,
 		tmxId: null,
-	}
+	};
 
 	it("should clean the map name of styling characters", () => {
 		const map = new TrackmaniaMap(validMapData);

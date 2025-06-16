@@ -23,7 +23,7 @@ export const login: RequestHandler = async (request, response) => {
 	}
 
 	const { code } = data;
-	const userAccessToken = await Twitch.getUserAccessToken(code);
+	const userAccessToken = await Twitch.requestUserAccessToken(code);
 
 	if (!userAccessToken) {
 		throw createHttpError(400, "Failed to retrieve user access token.");

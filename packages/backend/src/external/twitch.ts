@@ -20,7 +20,7 @@ const AccessTokenSchema = z.object({
 	access_token: z.string(),
 });
 
-export const getUserAccessToken = async (code: string): Promise<string | null> => {
+export const requestUserAccessToken = async (code: string): Promise<string | null> => {
 	const url = "https://id.twitch.tv/oauth2/token";
 	const response = await axios.post(url, null, {
 		params: {
@@ -43,7 +43,7 @@ export const getUserAccessToken = async (code: string): Promise<string | null> =
 	return data.access_token;
 };
 
-export const getAppAccessToken = async (): Promise<string | null> => {
+export const requestAppAccessToken = async (): Promise<string | null> => {
 	const url = "https://id.twitch.tv/oauth2/token";
 	const response = await axios.post(url, null, {
 		params: {
@@ -103,4 +103,10 @@ export const getUser = async (accessToken: string) => {
 	return data.data[0];
 };
 
-export const getUserOnlineStatus = async (userIds: string[]) => { };
+export const getUsers = async (channelIds: string[]) => {
+	// TODO
+};
+
+export const getStreams = async (channelIds: string[]) => {
+	// TODO
+};

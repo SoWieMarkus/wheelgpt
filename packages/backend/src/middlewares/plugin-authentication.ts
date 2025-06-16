@@ -33,7 +33,7 @@ export const requiresPluginAuthentication: RequestHandler = (request, response, 
 
 		const { channelId, id, token } = data;
 
-		// Check if exactly one of channelId or id is provided 
+		// Check if exactly one of channelId or id is provided
 		// channelId === login, used in the past to identifiy channels
 		// To support existing tokens, we keep this check
 		if (channelId === undefined && id === undefined) {
@@ -46,13 +46,14 @@ export const requiresPluginAuthentication: RequestHandler = (request, response, 
 			return next(httpError);
 		}
 
-		const channel = channelId === undefined
-			? await database.channel.findUnique({
-				where: { id: id },
-			})
-			: await database.channel.findUnique({
-				where: { login: channelId },
-			});
+		const channel =
+			channelId === undefined
+				? await database.channel.findUnique({
+						where: { id: id },
+					})
+				: await database.channel.findUnique({
+						where: { login: channelId },
+					});
 
 		if (channel === null) {
 			const httpError = createHttpError(401, "Unauthorized. User not found.");
