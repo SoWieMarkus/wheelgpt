@@ -21,6 +21,7 @@ jobs:
 
       - name: Generate Prisma client
         run: npx prisma generate
+        working-directory: ./packages/backend
         env:
           DATABASE_URL: file:./dev.db
 
