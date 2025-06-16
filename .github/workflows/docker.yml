@@ -18,6 +18,8 @@ jobs:
 
       - name: Generate Prisma client
         run: npx prisma generate
+        env:
+          DATABASE_URL: file:./dev.db
 
       - name: Run tests
         run: npm test
