@@ -16,7 +16,7 @@ bool testLocal = false;
 [Setting category="Dev" name="Backend"]
 string backend = "https://wheelgpt.dev/api/";
 
-string localBackend = "http://localhost:1330/api";
+string localBackend = "http://localhost:3000/api/";
 
 string getBackend() {
     if (testLocal) return localBackend;
