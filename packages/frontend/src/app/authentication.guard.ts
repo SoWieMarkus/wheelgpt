@@ -3,34 +3,34 @@ import { type ActivatedRouteSnapshot, type CanActivateFn, Router, type RouterSta
 import { AuthenticationService } from "./services/authentication.service";
 
 @Injectable({
-  providedIn: "root",
+	providedIn: "root",
 })
 class AuthenticationPermissionService {
-  private readonly router = inject(Router);
-  private readonly authenticationService = inject(AuthenticationService);
+	private readonly router = inject(Router);
+	private readonly authenticationService = inject(AuthenticationService);
 
-  public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const isTokenExpired = this.authenticationService.isTokenExpired();
-    const doesTokenExist = this.authenticationService.getToken() !== null;
+	public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+		const isTokenExpired = this.authenticationService.isTokenExpired();
+		const doesTokenExist = this.authenticationService.getToken() !== null;
 
-    if (isTokenExpired && !doesTokenExist) {
-      this.router.navigate(["/landing"]);
-      return false;
-    }
+		if (isTokenExpired && !doesTokenExist) {
+			this.router.navigate(["/landing"]);
+			return false;
+		}
 
-    if (isTokenExpired && doesTokenExist) {
-      this.router.navigate(["/login"]);
-      return false;
-    }
+		if (isTokenExpired && doesTokenExist) {
+			this.router.navigate(["/login"]);
+			return false;
+		}
 
-    return true;
-  }
+		return true;
+	}
 }
 
 export const AuthenticationGuard: CanActivateFn = (
-  next: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot,
+	next: ActivatedRouteSnapshot,
+	state: RouterStateSnapshot,
 ): boolean => {
-  const service = inject(AuthenticationPermissionService);
-  return service.canActivate(next, state);
+	const service = inject(AuthenticationPermissionService);
+	return service.canActivate(next, state);
 };
