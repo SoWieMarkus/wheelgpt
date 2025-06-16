@@ -7,14 +7,14 @@ import { guessResultHandler } from "./commands";
 import { type ChannelConfig, TrackmaniaTime, TwitchChannel, getCommandArguments, getUser } from "./core";
 
 export const failedConnectionAttemptsCounterMetric = new Counter({
-	name: "failed_connection_attempts_total",
+	name: "wheelgpt_failed_connection_attempts_total",
 	help: "Total failed connection attempts per channel",
 	labelNames: ["channelId"],
 	registers: [prometheus],
 });
 
 export const commandCounterMetric = new Counter({
-	name: "commands_total",
+	name: "wheelgpt_commands_total",
 	help: "Total number of commands executed",
 	labelNames: ["channelId", "commandName"],
 	registers: [prometheus],
@@ -59,7 +59,8 @@ export class WheelGPT extends Client {
 		await this.connect();
 		const channels = await database.channel.findMany({
 			select: {
-				channelId: true,
+				id: true,
+				login: true,
 				displayName: true,
 				guessDelayTime: true,
 				botActiveWhenOffline: true,
@@ -73,12 +74,12 @@ export class WheelGPT extends Client {
 
 	public async register(channel: ChannelConfig) {
 		try {
-			const twitchChannel = new TwitchChannel(channel.channelId, channel);
-			this.channelMap.set(channel.channelId, twitchChannel);
-			await this.join(channel.channelId);
+			const twitchChannel = new TwitchChannel(channel.id, channel);
+			this.channelMap.set(channel.id, twitchChannel);
+			await this.join(channel.login);
 		} catch (error) {
-			failedConnectionAttemptsCounterMetric.inc({ channelId: channel.channelId });
-			logger.error(`Failed to register channel ${channel.channelId}:`, error);
+			failedConnectionAttemptsCounterMetric.inc({ channelId: channel.id });
+			logger.error(`Failed to register channel ${channel.id}:`, error);
 		}
 	}
 
@@ -106,12 +107,13 @@ export class WheelGPT extends Client {
 		}, channel.config.guessDelayTime * 1000);
 	}
 
-	public async reload(channelId: string) {
-		this.channelMap.delete(channelId);
+	public async reload(id: string) {
+		this.channelMap.delete(id);
 		const channel = await database.channel.findUnique({
-			where: { channelId },
+			where: { id },
 			select: {
-				channelId: true,
+				id: true,
+				login: true,
 				displayName: true,
 				guessDelayTime: true,
 				botActiveWhenOffline: true,
@@ -119,9 +121,9 @@ export class WheelGPT extends Client {
 			},
 		});
 		if (!channel) {
-			logger.warn(`Channel ${channelId} not found for reload.`);
+			logger.warn(`Channel ${id} not found for reload.`);
 			return;
 		}
-		this.channelMap.set(channel.channelId, new TwitchChannel(channel.channelId, channel));
+		this.channelMap.set(channel.id, new TwitchChannel(channel.id, channel));
 	}
 }

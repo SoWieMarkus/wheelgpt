@@ -5,7 +5,7 @@ import { prometheus } from "../prometheus";
 import { env, logger } from "../utils";
 
 export const failedTwitchAPIMetric = new Counter({
-	name: "twitch_failed_requests_total",
+	name: "wheelgpt_twitch_failed_requests_total",
 	help: "Total number of failed requests to Twitch API",
 	labelNames: ["endpoint"],
 	registers: [prometheus],
@@ -67,6 +67,7 @@ export const getAppAccessToken = async (): Promise<string | null> => {
 };
 
 const UserSchema = z.object({
+	id: z.string(),
 	login: z.string(),
 	display_name: z.string(),
 	profile_image_url: z.string(),
@@ -102,4 +103,4 @@ export const getUser = async (accessToken: string) => {
 	return data.data[0];
 };
 
-export const getUserOnlineStatus = async (userIds: string[]) => {};
+export const getUserOnlineStatus = async (userIds: string[]) => { };

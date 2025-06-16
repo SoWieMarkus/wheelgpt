@@ -6,7 +6,8 @@ import { database } from "../database";
 import { env } from "../utils";
 
 const PayloadSchema = z.object({
-	channelId: z.string(),
+	channelId: z.string().optional(), // Channel login, which was used in the past to generate tokens. To still support existing tokens it is kept here.
+	id: z.string().optional(), // Channel ID, which is the new standard for tokens. One of these two needs to be present.
 	token: z.string(),
 });
 
@@ -30,11 +31,28 @@ export const requiresPluginAuthentication: RequestHandler = (request, response, 
 			return next(httpError);
 		}
 
-		const { channelId, token } = data;
+		const { channelId, id, token } = data;
 
-		const channel = await database.channel.findUnique({
-			where: { channelId },
-		});
+		// Check if exactly one of channelId or id is provided 
+		// channelId === login, used in the past to identifiy channels
+		// To support existing tokens, we keep this check
+		if (channelId === undefined && id === undefined) {
+			const httpError = createHttpError(401, "Unauthorized. Invalid token payload.");
+			return next(httpError);
+		}
+
+		if (channelId !== undefined && id !== undefined) {
+			const httpError = createHttpError(401, "Unauthorized. Invalid token payload.");
+			return next(httpError);
+		}
+
+		const channel = channelId === undefined
+			? await database.channel.findUnique({
+				where: { id: id },
+			})
+			: await database.channel.findUnique({
+				where: { login: channelId },
+			});
 
 		if (channel === null) {
 			const httpError = createHttpError(401, "Unauthorized. User not found.");

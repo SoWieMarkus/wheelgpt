@@ -11,7 +11,8 @@ import type { Command } from "./command";
 import { AccessLevel } from "./user";
 
 export type ChannelConfig = {
-	channelId: string;
+	id: string;
+	login: string;
 	displayName: string;
 	guessDelayTime: number;
 	botActiveWhenOffline: boolean;
@@ -22,40 +23,40 @@ export class TwitchChannel {
 	private readonly commands: Command[];
 
 	constructor(
-		public readonly channelId: string,
+		public readonly id: string,
 		public readonly config: ChannelConfig,
 	) {
 		this.commands = [
-			new GuessCommand(channelId, {
+			new GuessCommand(id, {
 				name: "guess",
 				accessLevel: AccessLevel.USER,
 				cooldown: 0,
 				aliases: ["g"],
 			}),
-			new MyGuessCommand(channelId, {
+			new MyGuessCommand(id, {
 				name: "myguess",
 				accessLevel: AccessLevel.USER,
 				cooldown: 0,
 				aliases: ["myg"],
 			}),
-			new GuessResultCommand(channelId, {
+			new GuessResultCommand(id, {
 				name: "result",
 				accessLevel: AccessLevel.MOD,
 				cooldown: 0,
 				aliases: ["gr"],
 			}),
-			new MapCommand(channelId, {
+			new MapCommand(id, {
 				name: "map",
 				accessLevel: AccessLevel.USER,
 				cooldown: 10,
 				aliases: ["m"],
 			}),
-			new EmotesCommand(channelId, {
+			new EmotesCommand(id, {
 				name: "wgpt-emotes",
 				accessLevel: AccessLevel.MOD,
 				cooldown: 10,
 			}),
-			new FormatCommand(channelId, {
+			new FormatCommand(id, {
 				name: "format",
 				accessLevel: AccessLevel.USER,
 				cooldown: 5,

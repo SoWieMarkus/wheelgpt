@@ -9,7 +9,8 @@ datasource db {
 }
 
 model Channel {
-  channelId            String   @id @unique
+  id                   String   @id
+  login                String   @unique
   token                String
   displayName          String
   profileImage         String

@@ -38,13 +38,14 @@ export const login: RequestHandler = async (request, response) => {
 	const profileImage = user.profile_image_url;
 
 	const existingChannel = await database.channel.findUnique({
-		where: { channelId: user.login },
+		where: { id: user.id },
 	});
 
 	const channel = await database.channel.upsert({
-		where: { channelId: user.login },
+		where: { id: user.id },
 		create: {
-			channelId: user.login,
+			id: user.id,
+			login: user.login,
 			displayName,
 			profileImage,
 			token: uuid.v4(),
@@ -54,7 +55,8 @@ export const login: RequestHandler = async (request, response) => {
 			profileImage,
 		},
 		select: {
-			channelId: true,
+			id: true,
+			login: true,
 			displayName: true,
 			guessDelayTime: true,
 			botActiveWhenOffline: true,
@@ -66,7 +68,7 @@ export const login: RequestHandler = async (request, response) => {
 		wheelgpt.register(channel);
 	}
 
-	const webToken = jwt.sign({ channelId: user.login }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
+	const webToken = jwt.sign({ channelId: user.id }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
 	response.status(200).json({ webToken, displayName, profileImage });
 };
 
@@ -77,7 +79,7 @@ export const remove: RequestHandler = async (request, response) => {
 	}
 
 	await wheelgpt.remove(channelId);
-	await database.channel.delete({ where: { channelId } });
+	await database.channel.delete({ where: { id: channelId } });
 	response.status(204).json({});
 };
 
@@ -88,7 +90,7 @@ export const getPluginToken: RequestHandler = async (request, response) => {
 	}
 
 	const channel = await database.channel.findUnique({
-		where: { channelId },
+		where: { id: channelId },
 		select: { token: true },
 	});
 
@@ -107,15 +109,15 @@ export const updatePluginToken: RequestHandler = async (request, response) => {
 	}
 
 	const channel = await database.channel.update({
-		where: { channelId },
+		where: { id: channelId },
 		data: { token: uuid.v4() },
-		select: { token: true },
+		select: { token: true, login: true },
 	});
 
 	if (!channel) {
 		throw createHttpError(404, "Channel not found.");
 	}
 
-	const pluginToken = jwt.sign({ channelId, token: channel.token }, env.JWT_SECRET_CHANNEL);
+	const pluginToken = jwt.sign({ id: channel.login, token: channel.token }, env.JWT_SECRET_CHANNEL);
 	response.status(200).json({ pluginToken });
 };
