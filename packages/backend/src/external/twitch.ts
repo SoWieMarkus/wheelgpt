@@ -24,6 +24,8 @@ const AppAccessTokenSchema = z.object({
 	expires_in: z.number(),
 });
 
+
+// Request a new app access token from Twitch
 export const requestAppAccessToken = async (): Promise<string | null> => {
 	const url = "https://id.twitch.tv/oauth2/token";
 	const response = await axios.post(url, null, {
@@ -48,6 +50,7 @@ export const requestAppAccessToken = async (): Promise<string | null> => {
 	return appAccessToken;
 };
 
+// Get the app access token, caching it if it's still valid
 const getAppAccessToken = async (): Promise<string> => {
 	if (appAccessToken && appAccessTokenExpiration && Date.now() < appAccessTokenExpiration * 1000) {
 		return appAccessToken;
@@ -61,6 +64,7 @@ const UserAccessTokenSchema = z.object({
 	access_token: z.string(),
 });
 
+// Request a user access token using the authorization code returned from the Twitch OAuth flow
 export const requestUserAccessToken = async (code: string): Promise<string | null> => {
 	const url = "https://id.twitch.tv/oauth2/token";
 	const response = await axios.post(url, null, {
@@ -95,6 +99,7 @@ const HelixUsersSchema = z.object({
 	data: UserSchema.array(),
 });
 
+// Used to get the user information by a user access token to identify who is trying to log in
 export const getUser = async (accessToken: string) => {
 	const userUrl = "https://api.twitch.tv/helix/users";
 	const response = await axios.get(userUrl, {
@@ -121,6 +126,8 @@ export const getUser = async (accessToken: string) => {
 	return data.data[0];
 };
 
+
+// Used to update the channel information in the database on boot up
 export const getUsers = async (channelIds: string[]) => {
 	const accessToken = await getAppAccessToken();
 	const userUrl = "https://api.twitch.tv/helix/users";
@@ -167,6 +174,7 @@ const HelixStreamsSchema = z.object({
 	data: StreamsSchema.array(),
 });
 
+// Used to initially check if a channel is live or not
 // See: https://dev.twitch.tv/docs/api/reference/#get-streams
 export const getStreams = async (channelIds: string[]) => {
 	const accessToken = await getAppAccessToken();
