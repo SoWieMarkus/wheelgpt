@@ -1,10 +1,10 @@
 import axios from "axios";
+import { data } from "cheerio/dist/commonjs/api/attributes";
 import { Counter } from "prom-client";
 import { z } from "zod";
+import { database } from "../database";
 import { prometheus } from "../prometheus";
 import { env, logger } from "../utils";
-import { database } from "../database";
-import { data } from "cheerio/dist/commonjs/api/attributes";
 
 export const failedTwitchAPIMetric = new Counter({
 	name: "wheelgpt_twitch_failed_requests_total",
@@ -44,7 +44,7 @@ export const requestAppAccessToken = async (): Promise<string | null> => {
 	}
 
 	appAccessToken = data.access_token;
-	appAccessTokenExpiration = data.expires_in
+	appAccessTokenExpiration = data.expires_in;
 	return appAccessToken;
 };
 
@@ -56,7 +56,6 @@ const getAppAccessToken = async (): Promise<string> => {
 	if (token === null) throw new Error("Failed to retrieve app access token");
 	return token;
 };
-
 
 const UserAccessTokenSchema = z.object({
 	access_token: z.string(),
@@ -126,7 +125,6 @@ export const getUsers = async (channelIds: string[]) => {
 	const accessToken = await getAppAccessToken();
 	const userUrl = "https://api.twitch.tv/helix/users";
 
-
 	// Split channelIds into chunks of 100, as Twitch API has a limit of 100 IDs per request
 	const chunkSize = 100;
 	const chunks = [];
@@ -164,7 +162,6 @@ const StreamsSchema = z.object({
 	id: z.string(),
 	type: z.string(),
 });
-
 
 const HelixStreamsSchema = z.object({
 	data: StreamsSchema.array(),
