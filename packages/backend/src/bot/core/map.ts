@@ -25,7 +25,7 @@ export class TrackmaniaMap {
 	}
 
 	public hasTrackmaniaExchangeId() {
-		return this.data.tmxId !== undefined;
+		return this.data.tmxId !== null;
 	}
 
 	public getMedal(value: number | TrackmaniaTime) {
@@ -97,7 +97,7 @@ export class TrackmaniaMap {
 
 	public get tmxLink() {
 		const { tmxId } = this.data;
-		if (tmxId === undefined) return undefined;
+		if (tmxId === null) return undefined;
 		return `https://trackmania.exchange/maps/${tmxId}`;
 	}
 

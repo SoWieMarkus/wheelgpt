@@ -1,8 +1,9 @@
-import { TrackmaniaTime } from "../guess/time";
+import { TrackmaniaTime } from "./time";
 import { Medal, TrackmaniaMap } from "./map";
 
 describe("TrackmaniaMap", () => {
 	const validMapData = {
+		channelId: "channel123",
 		name: "MapName$w",
 		uid: "abc123",
 		author: "AuthorName",
@@ -12,6 +13,7 @@ describe("TrackmaniaMap", () => {
 		bronzeTime: 4000,
 		championTime: 500,
 		tmxId: 12345,
+		worldRecord: null,
 	};
 
 	const noChampionMapData = {
@@ -24,7 +26,14 @@ describe("TrackmaniaMap", () => {
 		bronzeTime: 4000,
 		championTime: 0,
 		tmxId: 54321,
+		channelId: "channel456",
+		worldRecord: null,
 	};
+
+	const mapWithoutTmxId = {
+		...validMapData,
+		tmxId: null,
+	}
 
 	it("should clean the map name of styling characters", () => {
 		const map = new TrackmaniaMap(validMapData);
@@ -41,31 +50,23 @@ describe("TrackmaniaMap", () => {
 
 	it("should detect if a map has a Trackmania Exchange ID", () => {
 		const mapWithTmx = new TrackmaniaMap(validMapData);
-		const mapWithoutTmx = new TrackmaniaMap({
-			...validMapData,
-			tmxId: undefined,
-		});
+		const mapWithoutTmx = new TrackmaniaMap(mapWithoutTmxId);
 
 		expect(mapWithTmx.hasTrackmaniaExchangeId()).toBe(true);
 		expect(mapWithoutTmx.hasTrackmaniaExchangeId()).toBe(false);
 	});
 
 	it("should set a new Trackmania Exchange ID", () => {
-		const map = new TrackmaniaMap(validMapData);
-		map.setTrackmaniaExchangeId(67890);
+		const map = new TrackmaniaMap({ ...validMapData, tmxId: 67890 });
 		expect(map.data.tmxId).toBe(67890);
 	});
 
 	it("should return the correct Trackmania Exchange link", () => {
-		const mapWithTmx = new TrackmaniaMap(validMapData);
-		mapWithTmx.setTrackmaniaExchangeId(67890);
-		const mapWithoutTmx = new TrackmaniaMap({
-			...validMapData,
-			tmxId: undefined,
-		});
+		const mapWithTmx = new TrackmaniaMap({ ...validMapData, tmxId: 67890 });
+		const mapWithoutTmx = new TrackmaniaMap(mapWithoutTmxId);
 
-		expect(mapWithTmx.getTrackmaniaExchangeLink()).toBe("https://trackmania.exchange/maps/67890");
-		expect(mapWithoutTmx.getTrackmaniaExchangeLink()).toBeUndefined();
+		expect(mapWithTmx.tmxLink).toBe("https://trackmania.exchange/maps/67890");
+		expect(mapWithoutTmx.tmxLink).toBeUndefined();
 	});
 
 	it("should return the correct medal based on the time", () => {
