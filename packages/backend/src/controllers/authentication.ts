@@ -68,7 +68,7 @@ export const login: RequestHandler = async (request, response) => {
 		wheelgpt.register(channel);
 	}
 
-	const webToken = jwt.sign({ channelId: user.id }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
+	const webToken = jwt.sign({ id: channel.id }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
 	response.status(200).json({ webToken, displayName, profileImage });
 };
 
@@ -91,14 +91,14 @@ export const getPluginToken: RequestHandler = async (request, response) => {
 
 	const channel = await database.channel.findUnique({
 		where: { id: channelId },
-		select: { token: true },
+		select: { token: true, id: true },
 	});
 
 	if (!channel) {
 		throw createHttpError(404, "Channel not found.");
 	}
 
-	const pluginToken = jwt.sign({ channelId, token: channel.token }, env.JWT_SECRET_CHANNEL);
+	const pluginToken = jwt.sign({ id: channel.id, token: channel.token }, env.JWT_SECRET_CHANNEL);
 	response.status(200).json({ pluginToken });
 };
 
@@ -111,13 +111,13 @@ export const updatePluginToken: RequestHandler = async (request, response) => {
 	const channel = await database.channel.update({
 		where: { id: channelId },
 		data: { token: uuid.v4() },
-		select: { token: true, login: true },
+		select: { token: true, id: true },
 	});
 
 	if (!channel) {
 		throw createHttpError(404, "Channel not found.");
 	}
 
-	const pluginToken = jwt.sign({ id: channel.login, token: channel.token }, env.JWT_SECRET_CHANNEL);
+	const pluginToken = jwt.sign({ id: channel.id, token: channel.token }, env.JWT_SECRET_CHANNEL);
 	response.status(200).json({ pluginToken });
 };

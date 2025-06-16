@@ -6,7 +6,7 @@ import { database } from "../database";
 import { env } from "../utils";
 
 const PayloadSchema = z.object({
-	channelId: z.string(),
+	id: z.string(),
 	exp: z.number(),
 });
 
@@ -30,7 +30,7 @@ export const requiresWebAuthentication: RequestHandler = (request, _, next) => {
 			return next(httpError);
 		}
 
-		const { channelId, exp } = data;
+		const { id, exp } = data;
 		const now = Date.now() / 1000;
 		if (exp < now) {
 			const httpError = createHttpError(401, "Unauthorized. Token has expired.");
@@ -38,7 +38,7 @@ export const requiresWebAuthentication: RequestHandler = (request, _, next) => {
 		}
 
 		const channel = await database.channel.findUnique({
-			where: { channelId },
+			where: { id },
 		});
 
 		if (channel === null) {
@@ -46,7 +46,7 @@ export const requiresWebAuthentication: RequestHandler = (request, _, next) => {
 			return next(httpError);
 		}
 
-		request.channelId = channelId;
+		request.channelId = channel.id;
 		next();
 	});
 };
