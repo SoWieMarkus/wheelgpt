@@ -24,7 +24,6 @@ const AppAccessTokenSchema = z.object({
 	expires_in: z.number(),
 });
 
-
 // Request a new app access token from Twitch
 export const requestAppAccessToken = async (): Promise<string | null> => {
 	const url = "https://id.twitch.tv/oauth2/token";
@@ -125,7 +124,6 @@ export const getUser = async (accessToken: string) => {
 
 	return data.data[0];
 };
-
 
 // Used to update the channel information in the database on boot up
 export const getUsers = async (channelIds: string[]) => {
