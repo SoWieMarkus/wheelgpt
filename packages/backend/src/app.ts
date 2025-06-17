@@ -2,7 +2,14 @@ import path from "node:path";
 import cors from "cors";
 import express, { json, type NextFunction, type Request, type Response } from "express";
 import createHttpError, { isHttpError } from "http-errors";
-import { AuthenticationRouter, ChannelRouter, LandingRouter, MetricsRouter, TrackmaniaRouter } from "./routes";
+import {
+	AuthenticationRouter,
+	ChannelRouter,
+	LandingRouter,
+	MetricsRouter,
+	TrackmaniaRouter,
+	TwitchWebhookRouter,
+} from "./routes";
 import { logger } from "./utils";
 
 const app = express();
@@ -17,6 +24,7 @@ apiRouter.use("/authentication", AuthenticationRouter);
 apiRouter.use("/trackmania", TrackmaniaRouter);
 apiRouter.use("/landing", LandingRouter);
 apiRouter.use("/channel", ChannelRouter);
+apiRouter.use("/twitch", TwitchWebhookRouter);
 
 app.use("/api", apiRouter);
 app.get("*name", (_, response) => {

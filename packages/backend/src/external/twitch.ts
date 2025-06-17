@@ -250,7 +250,7 @@ export const getRegisteredWebhooks = async () => {
 export const registerWebhook = async (
 	type: "stream.online" | "stream.offline",
 	broadcasterUserId: string,
-	callback: string
+	callback: string,
 ) => {
 	const accessToken = await getAppAccessToken();
 	const url = "https://api.twitch.tv/helix/eventsub/subscriptions";
@@ -272,7 +272,7 @@ export const registerWebhook = async (
 				"Client-Id": env.TWITCH_CLIENT_ID,
 				"Content-Type": "application/json",
 			},
-		}
+		},
 	);
 };
 
@@ -302,10 +302,7 @@ export const syncWebhooks = async (channelIds: string[], callbackUrl: string) =>
 	// Build a map of currently registered webhooks
 	const registeredMap = new Map<string, { id: string; type: string; broadcaster_user_id: string }>();
 	for (const sub of registered) {
-		if (
-			(sub.type === "stream.online" || sub.type === "stream.offline") &&
-			sub.condition.broadcaster_user_id
-		) {
+		if ((sub.type === "stream.online" || sub.type === "stream.offline") && sub.condition.broadcaster_user_id) {
 			registeredMap.set(`${sub.type}:${sub.condition.broadcaster_user_id}`, {
 				id: sub.id,
 				type: sub.type,
