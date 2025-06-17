@@ -163,7 +163,7 @@ export const getUsers = async (channelIds: string[]) => {
 };
 
 const StreamsSchema = z.object({
-	id: z.string(),
+	user_id: z.string(),
 	type: z.string(),
 });
 
@@ -207,4 +207,129 @@ export const getStreams = async (channelIds: string[]) => {
 		streams.push(...data.data);
 	}
 	return streams;
+};
+
+// Zod schema for EventSub subscriptions
+const EventSubSubscriptionSchema = z.object({
+	id: z.string(),
+	type: z.string(),
+	status: z.string(),
+	condition: z.record(z.string(), z.string()),
+	transport: z.object({
+		method: z.string(),
+		callback: z.string(),
+	}),
+	created_at: z.string(),
+});
+const HelixEventSubSchema = z.object({
+	data: EventSubSubscriptionSchema.array(),
+	total: z.number(),
+	total_cost: z.number(),
+	max_total_cost: z.number(),
+});
+
+// Fetch all registered EventSub webhooks
+export const getRegisteredWebhooks = async () => {
+	const accessToken = await getAppAccessToken();
+	const url = "https://api.twitch.tv/helix/eventsub/subscriptions";
+	const response = await axios.get(url, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			"Client-Id": env.TWITCH_CLIENT_ID,
+		},
+	});
+	const { success, data, error } = HelixEventSubSchema.safeParse(response.data);
+	if (!success) {
+		logger.error("Failed to parse EventSub subscriptions", { error: error.errors[0].message });
+		return [];
+	}
+	return data.data;
+};
+
+// Register a new webhook for a channel (online/offline)
+export const registerWebhook = async (
+	type: "stream.online" | "stream.offline",
+	broadcasterUserId: string,
+	callback: string
+) => {
+	const accessToken = await getAppAccessToken();
+	const url = "https://api.twitch.tv/helix/eventsub/subscriptions";
+	await axios.post(
+		url,
+		{
+			type,
+			version: "1",
+			condition: { broadcaster_user_id: broadcasterUserId },
+			transport: {
+				method: "webhook",
+				callback,
+				secret: env.TWITCH_EVENTSUB_SECRET,
+			},
+		},
+		{
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				"Client-Id": env.TWITCH_CLIENT_ID,
+				"Content-Type": "application/json",
+			},
+		}
+	);
+};
+
+// Remove a webhook by ID
+export const removeWebhook = async (id: string) => {
+	const accessToken = await getAppAccessToken();
+	const url = `https://api.twitch.tv/helix/eventsub/subscriptions?id=${id}`;
+	await axios.delete(url, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			"Client-Id": env.TWITCH_CLIENT_ID,
+		},
+	});
+};
+
+// Main logic to sync webhooks on boot
+export const syncWebhooks = async (channelIds: string[], callbackUrl: string) => {
+	const registered = await getRegisteredWebhooks();
+
+	// Build a set of required webhooks
+	const required = new Set<string>();
+	for (const id of channelIds) {
+		required.add(`stream.online:${id}`);
+		required.add(`stream.offline:${id}`);
+	}
+
+	// Build a map of currently registered webhooks
+	const registeredMap = new Map<string, { id: string; type: string; broadcaster_user_id: string }>();
+	for (const sub of registered) {
+		if (
+			(sub.type === "stream.online" || sub.type === "stream.offline") &&
+			sub.condition.broadcaster_user_id
+		) {
+			registeredMap.set(`${sub.type}:${sub.condition.broadcaster_user_id}`, {
+				id: sub.id,
+				type: sub.type,
+				broadcaster_user_id: sub.condition.broadcaster_user_id,
+			});
+		}
+	}
+
+	// Register missing webhooks
+	for (const id of channelIds) {
+		for (const type of ["stream.online", "stream.offline"] as const) {
+			const key = `${type}:${id}`;
+			if (!registeredMap.has(key)) {
+				logger.info(`Registering webhook: ${type} for channel ${id}`);
+				await registerWebhook(type, id, callbackUrl);
+			}
+		}
+	}
+
+	// Remove unused webhooks
+	for (const [key, sub] of registeredMap.entries()) {
+		if (!required.has(key)) {
+			logger.info(`Removing unused webhook: ${sub.type} for channel ${sub.broadcaster_user_id}`);
+			await removeWebhook(sub.id);
+		}
+	}
 };

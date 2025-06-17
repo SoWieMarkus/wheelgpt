@@ -11,4 +11,5 @@ export default cleanEnv(process.env, {
 	TWITCH_REDIRECT_URL: str(),
 	BOT_USERNAME: str(),
 	BOT_OAUTH_TOKEN: str(),
+	TWITCH_EVENTSUB_SECRET: str(),
 });
