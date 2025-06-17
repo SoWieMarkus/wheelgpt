@@ -13,7 +13,7 @@
   "license": "ISC",
   "description": "",
   "overrides": {
-    "glob": "11.0.1"
+    "glob": "11.0.3"
   },
   "jest": {
     "preset": "ts-jest",
