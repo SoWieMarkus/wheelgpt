@@ -23,14 +23,12 @@
     ]
   },
   "devDependencies": {
-    "@types/axios": "^0.9.36",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/tmi.js": "^1.8.6",
-    "@types/winston": "^2.4.4",
     "nodemon": "^3.1.10",
     "ts-jest": "^29.3.4",
     "ts-node": "^10.9.2"
