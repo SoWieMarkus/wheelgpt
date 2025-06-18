@@ -4,8 +4,8 @@ import { EXAMPLE_FORMAT, TrackmaniaTime } from "../core/time";
 
 export class GuessCommand extends Command {
 	protected async onExecute(user: User, args: string[]): Promise<string | null> {
-		if (args.length > 0) {
-			return `@${user.displayName} Please add your guess: ${EXAMPLE_FORMAT}`;
+		if (args.length === 0) {
+			return `@${user.displayName} ${EXAMPLE_FORMAT}`;
 		}
 
 		const time = TrackmaniaTime.parse(args[0]);

@@ -1,1 +1,15 @@
-<p>landing-page works!</p>
+<h1>WheelGPT</h1>
+
+<div class="introduction">
+  <p [innerHTML]="'pages.landing.introduction' | translate"></p>
+  <a class="twitch-login-button" [href]="authenticationService.twitchSSOUrl">
+    <mat-icon svgIcon="twitch"></mat-icon>
+    {{ "pages.landing.login" | translate }}
+  </a>
+</div>
+<h2>Commands</h2>
+<div class="commands">
+  @for (command of commandsService.commands(); track command.name) {
+  <app-command [command]="command"></app-command>
+  }
+</div>

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { data } from "cheerio/dist/commonjs/api/attributes";
 import { Counter } from "prom-client";
 import { z } from "zod";
 import { prometheus } from "../prometheus";
@@ -144,7 +143,7 @@ export const getUsers = async (channelIds: string[]) => {
 				"Client-Id": env.TWITCH_CLIENT_ID,
 			},
 			params: {
-				id: chunk.join(","),
+				id: chunk,
 			},
 		});
 
@@ -191,7 +190,7 @@ export const getStreams = async (channelIds: string[]) => {
 				"Client-Id": env.TWITCH_CLIENT_ID,
 			},
 			params: {
-				user_id: chunk.join(","),
+				user_id: chunk,
 			},
 		});
 

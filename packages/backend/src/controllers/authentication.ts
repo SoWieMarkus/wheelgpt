@@ -6,6 +6,7 @@ import { database } from "../database";
 import { Twitch } from "../external";
 import { env } from "../utils";
 import { wheelgpt } from "../wheelgpt";
+import z from "zod";
 
 const clientId = env.TWITCH_CLIENT_ID;
 const redirectUri = env.TWITCH_REDIRECT_URL;
@@ -16,8 +17,12 @@ export const twitchLoginRequest: RequestHandler = async (request, response) => {
 	response.redirect(authUrl);
 };
 
+const TwitchCodeSchema = z.object({
+	code: z.string(),
+});
+
 export const login: RequestHandler = async (request, response) => {
-	const { success, data, error } = request.body;
+	const { success, data, error } = TwitchCodeSchema.safeParse(request.body);
 	if (!success) {
 		throw createHttpError(400, error.errors[0].message);
 	}
@@ -69,7 +74,7 @@ export const login: RequestHandler = async (request, response) => {
 	}
 
 	const webToken = jwt.sign({ id: channel.id }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
-	response.status(200).json({ webToken, displayName, profileImage });
+	response.status(200).json({ webToken });
 };
 
 export const remove: RequestHandler = async (request, response) => {

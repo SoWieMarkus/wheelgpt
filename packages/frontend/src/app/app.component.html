@@ -1,0 +1,16 @@
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+<mat-divider></mat-divider>
+<footer>
+  <div class="footer-container">
+    <a href="mailto:markus.u.wieland@gmail.com">Contact</a>
+    <a> | </a>
+    <a href="https://github.com/SoWieMarkus/wheelgpt"><mat-icon svgIcon="github"></mat-icon> Github</a>
+    @if (profileService.channel() !== null) {
+    <span> | </span>
+    <span>{{"footer.login" | translate }} <span class="user">{{profileService.channel()?.displayName}}</span></span>
+    }
+  </div>
+  <a>© {{year}}, Markus Wieland</a>
+</footer>

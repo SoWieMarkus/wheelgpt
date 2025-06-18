@@ -1,0 +1,40 @@
+{
+  "pages": {
+    "landing": {
+      "login": "Add to Channel",
+      "introduction": "Jaaa hello guys! My name is WheelGPT! And especially mothers love me!<br><br>I am a Twitch bot made especially for Trackmania streamers. With me, your viewers can always check which map you are currently playing. They can also guess your next personal best time. To make everything run smoothly, you should install the <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">OpenPlanet Plugin</a>. Curious? Then add WheelGPT to your channel now!"    },
+    "redirect": {
+      "message": "You will be redirected shortly...",
+      "login-failed": {
+        "message": "Failed to log in to Twitch. Please try again.",
+        "close": "Close"
+      }
+    }
+  },
+  "commands": {
+    "guess": {
+      "description": "Submit your guess for the best time on the current map."
+    },
+    "myguess": {
+      "description": "View your current guess for the best time on the current map."
+    },
+    "result": {
+      "description": "Manually end the guessing game with the final time."
+    },
+    "map": {
+      "description": "Get information about the current map."
+    },
+    "wgpt-emotes": {
+      "description": "Get a list of all emotes that WheelGPT uses. You should add them all to your channel."
+    },
+    "format": {
+      "description": "Get information about the format of the guesses."
+    }
+  },
+  "footer": {
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "imprint": "Imprint",
+    "login": "Logged in as "
+  }
+}

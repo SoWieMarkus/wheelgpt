@@ -2,7 +2,13 @@
 
 More information on [wheelgpt.dev](https://wheelgpt.dev). Get the [OpenPlanet Plugin](https://openplanet.dev/plugin/wheelgpt-plugin).
 
-WheelGPT is a [Trackmania](https://www.trackmania.com/) Twitch bot that was originally developed for the Twitch channel of GranaDyy - the wheel guy. With the bot, viewers can ask for the current map of the streamer. They can also guess the next personal best time of the streamer. To automate the evaluation of the guesses and the updating of the map, this plugin was developed.
+WheelGPT is a [Trackmania](https://www.trackmania.com/) Twitch bot that was originally developed for the Twitch channel of GranaDyy - the wheel guy. With the bot, viewers can ask for the current map of the streamer. They can also guess the next personal best time of the streamer. To automate the evaluation of the guesses and the updating of the map, an openplanet plugin was developed.
+
+## Any Questions? Feedback?
+
+If you have any questions regarding the plugin or the Twitch Bot, feel free to contact me!
+
+- Discord: sowiemarkus
 
 ## Features
 
@@ -27,8 +33,20 @@ If the plugin is activated, whenever you enter a new map, this map is sent to ou
 
 If you want to disable this feature, you can deactivate this under `Settings`->`WheelGPT-Plugin`->` Send Maps to Server`.
 
-## Any Questions? Feedback?
+## Getting Started
 
-If you have any questions regarding the plugin or the Twitch Bot, feel free to contact me!
+1. Create a `.env` file based on the provided example.
+2. Build the Docker image:
 
-- Discord: sowiemarkus
+   ```sh
+   docker build -t wheelgpt-app .
+   ```
+
+3. Run the Docker container:
+
+   ```sh
+   docker run -p 3000:<port_from_env> wheelgpt-app
+   ```
+
+   This will start the backend server on port 3000.  
+   You can adjust the port mapping as needed.

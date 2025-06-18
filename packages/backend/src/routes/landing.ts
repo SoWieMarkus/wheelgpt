@@ -3,6 +3,6 @@ import { LandingController } from "../controllers";
 
 const router = express.Router();
 
-router.get("/", LandingController.getPublicChannels);
+router.get("/channels", LandingController.getPublicChannels);
 
 export default router;
