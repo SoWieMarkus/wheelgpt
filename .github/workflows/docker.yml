@@ -22,6 +22,9 @@ jobs:
         env:
           DATABASE_URL: file:./dev.db
 
+      - name: Build the project
+        run: npm run build
+
       - name: Run tests
         run: npm test
 
