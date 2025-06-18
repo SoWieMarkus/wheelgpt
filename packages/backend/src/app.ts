@@ -21,7 +21,7 @@ app.use(json({ limit: "7mb" }));
 const apiRouter = express.Router();
 apiRouter.use("/metrics", MetricsRouter);
 apiRouter.use("/authentication", AuthenticationRouter);
-apiRouter.use("/game", TrackmaniaRouter);
+apiRouter.use("/trackmania", TrackmaniaRouter);
 apiRouter.use("/landing", LandingRouter);
 apiRouter.use("/channel", ChannelRouter);
 apiRouter.use("/twitch", TwitchWebhookRouter);
