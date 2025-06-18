@@ -37,7 +37,7 @@ app.use((_, __, next) => {
 });
 
 // Error handling
-app.use((error: unknown, _: Request, response: Response, next: NextFunction) => {
+app.use((error: unknown, _: Request, response: Response, __: NextFunction) => {
 	const errorMessage = isHttpError(error) ? error.message : "An unknown error occured.";
 	const errorStatus = isHttpError(error) ? error.status : 500;
 

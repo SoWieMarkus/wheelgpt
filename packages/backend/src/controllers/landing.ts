@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { database } from "../database";
 
-export const getPublicChannels: RequestHandler = async (request, response) => {
+export const getPublicChannels: RequestHandler = async (_, response) => {
 	const channels = await database.channel.findMany({
 		where: {
 			usagePublic: true,

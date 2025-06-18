@@ -9,7 +9,7 @@ class AuthenticationPermissionService {
 	private readonly router = inject(Router);
 	private readonly authenticationService = inject(AuthenticationService);
 
-	public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+	public canActivate(_: ActivatedRouteSnapshot, __: RouterStateSnapshot): boolean {
 		const isTokenExpired = this.authenticationService.isTokenExpired();
 		const doesTokenExist = this.authenticationService.getToken() !== null;
 

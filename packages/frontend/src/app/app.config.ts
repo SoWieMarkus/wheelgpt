@@ -1,7 +1,6 @@
+import { HttpClient, provideHttpClient, withInterceptors } from "@angular/common/http";
 import { type ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from "@angular/core";
 import { provideRouter } from "@angular/router";
-
-import { HttpClient, provideHttpClient, withInterceptors } from "@angular/common/http";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { routes } from "./app.routes";

@@ -11,7 +11,7 @@ import { wheelgpt } from "../wheelgpt";
 const clientId = env.TWITCH_CLIENT_ID;
 const redirectUri = env.TWITCH_REDIRECT_URL;
 
-export const twitchLoginRequest: RequestHandler = async (request, response) => {
+export const twitchLoginRequest: RequestHandler = async (_, response) => {
 	const scope = "user:read:email";
 	const authUrl = `https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
 	response.redirect(authUrl);

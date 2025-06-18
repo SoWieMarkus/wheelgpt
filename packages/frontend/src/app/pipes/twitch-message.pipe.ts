@@ -13,7 +13,7 @@ const EMOTES: Record<string, string> = {
 	name: "twitch",
 })
 export class TwitchMessagePipe implements PipeTransform {
-	public transform(value: unknown, ...args: unknown[]): unknown {
+	public transform(value: unknown, ..._: unknown[]): unknown {
 		// Find all emotes inside the message
 		// They are wrapped by two $$
 		// Example: This message contains an $$EMOTE$$

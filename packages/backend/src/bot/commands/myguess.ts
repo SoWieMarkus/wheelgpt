@@ -3,7 +3,7 @@ import { Command, TrackmaniaTime, type User } from "../core";
 import { Emote } from "../core/emotes";
 
 export class MyGuessCommand extends Command {
-	protected async onExecute(user: User, args: string[]): Promise<string | null> {
+	protected async onExecute(user: User, _: string[]): Promise<string | null> {
 		const guess = await database.guess.findUnique({
 			where: {
 				channelId_userId: {

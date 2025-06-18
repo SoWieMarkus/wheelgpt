@@ -1,12 +1,12 @@
 import { database } from "../../database";
 import type { User } from "../core";
 import {
+	buildGuessResultMessage,
 	Command,
 	EXAMPLE_FORMAT,
+	evaluateGuesses,
 	TrackmaniaMap,
 	TrackmaniaTime,
-	buildGuessResultMessage,
-	evaluateGuesses,
 } from "../core";
 
 export const guessResultHandler = async (channelId: string, time: TrackmaniaTime) => {
@@ -43,7 +43,4 @@ export class GuessResultCommand extends Command {
 
 		return guessResultHandler(this.channelId, time);
 	}
-}
-function mentionUser(user: User, arg1: string): string | PromiseLike<string | null> | null {
-	throw new Error("Function not implemented.");
 }

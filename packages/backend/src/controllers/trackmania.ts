@@ -65,6 +65,7 @@ export const updateMap: RequestHandler = async (request, response) => {
 			});
 		})
 		.catch((error) => {
+			console.error("Failed to update map with TMX data:", error);
 			logger.error("Failed to update map with TMX data", {
 				mapUid: map.uid,
 			});

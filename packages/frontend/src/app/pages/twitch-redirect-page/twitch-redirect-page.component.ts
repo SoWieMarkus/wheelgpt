@@ -1,4 +1,4 @@
-import { Component, type OnInit, inject } from "@angular/core";
+import { Component, inject, type OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
@@ -38,6 +38,7 @@ export class TwitchRedirectPage implements OnInit {
 			.catch((error) => {
 				const message = this.translate.instant("pages.redirect.login-failed.message");
 				const close = this.translate.instant("pages.redirect.login-failed.close");
+				console.error("Login failed:", error);
 				this.snackbar.open(message, close, {
 					duration: 5000,
 				});
