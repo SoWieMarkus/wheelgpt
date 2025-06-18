@@ -18,7 +18,7 @@ const TrackmaniaMapSchema = z.object({
 });
 
 const TrackmaniaMapPostSchema = z.object({
-	map: TrackmaniaMapSchema.nullable(),
+	map: TrackmaniaMapSchema.nullable().optional(),
 });
 
 export const updateMap: RequestHandler = async (request, response) => {
@@ -34,11 +34,17 @@ export const updateMap: RequestHandler = async (request, response) => {
 
 	const { map } = data;
 
-	await database.trackmaniaMap.delete({
+	const exisitingMap = await database.trackmaniaMap.findUnique({
 		where: { channelId },
 	});
 
-	if (map === null) {
+	if (exisitingMap || !map) {
+		await database.trackmaniaMap.delete({
+			where: { channelId },
+		});
+	}
+
+	if (!map) {
 		response.status(200).json({ message: "Map deleted successfully." });
 		return;
 	}
@@ -55,9 +61,8 @@ export const updateMap: RequestHandler = async (request, response) => {
 			if (!tmxData) return;
 			await database.trackmaniaMap.update({
 				where: { channelId },
-				data: { tmxId: tmxData.TrackID, worldRecord: tmxData.ReplayWRTime ?? null },
+				data: { tmxId: tmxData.TrackID, worldRecord: null },
 			});
-			response.status(200).json({ message: "Map updated successfully." });
 		})
 		.catch((error) => {
 			logger.error("Failed to update map with TMX data", {
@@ -79,6 +84,7 @@ export const updatePersonalBest: RequestHandler = async (request, response) => {
 	}
 
 	const { success, data, error } = PersonalBestSchema.safeParse(request.body);
+	console.log(success, data, error);
 	if (!success) {
 		throw createHttpError(400, error.errors[0].message);
 	}

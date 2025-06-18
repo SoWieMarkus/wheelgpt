@@ -11,9 +11,8 @@ export const unauthorizedInterceptor: HttpInterceptorFn = (request, next) => {
 	return next(request).pipe(
 		catchError((error) => {
 			if (error.status === 401) {
-				console.warn("Unauthorized request, redirecting to login");
 				authenticationService.removeToken();
-				router.navigate(["/login"]);
+				router.navigate(["/landing"]);
 			}
 			return throwError(() => error);
 		}),

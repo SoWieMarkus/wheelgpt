@@ -37,7 +37,7 @@ export class TwitchChannel {
 				name: "myguess",
 				accessLevel: AccessLevel.USER,
 				cooldown: 0,
-				aliases: ["myg"],
+				aliases: ["mg"],
 			}),
 			new GuessResultCommand(id, {
 				name: "result",

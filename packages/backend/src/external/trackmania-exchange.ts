@@ -8,7 +8,6 @@ export const getTrackmaniaExchangeData = async (mapUid: string) => {
 	if (result.data === "") return undefined;
 	const TrackmaniaExchangeMapSchema = z.object({
 		TrackID: z.number(),
-		ReplayWRTime: z.number().optional(),
 	});
 
 	const { success, data } = TrackmaniaExchangeMapSchema.safeParse(result.data);

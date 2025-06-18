@@ -12,7 +12,7 @@ export const routes: Routes = [
 		title: "WheelGPT: Redirecting ...",
 	},
 	{
-		path: "",
+		path: "landing",
 		component: LandingPage,
 		title: "WheelGPT: Welcome!",
 	},

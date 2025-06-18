@@ -43,10 +43,14 @@ const initialize = async () => {
 	logger.info("Stream status updated successfully");
 	logger.info("Initializing WheelGPT...");
 	await wheelgpt.start();
+	logger.info("WheelGPT initialized successfully");
 };
 
 logger.info("Starting the backend server...");
 app.listen(env.PORT, () => {
 	logger.info(`Running on port "${env.PORT}"`);
-	initialize().catch((error) => logger.error("Failed to initialize backend", { error }));
+	initialize().catch((error) => {
+		logger.error("Failed to initialize WheelGPT");
+		console.error(error);
+	});
 });

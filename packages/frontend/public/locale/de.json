@@ -1,0 +1,72 @@
+{
+  "pages": {
+    "landing": {
+      "login": "Zum Channel hinzufügen",
+      "introduction": "Jaaa hello guys! My name is WheelGPT! Und vor allem Mütter lieben mich!<br><br> Ich bin ein Twitch-Bot speziell für Trackmania-Streamer. Mit mir können deine Zuschauer jederzeit die aktuelle Map abfragen, die du gerade spielst. Außerdem können sie deine nächste persönliche Bestzeit raten. Damit alles reibungslos funktioniert, solltest du das <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">OpenPlanet Plugin</a> installieren. Na, neugierig? Dann füge WheelGPT jetzt zu deinem Kanal hinzu!"
+    },
+    "redirect": {
+      "message": "Du wirst in Kürze weitergeleitet...",
+      "login-failed": {
+        "message": "Die Anmeldung bei Twitch ist fehlgeschlagen. Bitte versuche es erneut.",
+        "close": "Schließen"
+      }
+    },
+    "dashboard": {
+      "token": {
+        "title": "Dein WheelGPT Token",
+        "description": "Dieser Token wird benötigt um das OpenPlanet Plugin mit dem WheelGPT zu verbinden. Kopiere den Token und füge ihn in den Einstellungen des Plugins ein.",
+        "note": "Der Token wird beim Aufruf der Seite automatisch generiert. Vorherige Token behalten jedoch ihre Gültigkeit und können weiterhin verwendet werden. Solltest du also den Token im Stream gezeigt haben, solltest du auf \"Token erneuern\" klicken, um einen neuen Token zu generieren.",
+        "actions": {
+          "copy": {
+            "title": "Token in die Zwischenablage kopieren.",
+            "success": "Link in die Zwischenablage kopiert.",
+            "error": "Fehler beim Kopieren des Links. Bitte versuche es erneut."
+          },
+          "renew": {
+            "title": "Token erneuern",
+            "success": "Token erfolgreich erneuert.",
+            "error": "Fehler beim Erneuern des Tokens. Bitte versuche es später erneut."
+          }
+        }
+      },
+      "settings": {
+        "title": "Einstellungen",
+        "description": "Hier kannst du die Einstellungen für WheelGPT anpassen.",
+        "save": "Speichern"
+      },
+      "init": {
+        "error": "Fehler beim Abrufen des Plugin Tokens. Bitte versuche es später erneut."
+      },
+      "remove": {
+        "success": "WheelGPT wurde erfolgreich von deinem Kanal entfernt.",
+        "error": "Fehler beim Entfernen von WheelGPT. Bitte versuche es später erneut."
+      }
+    }
+  },
+  "commands": {
+    "guess": {
+      "description": "Gib deinen Tipp für die beste Zeit auf der aktuellen Karte ab."
+    },
+    "myguess": {
+      "description": "Zeige deinen aktuellen Tipp für die beste Zeit auf der aktuellen Karte an."
+    },
+    "result": {
+      "description": "Beende das Ratespiel manuell mit der endgültigen Zeit."
+    },
+    "map": {
+      "description": "Erhalte Informationen über die aktuelle Karte."
+    },
+    "wgpt-emotes": {
+      "description": "Erhalte eine Liste aller Emotes, die WheelGPT verwendet. Du solltest sie alle zu deinem Kanal hinzufügen."
+    },
+    "format": {
+      "description": "Erhalte Informationen über das Format der Tipps."
+    }
+  },
+  "footer": {
+    "contact": "Kontakt",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "login": "Eingeloggt als "
+  }
+}

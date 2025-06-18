@@ -4,7 +4,9 @@ import type { Schema } from "@wheelgpt/shared";
 import type { Observable } from "rxjs";
 import type { z } from "zod";
 import { environment } from "../../environments/environment";
+import { PluginTokenSchema, WebTokenSchema } from "../schemas/authentication";
 import { ChannelSchema } from "../schemas/channel";
+import { PublicChannelsSchema } from "../schemas/landing";
 
 const BACKEND_URL = environment.backend;
 
@@ -58,6 +60,17 @@ export class BackendService {
 	}
 
 	public get authentication() {
-		return {};
+		return {
+			login: (code: string) => this.post("authentication/login", { code }, WebTokenSchema),
+			renewPluginToken: () => this.post("authentication/renew", {}, PluginTokenSchema),
+			remove: () => this.delete("authentication/remove"),
+			getPluginToken: () => this.get("authentication/token", PluginTokenSchema),
+		};
+	}
+
+	public get landing() {
+		return {
+			publicChannels: () => this.get("landing/channels", PublicChannelsSchema),
+		};
 	}
 }
