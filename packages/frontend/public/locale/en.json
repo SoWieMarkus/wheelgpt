@@ -9,6 +9,37 @@
         "message": "Failed to log in to Twitch. Please try again.",
         "close": "Close"
       }
+    },
+    "dashboard": {
+      "settings": {
+        "title": "Settings",
+        "description": "Here you can adjust the settings for WheelGPT.",
+        "save": "Save"
+      },
+      "token": {
+        "title": "Your WheelGPT Token",
+        "description": "This token is required to connect the OpenPlanet Plugin with WheelGPT. Copy the token and paste it into the plugin's settings.",
+        "note": "The token is automatically generated when you open this page. Previous tokens remain valid and can still be used. If you have shown the token on stream, you should click \"Renew Token\" to generate a new one.",
+        "actions": {
+          "copy": {
+            "title": "Copy token to clipboard.",
+            "success": "Token copied to clipboard.",
+            "error": "Error copying the token. Please try again."
+          },
+          "renew": {
+            "title": "Renew Token",
+            "success": "Token renewed successfully.",
+            "error": "Error renewing the token. Please try again later."
+          }
+        }
+      },
+      "init": {
+        "error": "Error retrieving the plugin token. Please try again later."
+      },
+      "remove": {
+        "success": "WheelGPT was successfully removed from your channel.",
+        "error": "Error removing WheelGPT. Please try again later."
+      }
     }
   },
   "commands": {

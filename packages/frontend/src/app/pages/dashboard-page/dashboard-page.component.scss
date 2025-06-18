@@ -1,3 +1,11 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
 .profile-image {
   width: 150px;
   height: 150px;
@@ -6,10 +14,62 @@
   margin-right: 10px;
 }
 
+
+.token-manager {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+}
+
+.token {
+  background-color: #1f1f1f;
+  border-radius: 4px;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1rem;
+  box-shadow: none;
+  /* Remove default appearance for cross-browser consistency */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  flex: 1 0 auto;
+}
+
+.token-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .profile-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  width: 100%;
+}
+
+.settings-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+  box-sizing: border-box;
 }

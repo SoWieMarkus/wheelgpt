@@ -128,6 +128,8 @@ void SendUpdateMap() {
     }
 
     if (retriesMap == 0) {
+        retriesMap = 5;
+        debugPrint("No Retries left.");
         return;
     }
 
@@ -175,6 +177,7 @@ void SendUpdatePersonalBest(int time) {
     }
     
     if (retriesPB == 0) {
+        retriesPB = 5;
         debugPrint("No Retries left.");
         return;
     }

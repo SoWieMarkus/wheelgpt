@@ -1,4 +1,44 @@
-<div class="profile-container">
-  <img class="profile-image" [src]="profileService.channel()?.profileImage" alt="Avatar" />
-  <h1>{{profileService.channel()?.displayName}}</h1>
+<div class="page">
+
+  <div class="profile-container">
+    <img class="profile-image" [src]="profileService.channel()?.profileImage" alt="Avatar" />
+    <h1>{{profileService.channel()?.displayName}}</h1>
+  </div>
+
+  <div class="token-container">
+    <h2>{{"pages.dashboard.token.title" | translate}}</h2>
+    <p>{{"pages.dashboard.token.description" | translate}}</p>
+    <p>{{"pages.dashboard.token.note" | translate}}</p>
+
+    <div class="token-manager">
+      <input class="token" type="password" [(ngModel)]="pluginToken" readonly>
+      <button mat-icon-button [matTooltipShowDelay]="1000"
+        [matTooltip]="'pages.dashboard.token.actions.copy.title' |translate"
+        (click)="copyPluginToken()"><mat-icon>content_copy</mat-icon></button>
+      <button mat-icon-button [matTooltipShowDelay]="1000"
+        [matTooltip]="'pages.dashboard.token.actions.renew.title' |translate"
+        (click)="renewPluginToken()"><mat-icon>sync</mat-icon></button>
+    </div>
+  </div>
+
+  <div class="settings-container">
+    <h2>{{"pages.dashboard.settings.title" | translate }}</h2>
+    <p>{{"pages.dashboard.settings.description" | translate }}</p>
+
+    <div class="settings">
+      <mat-slide-toggle [(ngModel)]="settingBotActiveWhenOffline">TODO</mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="settingPublicChannel">TODO</mat-slide-toggle>
+      <mat-slider min="0" max="60" step="0.5">
+        <input matSliderThumb [(ngModel)]="settingGuessDelay">
+      </mat-slider>
+    </div>
+  </div>
+
+  <div>
+    <button mat-flat-button (click)="logout()">TODO</button>
+
+  </div>
+
+
+  <button mat-flat-button>{{"pages.dashboard.settings.save" | translate }}</button>
 </div>

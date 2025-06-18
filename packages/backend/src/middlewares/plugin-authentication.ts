@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { database } from "../database";
-import { env } from "../utils";
+import { env, logger } from "../utils";
 
 const PayloadSchema = z.object({
 	channelId: z.string().optional(), // Channel login, which was used in the past to generate tokens. To still support existing tokens it is kept here.
@@ -72,7 +72,7 @@ export const requiresPluginAuthentication: RequestHandler = (request, response, 
 			return;
 		}
 
-		request.channelId = channelId;
+		request.channelId = channel.id;
 		next();
 	});
 };
