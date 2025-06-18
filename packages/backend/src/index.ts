@@ -52,5 +52,5 @@ app.listen(env.PORT, () => {
 	initialize().catch((error) => {
 		logger.error("Failed to initialize WheelGPT");
 		console.error(error);
-	})
+	});
 });

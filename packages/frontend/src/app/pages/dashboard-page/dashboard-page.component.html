@@ -1,1 +1,4 @@
-<p>dashboard-page works!</p>
+<div class="profile-container">
+  <img class="profile-image" [src]="profileService.channel()?.profileImage" alt="Avatar" />
+  <h1>{{profileService.channel()?.displayName}}</h1>
+</div>

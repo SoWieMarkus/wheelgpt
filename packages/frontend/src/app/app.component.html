@@ -1,3 +1,7 @@
+@if (authenticationService.isFetchingData()) {
+<app-loading />
+}
+@else {
 <div class="container">
   <router-outlet></router-outlet>
 </div>
@@ -14,3 +18,4 @@
   </div>
   <a>© {{year}}, Markus Wieland</a>
 </footer>
+}

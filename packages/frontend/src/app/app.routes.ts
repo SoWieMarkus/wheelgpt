@@ -6,30 +6,30 @@ import { PrivacyPolicyPage } from "./pages/privacy-policy-page/privacy-policy-pa
 import { TwitchRedirectPage } from "./pages/twitch-redirect-page/twitch-redirect-page.component";
 
 export const routes: Routes = [
-  {
-    path: "twitch/callback",
-    component: TwitchRedirectPage,
-    title: "WheelGPT: Redirecting ...",
-  },
-  {
-    path: "landing",
-    component: LandingPage,
-    title: "WheelGPT: Welcome!",
-  },
-  {
-    path: "privacy",
-    component: PrivacyPolicyPage,
-    title: "WheelGPT: Privacy Policy",
-  },
-  {
-    path: "",
-    title: "WheelGPT: Dashboard",
-    component: DashboardPage,
-    canActivate: [AuthenticationGuard],
-  },
-  {
-    path: "**",
-    redirectTo: "/",
-    pathMatch: "full",
-  },
+	{
+		path: "twitch/callback",
+		component: TwitchRedirectPage,
+		title: "WheelGPT: Redirecting ...",
+	},
+	{
+		path: "landing",
+		component: LandingPage,
+		title: "WheelGPT: Welcome!",
+	},
+	{
+		path: "privacy",
+		component: PrivacyPolicyPage,
+		title: "WheelGPT: Privacy Policy",
+	},
+	{
+		path: "",
+		title: "WheelGPT: Dashboard",
+		component: DashboardPage,
+		canActivate: [AuthenticationGuard],
+	},
+	{
+		path: "**",
+		redirectTo: "/",
+		pathMatch: "full",
+	},
 ];

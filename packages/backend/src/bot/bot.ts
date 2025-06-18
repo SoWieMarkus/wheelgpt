@@ -1,11 +1,11 @@
 import { Counter } from "prom-client";
 import { Client } from "tmi.js";
+import { log } from "winston";
 import { database } from "../database";
 import { prometheus } from "../prometheus";
 import { logger } from "../utils";
 import { guessResultHandler } from "./commands";
 import { type ChannelConfig, TrackmaniaTime, TwitchChannel, getCommandArguments, getUser } from "./core";
-import { log } from "winston";
 
 export const failedConnectionAttemptsCounterMetric = new Counter({
 	name: "wheelgpt_failed_connection_attempts_total",
@@ -82,7 +82,6 @@ export class WheelGPT extends Client {
 			this.channelMap.set(channel.login, twitchChannel);
 			await this.join(channel.login);
 			logger.info(`Registered channel ${channel.id} (${channel.login})`);
-
 		} catch (error) {
 			failedConnectionAttemptsCounterMetric.inc({ login: channel.login });
 			logger.error(`Failed to register channel ${channel.id}:`, error);
