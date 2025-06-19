@@ -71,7 +71,7 @@ export class WheelGPT extends Client {
 			},
 		});
 		for (const channel of channels) {
-			this.register(channel);
+			await this.register(channel);
 		}
 	}
 
@@ -84,6 +84,7 @@ export class WheelGPT extends Client {
 		} catch (error) {
 			failedConnectionAttemptsCounterMetric.inc({ login: channel.login });
 			logger.error(`Failed to register channel ${channel.id}:`, error);
+			console.error(error);
 		}
 	}
 
