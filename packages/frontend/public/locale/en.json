@@ -59,7 +59,7 @@
       "description": "Get a list of all emotes that WheelGPT uses. You should add them all to your channel."
     },
     "format": {
-      "description": "Get information about the format of the guesses."
+      "description": "Get information about the format in which you can submit your guess."
     }
   },
   "footer": {

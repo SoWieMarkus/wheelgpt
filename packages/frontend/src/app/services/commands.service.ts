@@ -71,7 +71,7 @@ export class CommandsService {
 		{
 			name: "!format",
 			aliases: [],
-			description: "commands.guess.description",
+			description: "commands.format.description",
 			example: [
 				{ isBot: false, text: "!format viewer" },
 				{ isBot: true, text: "@viewer hh:mm:ss.xxx (hours and minutes are optional)" },

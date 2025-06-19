@@ -60,7 +60,7 @@
       "description": "Erhalte eine Liste aller Emotes, die WheelGPT verwendet. Du solltest sie alle zu deinem Kanal hinzufügen."
     },
     "format": {
-      "description": "Erhalte Informationen über das Format der Tipps."
+      "description": "Erhalte Informationen darüber in welchem Format du deine Tipps abgeben kannst."
     }
   },
   "footer": {
