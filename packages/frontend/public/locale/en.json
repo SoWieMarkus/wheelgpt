@@ -2,6 +2,7 @@
   "pages": {
     "landing": {
       "login": "Add to Channel",
+      "dashboard": "Go to Dashboard",
       "introduction": "Jaaa hello guys! My name is WheelGPT! And especially mothers love me!<br><br>I am a Twitch bot made especially for Trackmania streamers. With me, your viewers can always check which map you are currently playing. They can also guess your next personal best time. To make everything run smoothly, you should install the <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">OpenPlanet Plugin</a>. Curious? Then add WheelGPT to your channel now!"    },
     "redirect": {
       "message": "You will be redirected shortly...",

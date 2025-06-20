@@ -1,22 +1,24 @@
 import { Component, inject, signal } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
+import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
 import { CommandComponent } from "../../components/command/command.component";
 import type { PublicChannels } from "../../schemas/landing";
 import { AuthenticationService } from "../../services/authentication.service";
 import { BackendService } from "../../services/backend.service";
 import { CommandsService } from "../../services/commands.service";
+import { ProfileService } from "../../services/profile.service";
 
 @Component({
 	selector: "app-landing-page",
-	imports: [CommandComponent, MatIconModule, TranslatePipe],
+	imports: [CommandComponent, MatIconModule, TranslatePipe, RouterLink],
 	templateUrl: "./landing-page.component.html",
 	styleUrl: "./landing-page.component.scss",
 })
 export class LandingPage {
 	private readonly backendService = inject(BackendService);
 	protected readonly authenticationService = inject(AuthenticationService);
-
+	protected readonly profileService = inject(ProfileService);
 	protected readonly commandsService = inject(CommandsService);
 
 	protected readonly data = signal<PublicChannels | null>(null);
