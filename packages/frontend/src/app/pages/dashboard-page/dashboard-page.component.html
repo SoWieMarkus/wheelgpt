@@ -5,6 +5,13 @@
     <h1>{{profileService.channel()?.displayName}}</h1>
   </div>
 
+  <div class="actions">
+    <button mat-flat-button (click)="logout()">{{ "pages.dashboard.logout" | translate}} </button>
+    <button class="warning" style="color: white;" mat-flat-button (click)="removeChannel()">{{
+      "pages.dashboard.remove.title"| translate}}
+    </button>
+  </div>
+
   <div class="token-container">
     <h2>{{"pages.dashboard.token.title" | translate}}</h2>
     <p>{{"pages.dashboard.token.description" | translate}}</p>
@@ -21,24 +28,81 @@
     </div>
   </div>
 
+  <div>
+    <h2>{{"pages.dashboard.tutorial.title" | translate}}</h2>
+    <p>{{"pages.dashboard.tutorial.description" | translate}}</p>
+
+    <div>
+      <h3>{{"pages.dashboard.tutorial.steps.install-openplanet.title" | translate}}</h3>
+      <p [innerHTML]="'pages.dashboard.tutorial.steps.install-openplanet.text' | translate"></p>
+    </div>
+
+    <div>
+      <h3>{{"pages.dashboard.tutorial.steps.install-plugin.title" | translate}}</h3>
+      <p [innerHTML]="'pages.dashboard.tutorial.steps.install-plugin.text' | translate"></p>
+    </div>
+
+    <div>
+      <h3>{{"pages.dashboard.tutorial.steps.token.title" | translate}}</h3>
+      <p [innerHTML]="'pages.dashboard.tutorial.steps.token.text' | translate"></p>
+    </div>
+
+    <div>
+      <h3>{{"pages.dashboard.tutorial.steps.insert-token.title" | translate}}</h3>
+      <p [innerHTML]="'pages.dashboard.tutorial.steps.insert-token.text' | translate"></p>
+    </div>
+
+    <div>
+      <h3>{{"pages.dashboard.tutorial.steps.done.title" | translate}}</h3>
+      <p [innerHTML]="'pages.dashboard.tutorial.steps.done.text' | translate"></p>
+    </div>
+
+
+  </div>
+
   <div class="settings-container">
     <h2>{{"pages.dashboard.settings.title" | translate }}</h2>
     <p>{{"pages.dashboard.settings.description" | translate }}</p>
 
     <div class="settings">
-      <mat-slide-toggle [(ngModel)]="settingBotActiveWhenOffline">TODO</mat-slide-toggle>
-      <mat-slide-toggle [(ngModel)]="settingPublicChannel">TODO</mat-slide-toggle>
-      <mat-slider min="0" max="60" step="0.5">
-        <input matSliderThumb [(ngModel)]="settingGuessDelay">
-      </mat-slider>
+      <div>
+        <mat-slide-toggle [(ngModel)]="settingBotActiveWhenOffline">
+          <span class="setting-header"> {{"pages.dashboard.settings.setting.bot-active-offline.title"
+            |translate}}</span>
+        </mat-slide-toggle>
+        <p>{{"pages.dashboard.settings.setting.bot-active-offline.description" | translate }}</p>
+      </div>
+
+      <div>
+        <mat-slide-toggle [(ngModel)]="settingPublicChannel"><span class="setting-header">
+            {{"pages.dashboard.settings.setting.public.title"
+            |translate}}</span></mat-slide-toggle>
+        <p>{{"pages.dashboard.settings.setting.public.description" | translate }}</p>
+      </div>
+
+      <div>
+        <p class="setting-header">{{"pages.dashboard.settings.setting.guess-delay.title" | translate }}</p>
+        <p>{{"pages.dashboard.settings.setting.guess-delay.description" | translate }}</p>
+        <div>
+
+        </div>
+        <div class="slider-container">
+          <mat-slider class="slider" min="0" max="60" step="0.5">
+            <input matSliderThumb [(ngModel)]="settingGuessDelay">
+          </mat-slider>
+          <span class="slider-value">{{settingGuessDelay() | number:'1.1-1'}}s</span>
+        </div>
+
+      </div>
     </div>
+    <button mat-flat-button (click)="saveSettings()">{{"pages.dashboard.settings.save.title" | translate }}</button>
   </div>
 
-  <div>
-    <button mat-flat-button (click)="logout()">TODO</button>
-
+  <h2>{{"pages.dashboard.commands.title" | translate }}</h2>
+  <div class="commands">
+    @for (command of commandsService.commands(); track command.name) {
+    <app-command [command]="command"></app-command>
+    }
   </div>
 
-
-  <button mat-flat-button>{{"pages.dashboard.settings.save" | translate }}</button>
 </div>

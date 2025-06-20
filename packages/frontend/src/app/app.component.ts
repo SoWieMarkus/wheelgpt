@@ -36,11 +36,13 @@ export class AppComponent {
 			return;
 		}
 		const browserLanguage = this.translateService.getBrowserLang();
+
 		// Use browser language if available, otherwise default to English
-		this.translateService.use(browserLanguage?.match(/de|en/) ? browserLanguage : "en");
+		this.translateService.use(browserLanguage?.match(/de|en|fr/) ? browserLanguage : "en");
 	}
 
-	public switchLanguage(lang: "de" | "en") {
+	public switchLanguage(lang: "de" | "en" | "fr") {
+		localStorage.setItem("language", lang);
 		this.translateService.use(lang);
 	}
 

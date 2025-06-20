@@ -40,7 +40,7 @@ export class TwitchRedirectPage implements OnInit {
 				const close = this.translate.instant("pages.redirect.login-failed.close");
 				console.error("Login failed:", error);
 				this.snackbar.open(message, close, {
-					duration: 5000,
+					duration: 3000,
 				});
 			})
 			.finally(() => {

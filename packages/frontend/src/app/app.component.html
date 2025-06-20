@@ -18,9 +18,15 @@
     <span> - </span>
     <a href="https://github.com/SoWieMarkus/wheelgpt"><mat-icon svgIcon="github"></mat-icon>Github</a>
   </div>
+
+  <div class="footer-container">
+    <img class="flag" src="flags/de.jpg" alt="German Flag" (click)="switchLanguage('de')">
+    <img class="flag" src="flags/en.jpg" alt="UK Flag" (click)="switchLanguage('en')">
+    <img class="flag" src="flags/fr.png" alt="French Flag" (click)="switchLanguage('fr')">
+  </div>
+
   <div class="footer-container">
     <span>© {{year}}, Markus Wieland</span>
-
   </div>
 </footer>
 }

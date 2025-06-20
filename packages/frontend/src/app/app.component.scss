@@ -16,6 +16,11 @@
   flex: 1 0 auto;
 }
 
+.flag {
+  height: 1rem;
+  cursor: pointer;
+}
+
 @media (max-width: 1200px) {
   .container {
     width: 90%;

@@ -1,0 +1,143 @@
+{
+  "pages": {
+    "landing": {
+      "login": "Connexion via Twitch",
+      "commands": "Commandes",
+      "dashboard": "Aller au tableau de bord",
+      "introduction": "Jaaa salut les gars ! Je m'appelle WheelGPT ! Et surtout, les mamans m'adorent !<br><br>Je suis un bot Twitch spécialement conçu pour les streamers Trackmania. Avec moi, vos spectateurs peuvent toujours vérifier sur quelle carte vous jouez actuellement. Ils peuvent également deviner votre prochain meilleur temps personnel. Pour que tout fonctionne parfaitement, vous devriez installer le <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">plugin OpenPlanet</a>. Curieux ? Ajoutez WheelGPT à votre chaîne dès maintenant !"
+    },
+    "redirect": {
+      "message": "Vous allez être redirigé sous peu...",
+      "login-failed": {
+        "message": "Échec de la connexion à Twitch. Veuillez réessayer.",
+        "close": "Fermer"
+      }
+    },
+    "privacy-policy": {
+      "title": "Politique de confidentialité",
+      "sections": {
+        "account": {
+          "title": "Informations du compte",
+          "text": "Lorsque vous vous connectez à wheelgpt.dev, certaines de vos informations de compte seront ajoutées à une base de données locale. Ces informations incluent le nom de votre chaîne Twitch, l'ID de votre chaîne Twitch, le nom d'affichage de votre chaîne Twitch et une URL vers la photo de profil de votre chaîne Twitch.<br><br>Notez que même si nous utilisons votre jeton d'accès autorisé pour vérifier qu'il s'agit bien de votre compte, nous ne stockons pas réellement le jeton d'accès. Il est conservé en mémoire pendant une très courte période puis supprimé."
+        },
+        "access-log": {
+          "title": "Journal d'accès",
+          "text": "Nous stockons des journaux de trafic qui peuvent contenir votre adresse IP et l'agent utilisateur de votre navigateur, afin de voir comment le site est utilisé. Ces journaux sont régulièrement supprimés et ne sont pas permanents. Dans la plupart des cas, ils sont conservés pendant un maximum de 24 heures."
+        },
+        "questions": {
+          "title": "Questions",
+          "text": "Si vous avez des questions concernant notre politique de confidentialité, veuillez envoyer un e-mail à markus.u.wieland&#64;gmail.com ou demander à &#64;sowiemarkus sur Discord."
+        }
+      }
+    },
+    "imprint": {
+      "title": "Mentions légales",
+      "text": "Ce site est exploité par Markus Wieland.<br><br>Contact : <a href=\"mailto:markus.u.wieland@gmail.com\"> markus.u.wieland&#64;gmail.com</a><br><br>Tous les contenus de ce site sont fournis sans aucune garantie. L'auteur n'assume aucune responsabilité quant à l'exactitude, l'exhaustivité et l'actualité du contenu. L'utilisation du site se fait à vos propres risques."
+    },
+    "dashboard": {
+      "logout": "Déconnexion",
+      "tutorial": {
+        "title": "Tutoriel",
+        "description": "WheelGPT a maintenant été ajouté à votre chaîne, voici un guide rapide pour connecter le bot à votre jeu.",
+        "steps": {
+          "install-openplanet": {
+            "title": "Étape 0 : Installer OpenPlanet",
+            "text": "Pour une utilisation optimale de WheelGPT, vous avez besoin d'OpenPlanet. Installez <a href=\"https://openplanet.dev/\">OpenPlanet</a> et lancez Trackmania."
+          },
+          "install-plugin": {
+            "title": "Étape 1 : Installer le plugin OpenPlanet",
+            "text": "Installez le <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">plugin OpenPlanet</a>."
+          },
+          "token": {
+            "title": "Étape 2 : Copier le jeton",
+            "text": "Copiez votre jeton WheelGPT depuis cette page. Ce jeton est nécessaire pour connecter le plugin OpenPlanet à WheelGPT."
+          },
+          "insert-token": {
+            "title": "Étape 3 : Insérer le jeton dans le plugin",
+            "text": "Collez le jeton généré dans les paramètres du plugin OpenPlanet. Appuyez d'abord sur la touche F3 pour ouvrir l'overlay OpenPlanet. Ensuite, allez dans OpenPlanet > Paramètres > WheelGPT et collez le jeton dans le champ approprié."
+          },
+          "done": {
+            "title": "Étape 4 : Terminé !",
+            "text": "Vous pouvez maintenant utiliser WheelGPT sur votre chaîne ! Vos spectateurs peuvent désormais soumettre leurs pronostics et consulter la carte actuelle."
+          }
+        }
+      },
+      "settings": {
+        "title": "Paramètres",
+        "description": "Ici, vous pouvez ajuster les paramètres de WheelGPT.",
+        "save": {
+          "title": "Enregistrer",
+          "success": "Paramètres enregistrés avec succès.",
+          "error": "Erreur lors de l'enregistrement des paramètres. Veuillez réessayer plus tard."
+        },
+        "setting": {
+          "guess-delay": {
+            "title": "Délai de pronostic",
+            "description": "Le délai en secondes avant qu'un nouveau meilleur temps signalé par le plugin ne soit affiché dans le chat pour éviter les spoilers."
+          },
+          "bot-active-offline": {
+            "title": "Bot actif lorsque le stream est hors ligne",
+            "description": "Si cette option est activée, WheelGPT sera également actif lorsque votre stream est hors ligne et que vous jouez à Trackmania. Les spectateurs peuvent toujours soumettre leurs pronostics et consulter la carte actuelle. Remarque : WheelGPT reste continuellement connecté à votre chaîne. Cette option ne change pas cela. Cependant, les requêtes du plugin ne seront pas traitées pendant cette période."
+          },
+          "public": {
+            "title": "Chaîne publique",
+            "description": "Si cette option est activée, votre chaîne apparaîtra sur la page d'accueil de WheelGPT.dev et les autres pourront voir que vous utilisez le bot."
+          }
+        }
+      },
+      "token": {
+        "title": "Votre jeton WheelGPT",
+        "description": "Ce jeton est nécessaire pour connecter le plugin OpenPlanet à WheelGPT. Copiez le jeton et collez-le dans les paramètres du plugin.",
+        "note": "Le jeton est généré automatiquement lorsque vous ouvrez cette page. Les anciens jetons restent valides et peuvent toujours être utilisés. Si vous avez montré le jeton en stream, vous devriez cliquer sur \"Renouveler le jeton\" pour en générer un nouveau.",
+        "actions": {
+          "copy": {
+            "title": "Copier le jeton dans le presse-papiers.",
+            "success": "Jeton copié dans le presse-papiers.",
+            "error": "Erreur lors de la copie du jeton. Veuillez réessayer."
+          },
+          "renew": {
+            "title": "Renouveler le jeton",
+            "success": "Jeton renouvelé avec succès.",
+            "error": "Erreur lors du renouvellement du jeton. Veuillez réessayer plus tard."
+          }
+        }
+      },
+      "init": {
+        "error": "Erreur lors de la récupération du jeton du plugin. Veuillez réessayer plus tard."
+      },
+      "remove": {
+        "title": "Supprimer WheelGPT de la chaîne",
+        "confirmation": "Êtes-vous sûr de vouloir supprimer WheelGPT de votre chaîne ? Cette action est irréversible.",
+        "success": "WheelGPT a été supprimé de votre chaîne avec succès.",
+        "error": "Erreur lors de la suppression de WheelGPT. Veuillez réessayer plus tard."
+      },
+      "commands": {
+        "title": "Commandes"
+      }
+    }
+  },
+  "commands": {
+    "guess": {
+      "description": "Soumettez votre pronostic pour le meilleur temps sur la carte actuelle."
+    },
+    "myguess": {
+      "description": "Voir votre pronostic actuel pour le meilleur temps sur la carte actuelle."
+    },
+    "result": {
+      "description": "Terminez manuellement le jeu de pronostics avec le temps final."
+    },
+    "map": {
+      "description": "Obtenez des informations sur la carte actuelle."
+    },
+    "wgpt-emotes": {
+      "description": "Obtenez la liste de toutes les émoticônes utilisées par WheelGPT. Vous devriez toutes les ajouter à votre chaîne."
+    },
+    "format": {
+      "description": "Obtenez des informations sur le format dans lequel vous pouvez soumettre votre pronostic."
+    }
+  },
+  "footer": {
+    "privacy": "Politique de confidentialité",
+    "imprint": "Mentions légales"
+  }
+}

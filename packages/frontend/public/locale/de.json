@@ -1,7 +1,8 @@
 {
   "pages": {
     "landing": {
-      "login": "Zum Channel hinzufügen",
+      "login": "Login mit Twitch",
+      "commands": "Befehle",
       "dashboard": "Gehe zum Dashboard",
       "introduction": "Jaaa hello guys! My name is WheelGPT! Und vor allem Mütter lieben mich!<br><br> Ich bin ein Twitch-Bot speziell für Trackmania-Streamer. Mit mir können deine Zuschauer jederzeit die aktuelle Map abfragen, die du gerade spielst. Außerdem können sie deine nächste persönliche Bestzeit raten. Damit alles reibungslos funktioniert, solltest du das <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">OpenPlanet Plugin</a> installieren. Na, neugierig? Dann füge WheelGPT jetzt zu deinem Kanal hinzu!"
     },
@@ -34,6 +35,33 @@
       "text": "Diese Website wird von Markus Wieland betrieben.<br><br>Kontakt: <a href=\"mailto:markus.u.wieland@gmail.com\"> markus.u.wieland&#64;gmail.com</a><br><br>Alle Inhalte auf dieser Website werden ohne Gewähr bereitgestellt. Der Autor übernimmt keine Haftung für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte. Die Nutzung der Website erfolgt auf eigene Gefahr."
     },
     "dashboard": {
+      "logout": "Abmelden",
+      "tutorial": {
+        "title": "Tutorial",
+        "description": "Nachdem WheelGPT nun zu deinem Kanal hinzugefügt wurde, findest du hier eine kurze Anleitung, wie den Bot mit deinem Spiel verbinden kannst.",
+        "steps": {
+          "install-openplanet": {
+            "title": "Schritt 0: OpenPlanet installieren",
+            "text": "Für die ideale Verwendung von WheelGPT benötigst du OpenPlanet. Installiere <a href=\"https://openplanet.dev/\">OpenPlanet</a> und starte Trackmania."
+          },
+          "install-plugin": {
+            "title": "Schritt 1: OpenPlanet Plugin installieren",
+            "text": "Installiere das <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">OpenPlanet Plugin</a>."
+          },
+          "token": {
+            "title": "Schritt 2: Token kopieren",
+            "text": "Kopiere dir deinen WheelGPT Token von dieser Seite. Dieser Token wird benötigt, um das OpenPlanet Plugin mit WheelGPT zu verbinden."
+          },
+          "insert-token": {
+            "title": "Schritt 3: Token im Plugin einfügen",
+            "text": "Füge den generierten Token in die Einstellungen des OpenPlanet Plugins ein. Drücke dafür zunächst die F3 Taste um das OpenPlanet Overlay zu öffnen. Gehe dann zu OpenPlanet > Settings > WheelGPT und füge den Token in das entsprechende Feld ein."
+          },
+          "done":{
+            "title": "Schritt 4: Fertig!",
+            "text": "Jetzt kannst du WheelGPT in deinem Kanal nutzen! Deine Zuschauer können nun ihre Tipps abgeben und die aktuelle Karte abfragen."
+          }
+        }
+      },
       "token": {
         "title": "Dein WheelGPT Token",
         "description": "Dieser Token wird benötigt um das OpenPlanet Plugin mit dem WheelGPT zu verbinden. Kopiere den Token und füge ihn in den Einstellungen des Plugins ein.",
@@ -54,14 +82,37 @@
       "settings": {
         "title": "Einstellungen",
         "description": "Hier kannst du die Einstellungen für WheelGPT anpassen.",
-        "save": "Speichern"
+         "save": {
+          "title":"Speichern",
+          "success": "Einstellungen erfolgreich gespeichert.",
+          "error": "Fehler beim Speichern der Einstellungen. Bitte versuche es später erneut."
+        },
+        "setting": {
+          "guess-delay": {
+            "title": "Guess-Delay",
+            "description": "Die Zeitverzögerung in Sekunden, mit der eine vom Plugin gemeldete neue Bestzeit im Chat angezeigt wird, um Spoiler zu verhindern."
+          },
+          "bot-active-offline": {
+            "title": "Bot aktiv, wenn der Stream offline ist",
+            "description": "Wenn diese Option aktiviert ist, wird WheelGPT auch dann aktiv sein, wenn dein Stream offline ist und du Trackmania spielst. Zuschauer können weiterhin ihre Tipps abgeben und die aktuelle Karte abfragen. Achtung: WheelGPT ist durchgehend mit deinem Kanal verbunden. Das wird durch diese Option nicht geändert. Anfragen von dem Plugin würden allerdings in dieser Zeit nicht beantwortet werden."
+          },
+          "public": {
+            "title": "Öffentlicher Kanal",
+            "description": "Ist diese Option aktiviert, erscheint dein Kanal auf der Startseite von WheelGPT.dev und andere können sehen, dass du den Bot verwendest."
+          }
+        }
       },
       "init": {
         "error": "Fehler beim Abrufen des Plugin Tokens. Bitte versuche es später erneut."
       },
       "remove": {
+        "title": "WheelGPT von deinem Kanel entfernen",
+        "confirmation": "Bist du sicher, dass du WheelGPT von deinem Kanal entfernen möchtest? Dies kann nicht rückgängig gemacht werden.",
         "success": "WheelGPT wurde erfolgreich von deinem Kanal entfernt.",
         "error": "Fehler beim Entfernen von WheelGPT. Bitte versuche es später erneut."
+      },
+      "commands": {
+        "title": "Befehle"
       }
     }
   },
