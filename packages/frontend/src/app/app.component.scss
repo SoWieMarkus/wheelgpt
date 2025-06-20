@@ -42,6 +42,17 @@
   font-weight: bold;
 }
 
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem; // optional: adds space between icon and text
+}
+
+.github-link mat-icon {
+  font-size: 20px; // adjust as needed
+  vertical-align: middle;
+}
+
 
 h2 {
   text-align: center;
@@ -51,4 +62,16 @@ footer {
   flex-shrink: 0;
   padding: 1rem;
   text-align: center;
+}
+
+footer .footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+footer .footer-container>* {
+  display: inline-flex;
+  align-items: center;
 }
