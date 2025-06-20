@@ -1,25 +1,41 @@
 <h1>WheelGPT</h1>
 
-<div class="introduction">
-  <p [innerHTML]="'pages.landing.introduction' | translate"></p>
-  @if (!authenticationService.isTokenExpired()) {
-  <a class="twitch-login-button" routerLink="/">
-    @if (profileService.channel() !== null ) {
-    <img class="profile-image" [src]="profileService.channel()?.profileImage" alt="Channel Avatar">
+<div class="page">
+  <div class="introduction">
+    <p [innerHTML]="'pages.landing.introduction' | translate"></p>
+    @if (!authenticationService.isTokenExpired()) {
+    <a class="twitch-login-button" routerLink="/">
+      @if (profileService.channel() !== null ) {
+      <img class="profile-image" [src]="profileService.channel()?.profileImage" alt="Channel Avatar">
+      }
+      {{ "pages.landing.dashboard" | translate }}
+    </a>
+    } @else {
+    <a class="twitch-login-button" [href]="authenticationService.twitchSSOUrl">
+      <mat-icon svgIcon="twitch"></mat-icon>
+      {{ "pages.landing.login" | translate }}
+    </a>
     }
-    {{ "pages.landing.dashboard" | translate }}
-  </a>
-  } @else {
-  <a class="twitch-login-button" [href]="authenticationService.twitchSSOUrl">
-    <mat-icon svgIcon="twitch"></mat-icon>
-    {{ "pages.landing.login" | translate }}
-  </a>
-  }
 
-</div>
-<h2>{{"pages.landing.commands" |translate}}</h2>
-<div class="commands">
-  @for (command of commandsService.commands(); track command.name) {
-  <app-command [command]="command"></app-command>
+  </div>
+  <h2>{{"pages.landing.commands" |translate}}</h2>
+  <div class="commands">
+    @for (command of commandsService.commands(); track command.name) {
+    <app-command [command]="command"></app-command>
+    }
+  </div>
+
+  @if (data().length > 0) {
+  <h2>{{"pages.landing.channels" |translate}}</h2>
+  <mat-chip-set>
+    @for (channel of data(); track channel.displayName) {
+
+    <mat-chip (click)="openTwitch(channel.login)">
+      <img matChipAvatar [src]="channel.profileImage" alt="Profile Avatar of channel" />
+      {{channel.displayName}}
+    </mat-chip>
+
+    }
+  </mat-chip-set>
   }
 </div>

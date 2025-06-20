@@ -10,6 +10,7 @@ export const getPublicChannels: RequestHandler = async (_, response) => {
 			displayName: true,
 			profileImage: true,
 			isLive: true,
+			login: true,
 		},
 		skip: 0,
 		take: 20,
