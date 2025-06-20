@@ -87,6 +87,9 @@ export class DashboardPage implements OnInit {
 	}
 
 	protected removeChannel(): void {
+		const confirmation = confirm(this.translate.instant("pages.dashboard.remove.confirmation"));
+		if (!confirmation) return;
+
 		this.backendService.authentication
 			.remove()
 			.then(() => {

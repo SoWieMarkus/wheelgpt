@@ -7,7 +7,8 @@
 
   <div class="actions">
     <button mat-flat-button (click)="logout()">{{ "pages.dashboard.logout" | translate}} </button>
-    <button mat-flat-button (click)="removeChannel()">{{ "pages.dashboard.remove-channel"| translate}}
+    <button class="warning" style="color: white;" mat-flat-button (click)="removeChannel()">{{
+      "pages.dashboard.remove.title"| translate}}
     </button>
   </div>
 

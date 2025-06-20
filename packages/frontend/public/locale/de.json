@@ -36,7 +36,6 @@
     },
     "dashboard": {
       "logout": "Abmelden",
-      "remove-channel": "WheelGPT von meinem Kanal entfernen",
       "tutorial": {
         "title": "Tutorial",
         "description": "Nachdem WheelGPT nun zu deinem Kanal hinzugefügt wurde, findest du hier eine kurze Anleitung, wie den Bot mit deinem Spiel verbinden kannst.",
@@ -107,6 +106,8 @@
         "error": "Fehler beim Abrufen des Plugin Tokens. Bitte versuche es später erneut."
       },
       "remove": {
+        "title": "WheelGPT von deinem Kanel entfernen",
+        "confirmation": "Bist du sicher, dass du WheelGPT von deinem Kanal entfernen möchtest? Dies kann nicht rückgängig gemacht werden.",
         "success": "WheelGPT wurde erfolgreich von deinem Kanal entfernt.",
         "error": "Fehler beim Entfernen von WheelGPT. Bitte versuche es später erneut."
       },

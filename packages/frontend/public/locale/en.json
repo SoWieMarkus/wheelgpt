@@ -35,7 +35,6 @@
     },
     "dashboard": {
       "logout": "Logout",
-      "remove-channel": "Remove WheelGPT from my channel",
       "tutorial": {
         "title": "Tutorial",
         "description": "Now that WheelGPT has been added to your channel, here is a brief guide on how to connect the bot with your game.",
@@ -106,6 +105,8 @@
         "error": "Error retrieving the plugin token. Please try again later."
       },
       "remove": {
+        "title": "Remove WheelGPT from Channel",
+        "confirmation": "Are you sure you want to remove WheelGPT from your channel? This action cannot be undone.",
         "success": "WheelGPT was successfully removed from your channel.",
         "error": "Error removing WheelGPT. Please try again later."
       },
