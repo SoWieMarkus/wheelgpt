@@ -9,10 +9,10 @@ import { AuthenticationService } from "./services/authentication.service";
 import { ProfileService } from "./services/profile.service";
 
 @Component({
-  selector: "app-root",
-  imports: [RouterOutlet, MatDividerModule, TranslatePipe, MatIconModule, LoadingComponent, RouterLink],
-  templateUrl: "./app.component.html",
-  styleUrl: "./app.component.scss",
+	selector: "app-root",
+	imports: [RouterOutlet, MatDividerModule, TranslatePipe, MatIconModule, LoadingComponent, RouterLink],
+	templateUrl: "./app.component.html",
+	styleUrl: "./app.component.scss",
 })
 export class AppComponent {
   protected readonly authenticationService = inject(AuthenticationService);
