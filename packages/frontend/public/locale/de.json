@@ -12,6 +12,27 @@
         "close": "Schließen"
       }
     },
+    "privacy-policy": {
+      "title": "Datenschutzerklärung",
+      "sections": {
+        "account": {
+          "title": "Kontoinformationen",
+          "text": "Wenn Sie sich bei wheelgpt.dev anmelden, werden einige Ihrer Kontoinformationen in einer lokalen Datenbank gespeichert. Diese Informationen umfassen Ihren Twitch-Kanalnamen, Ihre Twitch-Kanal-ID, Ihren Twitch-Kanal-Anzeigenamen und eine URL zu Ihrem Twitch-Kanal-Profilbild.<br><br>Beachten Sie, dass wir Ihr autorisiertes Zugriffstoken zwar verwenden, um Ihr Konto zu verifizieren, dieses Token jedoch nicht speichern. Es wird nur für einen sehr kurzen Zeitraum im Speicher gehalten und dann verworfen."
+        },
+        "access-log": {
+          "title": "Zugriffsprotokoll",
+          "text": "Wir speichern Zugriffsprotokolle, die Ihre IP-Adresse und den User-Agent Ihres Browsers enthalten können, um zu sehen, wie die Seite genutzt wird. Diese Protokolle werden regelmäßig gelöscht und sind nicht dauerhaft. In den meisten Fällen werden sie maximal 24 Stunden gespeichert."
+        },
+        "questions": {
+          "title": "Fragen",
+          "text": "Wenn Sie Fragen zu unserer Datenschutzerklärung haben, senden Sie bitte eine E-Mail an markus.u.wieland&#64;gmail.com oder fragen Sie &#64;sowiemarkus auf Discord."
+        }
+      }
+    },
+    "imprint": {
+      "title": "Impressum",
+      "text": "Diese Website wird von Markus Wieland betrieben.<br><br>Kontakt: <a href=\"mailto:markus.u.wieland@gmail.com\"> markus.u.wieland&#64;gmail.com</a><br><br>Alle Inhalte auf dieser Website werden ohne Gewähr bereitgestellt. Der Autor übernimmt keine Haftung für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte. Die Nutzung der Website erfolgt auf eigene Gefahr."
+    },
     "dashboard": {
       "token": {
         "title": "Dein WheelGPT Token",
@@ -65,9 +86,7 @@
     }
   },
   "footer": {
-    "contact": "Kontakt",
     "privacy": "Datenschutz",
-    "imprint": "Impressum",
-    "login": "Eingeloggt als "
+    "imprint": "Impressum"
   }
 }
