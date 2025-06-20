@@ -1,4 +1,4 @@
-name: Test & Lint
+name: Test & Biome CI
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - "*"
 
 jobs:
-  test-and-lint:
+  test:
     runs-on: ubuntu-latest
 
     steps:
