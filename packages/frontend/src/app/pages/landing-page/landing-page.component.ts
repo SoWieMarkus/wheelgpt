@@ -1,4 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
+import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
@@ -11,7 +12,7 @@ import { ProfileService } from "../../services/profile.service";
 
 @Component({
 	selector: "app-landing-page",
-	imports: [CommandComponent, MatIconModule, TranslatePipe, RouterLink],
+	imports: [CommandComponent, MatIconModule, TranslatePipe, RouterLink, MatChipsModule],
 	templateUrl: "./landing-page.component.html",
 	styleUrl: "./landing-page.component.scss",
 })
@@ -21,7 +22,7 @@ export class LandingPage {
 	protected readonly profileService = inject(ProfileService);
 	protected readonly commandsService = inject(CommandsService);
 
-	protected readonly data = signal<PublicChannels | null>(null);
+	protected readonly data = signal<PublicChannels>([]);
 
 	public ngOnInit() {
 		this.backendService.landing
@@ -32,7 +33,12 @@ export class LandingPage {
 			})
 			.catch((error) => {
 				console.error("Failed to load landing data:", error);
-				this.data.set(null);
+				this.data.set([]);
 			});
+	}
+
+	public openTwitch(login: string) {
+		const url = `https://www.twitch.tv/${login}`;
+		window.open(url, "_blank");
 	}
 }
