@@ -82,9 +82,16 @@
       <div>
         <p class="setting-header">{{"pages.dashboard.settings.setting.guess-delay.title" | translate }}</p>
         <p>{{"pages.dashboard.settings.setting.guess-delay.description" | translate }}</p>
-        <mat-slider min="0" max="60" step="0.5">
-          <input matSliderThumb [(ngModel)]="settingGuessDelay">
-        </mat-slider>
+        <div>
+
+        </div>
+        <div class="slider-container">
+          <mat-slider class="slider" min="0" max="60" step="0.5">
+            <input matSliderThumb [(ngModel)]="settingGuessDelay">
+          </mat-slider>
+          <span class="slider-value">{{settingGuessDelay() | number:'1.1-1'}}s</span>
+        </div>
+
       </div>
     </div>
     <button mat-flat-button (click)="saveSettings()">{{"pages.dashboard.settings.save.title" | translate }}</button>

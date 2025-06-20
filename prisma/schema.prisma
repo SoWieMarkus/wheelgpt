@@ -16,7 +16,7 @@ model Channel {
   profileImage         String
   isLive               Boolean  @default(false)
   createdAt            DateTime @default(now())
-  guessDelayTime       Int      @default(2)
+  guessDelayTime       Float    @default(2)
   botActiveWhenOffline Boolean  @default(false)
   usagePublic          Boolean  @default(true)
 }
