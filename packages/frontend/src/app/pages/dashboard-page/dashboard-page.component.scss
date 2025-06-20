@@ -24,6 +24,12 @@
   width: 80%;
 }
 
+.commands {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
 .token {
   background-color: #1f1f1f;
   border-radius: 4px;
@@ -72,4 +78,17 @@
   width: 100%;
   gap: 1rem;
   box-sizing: border-box;
+}
+
+.setting-header {
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
 }
