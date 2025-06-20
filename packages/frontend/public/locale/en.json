@@ -11,6 +11,27 @@
         "close": "Close"
       }
     },
+    "privacy-policy": {
+      "title": "Privacy Policy",
+      "sections": {
+        "account": {
+          "title": "Account Information",
+          "text": "When you log in to wheelgpt.dev, some of your account information will be added to a local database. This information includes your Twitch Channel Name, your Twitch Channel ID, your Twitch Channel Display Name and an URL to your Twitch Channel Profile Pitcure.<br><br>Note that while we do use your authorized access token to verify it's your account, we don't actually store the access token. It is kept in memory for a very short period of time and then discarded."
+        },
+        "access-log": {
+          "title": "Access Log",
+          "text": "We store traffic logs which may contain your IP address and browser user agent, in order to see how the site is being used. These logs are regularly rotated out and are not permanent. In most cases, they are stored for a maximum of 24 hours."
+        },
+        "questions": {
+          "title": "Questions",
+          "text": "If you have any questions related to our privacy policy, please send an email to markus.u.wieland&#64;gmail.com or ask &#64;sowiemarkus on Discord."
+        }
+      }
+    },
+    "imprint": {
+      "title": "Imprint",
+      "text": "This website is operated by Markus Wieland.<br><br>Contact: <a href=\"mailto:markus.u.wieland@gmail.com\"> markus.u.wieland&#64;gmail.com</a><br><br>All content on this website is provided without any warranty. The author assumes no liability for the correctness, completeness, and topicality of the content. The use of the website is at your own risk."
+    },
     "dashboard": {
       "settings": {
         "title": "Settings",
@@ -64,9 +85,7 @@
     }
   },
   "footer": {
-    "contact": "Contact",
     "privacy": "Privacy Policy",
-    "imprint": "Imprint",
-    "login": "Logged in as "
+    "imprint": "Imprint"
   }
 }

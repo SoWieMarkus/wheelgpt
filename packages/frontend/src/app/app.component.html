@@ -8,15 +8,19 @@
 <mat-divider></mat-divider>
 <footer>
   <div class="footer-container">
-    <a href="mailto:markus.u.wieland@gmail.com">Contact</a>
-    <span> | </span>
-    <a href="https://github.com/SoWieMarkus/wheelgpt"><mat-icon svgIcon="github"></mat-icon>
-      Github</a>
-    @if (profileService.channel() !== null) {
-    <span> | </span>
-    <span>{{"footer.login" | translate }} <span class="user">{{profileService.channel()?.displayName}}</span></span>
-    }
+    <a routerLink="/privacy-policy">
+      {{"footer.privacy" | translate }}
+    </a>
+    <span> - </span>
+    <a routerLink="/imprint">
+      {{"footer.imprint" | translate }}
+    </a>
+    <span> - </span>
+    <a href="https://github.com/SoWieMarkus/wheelgpt"><mat-icon svgIcon="github"></mat-icon>Github</a>
   </div>
-  <a>© {{year}}, Markus Wieland</a>
+  <div class="footer-container">
+    <span>© {{year}}, Markus Wieland</span>
+
+  </div>
 </footer>
 }
