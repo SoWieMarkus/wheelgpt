@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
 
-cd /usr/src/app/packages/backend
+cd /usr/src/app
 npx prisma migrate deploy
 npm start
