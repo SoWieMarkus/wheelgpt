@@ -2,3 +2,8 @@ node_modules
 dist
 .turbo
 .env
+
+/generated/prisma
+
+prisma/dev.db
+prisma/dev.db-journal
