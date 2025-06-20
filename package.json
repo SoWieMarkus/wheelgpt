@@ -33,6 +33,5 @@
     "build": "turbo run build",
     "dev:all": "concurrently \"npm run dev --workspace @wheelgpt/backend\" \"npm start --workspace @wheelgpt/frontend\"",
     "database": "npx prisma migrate deploy && npx prisma generate",
-    "start": "npm run start --workspace @wheelgpt/backend"
   }
 }
