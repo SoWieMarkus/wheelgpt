@@ -88,9 +88,9 @@ export class WheelGPT extends Client {
 		}
 	}
 
-	public async remove(channelId: string) {
-		this.channelMap.delete(channelId);
-		await this.part(channelId);
+	public async remove(login: string) {
+		this.channelMap.delete(login);
+		await this.part(login);
 	}
 
 	public getChannel(channelId: string): TwitchChannel | null {

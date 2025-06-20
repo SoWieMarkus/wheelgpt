@@ -83,7 +83,15 @@ export const remove: RequestHandler = async (request, response) => {
 		throw createHttpError(400, "Channel ID is required.");
 	}
 
-	await wheelgpt.remove(channelId);
+	const channel = await database.channel.findUnique({
+		where: { id: channelId },
+		select: { id: true, login: true },
+	});
+	if (!channel) {
+		throw createHttpError(404, "Channel not found.");
+	}
+
+	await wheelgpt.remove(channel.login);
 	await database.channel.delete({ where: { id: channelId } });
 	response.status(204).json({});
 };
