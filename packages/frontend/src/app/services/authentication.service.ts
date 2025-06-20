@@ -35,6 +35,7 @@ export class AuthenticationService {
 
 	public removeToken(): void {
 		localStorage.removeItem("token");
+		this.profileService.reset();
 	}
 
 	public isTokenExpired(): boolean {
