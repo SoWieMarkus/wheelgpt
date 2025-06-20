@@ -17,8 +17,7 @@
     "@types/express": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/tmi.js": "^1.8.6",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2"
+    "nodemon": "^3.1.10"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",
