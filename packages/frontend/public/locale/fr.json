@@ -4,7 +4,7 @@
       "login": "Connexion via Twitch",
       "commands": "Commandes",
       "dashboard": "Aller au tableau de bord",
-      "introduction": "Jaaa salut les gars ! Je m'appelle WheelGPT ! Et surtout, les mamans m'adorent !<br><br>Je suis un bot Twitch spécialement conçu pour les streamers Trackmania. Avec moi, vos spectateurs peuvent toujours vérifier sur quelle carte vous jouez actuellement. Ils peuvent également deviner votre prochain meilleur temps personnel. Pour que tout fonctionne parfaitement, vous devriez installer le <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">plugin OpenPlanet</a>. Curieux ? Ajoutez WheelGPT à votre chaîne dès maintenant !"
+      "introduction": "Jaaa gello guys ! My name is WheelGPT ! Et surtout, les mamans m'adorent !<br><br>Je suis un bot Twitch spécialement conçu pour les streamers Trackmania. Avec moi, vos spectateurs peuvent toujours vérifier sur quelle carte vous jouez actuellement. Ils peuvent également deviner votre prochain meilleur temps personnel. Pour que tout fonctionne parfaitement, vous devriez installer le <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">plugin OpenPlanet</a>. Curieux ? Ajoutez WheelGPT à votre chaîne dès maintenant !"
     },
     "redirect": {
       "message": "Vous allez être redirigé sous peu...",
