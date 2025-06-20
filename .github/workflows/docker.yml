@@ -13,24 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Generate Prisma client
-        run: npx prisma generate
-        working-directory: ./packages/backend
-        env:
-          DATABASE_URL: file:./dev.db
-
-      - name: Build the project
-        run: npm run build
-
-      - name: Run tests
-        run: npm test
-
-      - name: Run Biome CI check
-        run: npx @biomejs/biome ci
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:

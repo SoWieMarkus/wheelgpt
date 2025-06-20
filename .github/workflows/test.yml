@@ -2,8 +2,8 @@ name: Biome CI
 
 on:
   pull_request:
+  push:
     branches:
-      - main
       - "*"
 
 jobs:
@@ -22,8 +22,6 @@ jobs:
       - name: Generate Prisma client
         run: npx prisma generate
         working-directory: ./packages/backend
-        env:
-          DATABASE_URL: file:./dev.db
 
       - name: Build the project
         run: npm run build

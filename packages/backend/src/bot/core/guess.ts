@@ -1,4 +1,4 @@
-import type { Guess } from "../../../generated/prisma";
+import type { Guess } from "../../../../../generated/prisma";
 import { Emote } from "./emotes";
 import { Medal, type TrackmaniaMap } from "./map";
 import { TrackmaniaTime } from "./time";

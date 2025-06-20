@@ -1,4 +1,4 @@
-import type * as Table from "../../../generated/prisma";
+import type * as Table from "../../../../../generated/prisma";
 import { assertIsDefined } from "./assert-defined";
 import { Emote } from "./emotes";
 import { TrackmaniaTime } from "./time";
