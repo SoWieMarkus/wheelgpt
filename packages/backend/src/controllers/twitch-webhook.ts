@@ -47,7 +47,7 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 			return;
 		}
 		case TWITCH_MESSAGE_TYPE_NOTIFICATION: {
-			const event = TwitchWebhookEventSchema.safeParse(request.body.event);
+			const event = TwitchWebhookEventSchema.safeParse(body.event);
 			if (!event.success) {
 				logger.error("Failed to parse Twitch event", { error: event.error.errors[0].message });
 				throw createHttpError(400, "Bad Request. Invalid Twitch event data.");
@@ -59,7 +59,7 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 			return;
 		}
 		case TWITCH_MESSAGE_TYPE_REVOCATION: {
-			const subscriptionId = request.body.subscription.id;
+			const subscriptionId = body.subscription.id;
 			if (!subscriptionId) {
 				logger.error("Subscription ID missing in revocation request");
 				throw createHttpError(400, "Bad Request. Missing subscription ID.");
