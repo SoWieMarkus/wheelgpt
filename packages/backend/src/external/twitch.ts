@@ -301,6 +301,10 @@ export const syncWebhooks = async (channelIds: string[], callbackUrl: string) =>
 	// Build a map of currently registered webhooks
 	const registeredMap = new Map<string, { id: string; type: string; broadcaster_user_id: string }>();
 	for (const sub of registered) {
+		if (sub.status !== "enabled") {
+			logger.info(`Skipping disabled webhook: ${sub.id}`);
+			continue;
+		}
 		if ((sub.type === "stream.online" || sub.type === "stream.offline") && sub.condition.broadcaster_user_id) {
 			registeredMap.set(`${sub.type}:${sub.condition.broadcaster_user_id}`, {
 				id: sub.id,
