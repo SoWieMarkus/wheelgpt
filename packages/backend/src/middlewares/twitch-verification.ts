@@ -42,8 +42,6 @@ export const verifyTwitchSignature: RequestHandler = (request, _, next) => {
 		return next(httpError);
 	}
 
-	console.log("Twitch EventSub signature verified successfully", { messageId, timestamp });
-
 	request.legitTwitchSignature = true;
 
 	next();

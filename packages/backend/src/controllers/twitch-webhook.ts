@@ -1,6 +1,7 @@
 import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import { z } from "zod";
+import { database } from "../database";
 import { logger } from "../utils";
 
 const TWITCH_MESSAGE_TYPE_VERIFICATION = "webhook_callback_verification";
@@ -14,7 +15,26 @@ const TwitchEventSubHeaderSchema = z.object({
 });
 
 const TwitchWebhookEventSchema = z.object({
-	type: z.string(),
+	subscription: z.object({
+		id: z.string(),
+		status: z.string(),
+		type: z.string(),
+		version: z.string(),
+		condition: z.object({
+			broadcaster_user_id: z.string(),
+		}),
+		transport: z.object({
+			method: z.string(),
+			callback: z.string(),
+		}),
+		created_at: z.string(),
+		cost: z.number(),
+	}),
+	event: z.object({
+		broadcaster_user_id: z.string(),
+		broadcaster_user_login: z.string(),
+		broadcaster_user_name: z.string(),
+	}),
 });
 
 export const streamStateWebhook: RequestHandler = async (request, response) => {
@@ -29,18 +49,11 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 	}
 
 	const messageType = data[TWITCH_MESSAGE_TYPE_HEADER];
-
 	const body = JSON.parse(request.body.toString("utf8"));
-
-	console.log("_________________________________");
-	console.log(messageType);
-	console.log(request.headers);
-	console.log(body);
 
 	switch (messageType) {
 		case TWITCH_MESSAGE_TYPE_VERIFICATION: {
 			const challenge = body.challenge;
-			console.log("Challenge:", challenge);
 			if (!challenge) {
 				logger.error("Verification challenge missing in request body");
 				throw createHttpError(400, "Bad Request. Missing verification challenge.");
@@ -49,14 +62,25 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 			return;
 		}
 		case TWITCH_MESSAGE_TYPE_NOTIFICATION: {
-			const event = TwitchWebhookEventSchema.safeParse(body.event);
-			if (!event.success) {
-				logger.error("Failed to parse Twitch event", { error: event.error.errors[0].message });
+			const { success, data } = TwitchWebhookEventSchema.safeParse(body);
+			if (!success) {
+				logger.error("Failed to parse Twitch event");
+				console.error(body);
 				throw createHttpError(400, "Bad Request. Invalid Twitch event data.");
 			}
 
-			// TODO update the channel's live status in the database
+			const channelId = data.event.broadcaster_user_id;
+			const type = data.subscription.type;
+			await database.channel.update({
+				where: { id: channelId },
+				data: {
+					isLive: type === "stream.online",
+				},
+			});
 
+			logger.info(
+				`Channel ${data.event.broadcaster_user_name} updated to ${type === "stream.online" ? "live" : "offline"}`,
+			);
 			response.status(204).send();
 			return;
 		}
@@ -66,8 +90,7 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 				logger.error("Subscription ID missing in revocation request");
 				throw createHttpError(400, "Bad Request. Missing subscription ID.");
 			}
-			// Handle revocation (e.g., remove the subscription from the database)
-			logger.info("Received Twitch revocation", { subscriptionId });
+			logger.warn("Received Twitch revocation");
 			response.status(204).send();
 			return;
 		}

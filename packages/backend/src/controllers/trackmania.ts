@@ -85,7 +85,6 @@ export const updatePersonalBest: RequestHandler = async (request, response) => {
 	}
 
 	const { success, data, error } = PersonalBestSchema.safeParse(request.body);
-	console.log(success, data, error);
 	if (!success) {
 		throw createHttpError(400, error.errors[0].message);
 	}
