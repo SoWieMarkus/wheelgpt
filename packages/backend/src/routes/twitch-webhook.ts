@@ -4,15 +4,6 @@ import { verifyTwitchSignature } from "../middlewares/twitch-verification";
 
 const router = express.Router();
 
-router.post(
-	"/webhook/stream",
-	// the raw body parser is needed for signature verification
-	express.raw({
-		type: "application/json",
-	}),
-	verifyTwitchSignature,
-	express.json(),
-	TwitchWebhookController.streamStateWebhook,
-);
+router.post("/webhook/stream", verifyTwitchSignature, TwitchWebhookController.streamStateWebhook);
 
 export default router;

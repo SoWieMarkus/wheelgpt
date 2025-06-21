@@ -14,6 +14,14 @@ import { logger } from "./utils";
 
 const app = express();
 
+app.use(
+	"/api/twitch",
+	express.raw({
+		type: "application/json",
+	}),
+	TwitchWebhookRouter,
+);
+
 app.use(express.static(path.join(__dirname, "../../frontend/dist/frontend/browser")));
 app.use(cors());
 app.use(json({ limit: "7mb" }));
@@ -24,7 +32,6 @@ apiRouter.use("/authentication", AuthenticationRouter);
 apiRouter.use("/trackmania", TrackmaniaRouter);
 apiRouter.use("/landing", LandingRouter);
 apiRouter.use("/channel", ChannelRouter);
-apiRouter.use("/twitch", TwitchWebhookRouter);
 
 app.use("/api", apiRouter);
 app.get("*name", (_, response) => {
