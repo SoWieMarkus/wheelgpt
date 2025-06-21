@@ -35,6 +35,7 @@ export const verifyTwitchSignature: RequestHandler = (request, _, next) => {
 	const computedHmac = `sha256=${crypto.createHmac("sha256", secret).update(hmacMessage).digest("hex")}`;
 
 	const verified = crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computedHmac));
+	console.log(hmacMessage, computedHmac, signature, verified);
 
 	if (!verified) {
 		const httpError = createHttpError(403, "Unauthorized. Invalid Twitch EventSub signature.");
