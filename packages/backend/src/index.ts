@@ -41,7 +41,7 @@ const initialize = async () => {
 	logger.info("Channel information updated successfully");
 
 	logger.info("Registering Twitch webhook subscriptions...");
-	await Twitch.syncWebhooks(channelIds, env.TWITCH_STREAM_WEB_HOOK_URL);
+	//await Twitch.syncWebhooks(channelIds, env.TWITCH_STREAM_WEB_HOOK_URL);
 	logger.info("Twitch webhook subscriptions registered successfully");
 	console.log(await Twitch.getRegisteredWebhooks());
 

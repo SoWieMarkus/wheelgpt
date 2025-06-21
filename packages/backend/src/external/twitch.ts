@@ -305,6 +305,7 @@ export const syncWebhooks = async (channelIds: string[], callbackUrl: string) =>
 		if (sub.status !== "enabled") {
 			console.log(sub.status);
 			logger.info(`Skipping disabled webhook: ${sub.id}`);
+			await removeWebhook(sub.id);
 			continue;
 		}
 		if ((sub.type === "stream.online" || sub.type === "stream.offline") && sub.condition.broadcaster_user_id) {
