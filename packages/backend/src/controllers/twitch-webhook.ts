@@ -29,6 +29,8 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 	}
 	const messageType = data[TWITCH_MESSAGE_TYPE_HEADER];
 
+	console.log("_________________________________");
+	console.log(messageType);
 	console.log(request.headers);
 	console.log(request.body);
 
