@@ -1,4 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
+import { MatBadgeModule } from "@angular/material/badge";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
@@ -9,10 +10,9 @@ import { AuthenticationService } from "../../services/authentication.service";
 import { BackendService } from "../../services/backend.service";
 import { CommandsService } from "../../services/commands.service";
 import { ProfileService } from "../../services/profile.service";
-
 @Component({
 	selector: "app-landing-page",
-	imports: [CommandComponent, MatIconModule, TranslatePipe, RouterLink, MatChipsModule],
+	imports: [CommandComponent, MatIconModule, TranslatePipe, RouterLink, MatChipsModule, MatBadgeModule],
 	templateUrl: "./landing-page.component.html",
 	styleUrl: "./landing-page.component.scss",
 })
@@ -28,7 +28,13 @@ export class LandingPage {
 		this.backendService.landing
 			.publicChannels()
 			.then((data) => {
-				console.log("Landing data loaded:", data);
+				// sort channels by live status and display name
+				data.sort((a, b) => {
+					if (a.isLive && !b.isLive) return -1; // a is live, b is not
+					if (!a.isLive && b.isLive) return 1; // b is live, a is not
+					// both are live or both are not live, sort by display name
+					return a.displayName.localeCompare(b.displayName);
+				});
 				this.data.set(data);
 			})
 			.catch((error) => {

@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 
+@include mat.chips-overrides((elevated-container-color: #1f1f1f,
+    container-shape-radius: 8px,
+    outline-width: 0,
+  ));
+
 html {
   color-scheme: light dark;
   @include mat.theme((color: mat.$violet-palette,

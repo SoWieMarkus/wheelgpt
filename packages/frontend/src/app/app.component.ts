@@ -47,7 +47,7 @@ export class AppComponent {
 	}
 
 	private initializeIcons() {
-		const icons = ["github", "twitch"];
+		const icons = ["github", "twitch", "live"];
 		for (const icon of icons) {
 			this.registry.addSvgIcon(icon, this.sanitizer.bypassSecurityTrustResourceUrl(`icons/${icon}.svg`));
 		}
