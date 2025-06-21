@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended"
   ],
+  "commitMessageAction": "Renovate: Update",
   "assignees": [
     "SoWieMarkus"
   ]
