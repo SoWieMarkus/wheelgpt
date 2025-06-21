@@ -18,6 +18,7 @@ export const verifyTwitchSignature: RequestHandler = (request, _, next) => {
 	});
 
 	const { success, data, error } = TwitchEventSubHeaderSchema.safeParse(request.headers);
+	console.log(success, data, error);
 
 	if (!success) {
 		const httpError = createHttpError(403, "Bad Request. Invalid Twitch EventSub headers.");
