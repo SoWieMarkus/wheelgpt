@@ -31,8 +31,10 @@ export const verifyTwitchSignature: RequestHandler = (request, _, next) => {
 		[TWITCH_MESSAGE_TIMESTAMP]: timestamp,
 		[TWITCH_MESSAGE_SIGNATURE]: signature,
 	} = data;
+	console.log(request.body);
+	console.log(request.body.toString("utf8"));
 
-	const hmacMessage = messageId + timestamp + request.body;
+	const hmacMessage = messageId + timestamp + request.body.toString("utf8");
 	const computedHmac = `sha256=${crypto.createHmac("sha256", secret).update(hmacMessage).digest("hex")}`;
 
 	const verified = crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computedHmac));
