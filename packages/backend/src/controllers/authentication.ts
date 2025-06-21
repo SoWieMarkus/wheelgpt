@@ -5,7 +5,7 @@ import * as uuid from "uuid";
 import z from "zod";
 import { database } from "../database";
 import { Twitch } from "../external";
-import { env } from "../utils";
+import { env, logger } from "../utils";
 import { wheelgpt } from "../wheelgpt";
 
 const clientId = env.TWITCH_CLIENT_ID;
@@ -71,6 +71,9 @@ export const login: RequestHandler = async (request, response) => {
 
 	if (!existingChannel) {
 		wheelgpt.register(channel);
+		Twitch.addWebhooksByChannel(channel.id).catch((_) => {
+			logger.error("Failed to add Twitch webhooks");
+		});
 	}
 
 	const webToken = jwt.sign({ id: channel.id }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
@@ -93,6 +96,9 @@ export const remove: RequestHandler = async (request, response) => {
 
 	await wheelgpt.remove(channel.login);
 	await database.channel.delete({ where: { id: channelId } });
+	Twitch.removeWebhooksByChannel(channelId).catch((_) => {
+		logger.error("Failed to remove Twitch webhooks");
+	});
 	response.status(204).json({});
 };
 

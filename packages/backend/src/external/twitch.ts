@@ -290,8 +290,6 @@ export const removeWebhook = async (id: string) => {
 // Main logic to sync webhooks on boot
 export const syncWebhooks = async (channelIds: string[], callbackUrl: string) => {
 	const registered = await getRegisteredWebhooks();
-	console.log(registered);
-
 	// Build a set of required webhooks
 	const required = new Set<string>();
 	for (const id of channelIds) {
@@ -303,8 +301,6 @@ export const syncWebhooks = async (channelIds: string[], callbackUrl: string) =>
 	const registeredMap = new Map<string, { id: string; type: string; broadcaster_user_id: string }>();
 	for (const sub of registered) {
 		if (sub.status !== "enabled") {
-			console.log(sub.status);
-			logger.info(`Skipping disabled webhook: ${sub.id}`);
 			await removeWebhook(sub.id);
 			continue;
 		}
@@ -335,4 +331,41 @@ export const syncWebhooks = async (channelIds: string[], callbackUrl: string) =>
 			await removeWebhook(sub.id);
 		}
 	}
+
+	const postRegistered = await getRegisteredWebhooks();
+	const enabledCount = postRegistered.filter((sub) => sub.status === "enabled");
+
+	if (enabledCount.length !== required.size) {
+		logger.warn(`Mismatch in registered webhooks. Enabled: ${enabledCount.length}, Required: ${required.size}`);
+		return;
+	}
+
+	logger.info(`Twitch webhooks synced. Registered: ${enabledCount.length}, Required: ${required.size}`);
+};
+
+export const removeWebhooksByChannel = async (channelId: string) => {
+	const allSubs = await getRegisteredWebhooks();
+	const existingWebhooks = allSubs.filter((sub) => sub.condition?.broadcaster_user_id === channelId);
+	for (const sub of existingWebhooks) {
+		try {
+			await removeWebhook(sub.id);
+		} catch (error) {
+			logger.error(`Failed to remove webhook ${sub.id} for channel ${channelId}`, { error });
+		}
+	}
+};
+
+export const addWebhooksByChannel = async (channelId: string) => {
+	const allSubs = await getRegisteredWebhooks();
+	const existingWebhooks = allSubs.filter((sub) => sub.condition?.broadcaster_user_id === channelId);
+	for (const sub of existingWebhooks) {
+		try {
+			await removeWebhook(sub.id);
+		} catch (error) {
+			logger.error(`Failed to remove webhook ${sub.id} for channel ${channelId}`, { error });
+		}
+	}
+
+	await registerWebhook("stream.online", channelId, env.TWITCH_STREAM_WEB_HOOK_URL);
+	await registerWebhook("stream.offline", channelId, env.TWITCH_STREAM_WEB_HOOK_URL);
 };
