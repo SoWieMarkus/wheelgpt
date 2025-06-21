@@ -71,9 +71,23 @@ export const login: RequestHandler = async (request, response) => {
 
 	if (!existingChannel) {
 		wheelgpt.register(channel);
-		Twitch.addWebhooksByChannel(channel.id).catch((_) => {
-			logger.error("Failed to add Twitch webhooks");
-		});
+		Twitch.addWebhooksByChannel(channel.id)
+			.then(() => {
+				logger.info(`Added Twitch webhooks for channel ${channel.id}`);
+			})
+			.catch(() => {
+				logger.error("Failed to add Twitch webhooks");
+			});
+		Twitch.checkStreamState(channel.id)
+			.then(async (isLive) => {
+				await database.channel.update({
+					where: { id: channel.id },
+					data: { isLive },
+				});
+			})
+			.catch(() => {
+				logger.error("Failed to add Twitch webhooks");
+			});
 	}
 
 	const webToken = jwt.sign({ id: channel.id }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
@@ -96,9 +110,13 @@ export const remove: RequestHandler = async (request, response) => {
 
 	await wheelgpt.remove(channel.login);
 	await database.channel.delete({ where: { id: channelId } });
-	Twitch.removeWebhooksByChannel(channelId).catch((_) => {
-		logger.error("Failed to remove Twitch webhooks");
-	});
+	Twitch.removeWebhooksByChannel(channelId)
+		.then(() => {
+			logger.info(`Removed Twitch webhooks for channel ${channelId}`);
+		})
+		.catch((_) => {
+			logger.error("Failed to remove Twitch webhooks");
+		});
 	response.status(204).json({});
 };
 

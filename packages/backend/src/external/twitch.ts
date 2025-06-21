@@ -369,3 +369,11 @@ export const addWebhooksByChannel = async (channelId: string) => {
 	await registerWebhook("stream.online", channelId, env.TWITCH_STREAM_WEB_HOOK_URL);
 	await registerWebhook("stream.offline", channelId, env.TWITCH_STREAM_WEB_HOOK_URL);
 };
+
+export const checkStreamState = async (channelId: string) => {
+	const streams = await getStreams([channelId]);
+	if (streams.length === 0) {
+		return false;
+	}
+	return streams[0].type === "live";
+};
