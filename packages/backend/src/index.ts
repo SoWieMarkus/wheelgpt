@@ -27,20 +27,6 @@ const initialize = async () => {
 
 	// TODO update web hooks for channels
 
-	console.log(await Twitch.getRegisteredWebhooks());
-
-	const wheelgpt = await database.channel.findUnique({
-		where: { login: "wheelgpt" },
-	});
-	console.log(wheelgpt);
-
-	if (!wheelgpt) {
-		logger.error("WheelGPT channel not found in the database. Please ensure it is registered.");
-		throw new Error("WheelGPT channel not found");
-	}
-
-	await Twitch.registerWebhook("stream.offline", wheelgpt.id, "https://wheelgpt.de/api/twitch/webhook/stream");
-
 	logger.info("Requesting stream status for channels...");
 
 	// Get initial live status of channels. Later it will be updated by the Twitch webhook
