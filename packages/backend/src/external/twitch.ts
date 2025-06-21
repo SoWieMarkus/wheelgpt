@@ -290,6 +290,7 @@ export const removeWebhook = async (id: string) => {
 // Main logic to sync webhooks on boot
 export const syncWebhooks = async (channelIds: string[], callbackUrl: string) => {
 	const registered = await getRegisteredWebhooks();
+	console.log(registered);
 
 	// Build a set of required webhooks
 	const required = new Set<string>();
@@ -302,6 +303,7 @@ export const syncWebhooks = async (channelIds: string[], callbackUrl: string) =>
 	const registeredMap = new Map<string, { id: string; type: string; broadcaster_user_id: string }>();
 	for (const sub of registered) {
 		if (sub.status !== "enabled") {
+			console.log(sub.status);
 			logger.info(`Skipping disabled webhook: ${sub.id}`);
 			continue;
 		}
