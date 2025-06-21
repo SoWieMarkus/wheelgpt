@@ -29,6 +29,9 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 	}
 	const messageType = data[TWITCH_MESSAGE_TYPE_HEADER];
 
+	console.log(request.headers);
+	console.log(request.body);
+
 	switch (messageType) {
 		case TWITCH_MESSAGE_TYPE_VERIFICATION: {
 			const challenge = request.body.challenge;
