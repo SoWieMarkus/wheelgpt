@@ -29,14 +29,16 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 	}
 	const messageType = data[TWITCH_MESSAGE_TYPE_HEADER];
 
+	const body = JSON.parse(request.body.toString("utf8"));
+
 	console.log("_________________________________");
 	console.log(messageType);
 	console.log(request.headers);
-	console.log(request.body);
+	console.log(body);
 
 	switch (messageType) {
 		case TWITCH_MESSAGE_TYPE_VERIFICATION: {
-			const challenge = request.body.challenge;
+			const challenge = body.challenge;
 			if (!challenge) {
 				logger.error("Verification challenge missing in request body");
 				throw createHttpError(400, "Bad Request. Missing verification challenge.");
@@ -45,8 +47,6 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 			return;
 		}
 		case TWITCH_MESSAGE_TYPE_NOTIFICATION: {
-			console.log("Received Twitch notification", request.body);
-
 			const event = TwitchWebhookEventSchema.safeParse(request.body.event);
 			if (!event.success) {
 				logger.error("Failed to parse Twitch event", { error: event.error.errors[0].message });
