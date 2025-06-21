@@ -80,6 +80,7 @@ export const login: RequestHandler = async (request, response) => {
 			});
 		Twitch.checkStreamState(channel.id)
 			.then(async (isLive) => {
+				logger.info(`Checked stream state for channel ${channel.id}: ${isLive ? "Live" : "Offline"}`);
 				await database.channel.update({
 					where: { id: channel.id },
 					data: { isLive },
