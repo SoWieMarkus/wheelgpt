@@ -39,6 +39,7 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 	switch (messageType) {
 		case TWITCH_MESSAGE_TYPE_VERIFICATION: {
 			const challenge = body.challenge;
+			console.log("Challenge:", challenge);
 			if (!challenge) {
 				logger.error("Verification challenge missing in request body");
 				throw createHttpError(400, "Bad Request. Missing verification challenge.");
