@@ -6,9 +6,11 @@ WheelGPT is a [Trackmania](https://www.trackmania.com/) Twitch bot that was orig
 
 ## Any Questions? Feedback?
 
-If you have any questions regarding the plugin or the Twitch Bot, feel free to contact me!
+For more detailed information, check out the [documentation](./docs/).
+If you have any questions regarding the plugin or the Twitch Bot, feel free to contact me:
 
 - Discord: sowiemarkus
+- [markus.u.wieland@gmail.com](mailto:markus.u.wieland@gmail.com)
 
 ## Features
 
