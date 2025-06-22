@@ -13,7 +13,7 @@ export const getPublicChannels: RequestHandler = async (_, response) => {
 			login: true,
 		},
 		skip: 0,
-		take: 20,
+		take: 30,
 	});
 	response.status(200).json(channels);
 };
