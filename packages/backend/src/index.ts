@@ -40,9 +40,13 @@ const initialize = async () => {
 	await updateChannelDetails(channelIds);
 	logger.info("Channel information updated successfully");
 
-	logger.info("Registering Twitch webhook subscriptions...");
-	await Twitch.syncWebhooks(channelIds, env.TWITCH_STREAM_WEB_HOOK_URL);
-	logger.info("Twitch webhook subscriptions registered successfully");
+	// Don't update the webhooks in development mode
+	// Otherwise it would delete all existing webhooks in production
+	if (env.UPDATE_WEB_HOOKS) {
+		logger.info("Registering Twitch webhook subscriptions...");
+		await Twitch.syncWebhooks(channelIds, env.TWITCH_STREAM_WEB_HOOK_URL);
+		logger.info("Twitch webhook subscriptions registered successfully");
+	}
 
 	logger.info("Requesting stream status for channels...");
 	await updateStreamStatus(channelIds);

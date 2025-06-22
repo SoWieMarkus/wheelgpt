@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "../../.env" });
 
-import { cleanEnv, port, str, url } from "envalid";
+import { bool, cleanEnv, port, str, url } from "envalid";
 
 export default cleanEnv(process.env, {
 	PORT: port(),
@@ -17,4 +17,5 @@ export default cleanEnv(process.env, {
 	BOT_OAUTH_TOKEN: str(),
 	TWITCH_EVENTSUB_SECRET: str(),
 	TWITCH_STREAM_WEB_HOOK_URL: url(),
+	UPDATE_WEB_HOOKS: bool(),
 });
