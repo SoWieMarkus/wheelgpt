@@ -21,6 +21,14 @@ const TwitchCodeSchema = z.object({
 	code: z.string(),
 });
 
+const generatePluginToken = (id: string, token: string) => {
+	return jwt.sign({ id, token }, env.JWT_SECRET_CHANNEL);
+};
+
+const generateWebToken = (id: string) => {
+	return jwt.sign({ id }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
+};
+
 export const login: RequestHandler = async (request, response) => {
 	const { success, data, error } = TwitchCodeSchema.safeParse(request.body);
 	if (!success) {
@@ -91,7 +99,7 @@ export const login: RequestHandler = async (request, response) => {
 			});
 	}
 
-	const webToken = jwt.sign({ id: channel.id }, env.JWT_SECRET_WEB, { expiresIn: "1d" });
+	const webToken = generateWebToken(channel.id);
 	response.status(200).json({ webToken });
 };
 
@@ -136,7 +144,7 @@ export const getPluginToken: RequestHandler = async (request, response) => {
 		throw createHttpError(404, "Channel not found.");
 	}
 
-	const pluginToken = jwt.sign({ id: channel.id, token: channel.token }, env.JWT_SECRET_CHANNEL);
+	const pluginToken = generatePluginToken(channel.id, channel.token);
 	response.status(200).json({ pluginToken });
 };
 
@@ -156,6 +164,6 @@ export const updatePluginToken: RequestHandler = async (request, response) => {
 		throw createHttpError(404, "Channel not found.");
 	}
 
-	const pluginToken = jwt.sign({ id: channel.id, token: channel.token }, env.JWT_SECRET_CHANNEL);
+	const pluginToken = generatePluginToken(channel.id, channel.token);
 	response.status(200).json({ pluginToken });
 };
