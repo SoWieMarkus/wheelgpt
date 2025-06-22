@@ -22,22 +22,27 @@ export class CommandsService {
 			name: "!guess",
 			aliases: ["!g"],
 			description: "commands.guess.description",
-			example: [{ isBot: false, text: "!guess 1:23.456" }],
+			example: [
+				{ isBot: false, text: "!guess 23.456" },
+				{ isBot: false, text: "!g 1:23.456" },
+			],
 			accessLevel: "User",
 		},
 		{
 			name: "!myguess",
-			aliases: ["!myg"],
+			aliases: ["!mg"],
 			description: "commands.myguess.description",
 			example: [
 				{ isBot: false, text: "!myguess" },
+				{ isBot: true, text: "@sowiemarkus 1:23.456" },
+				{ isBot: false, text: "!mg" },
 				{ isBot: true, text: "@sowiemarkus 1:23.456" },
 			],
 			accessLevel: "User",
 		},
 		{
 			name: "!result",
-			aliases: ["!gr"],
+			aliases: [],
 			description: "commands.result.description",
 			example: [
 				{ isBot: false, text: "!result 1:23.457" },
@@ -50,7 +55,7 @@ export class CommandsService {
 		},
 		{
 			name: "!map",
-			aliases: ["!m"],
+			aliases: [],
 			description: "commands.map.description",
 			example: [
 				{ isBot: false, text: "!map" },

@@ -1,4 +1,4 @@
-import { Component, input } from "@angular/core";
+import { Component, computed, input } from "@angular/core";
 import { TranslatePipe } from "@ngx-translate/core";
 import { TwitchMessagePipe } from "../../pipes/twitch-message.pipe";
 import type { Command } from "../../services/commands.service";
@@ -11,6 +11,10 @@ import type { Command } from "../../services/commands.service";
 })
 export class CommandComponent {
 	public readonly command = input.required<Command>();
+	protected readonly commandAliases = computed(() => {
+		const command = this.command();
+		return [command.name, ...command.aliases];
+	});
 
 	protected get showUserBadge() {
 		return this.command().accessLevel !== "User";

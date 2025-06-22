@@ -43,7 +43,7 @@ export class TwitchChannel {
 				name: "result",
 				accessLevel: AccessLevel.MOD,
 				cooldown: 0,
-				aliases: ["gr"],
+				aliases: [],
 			}),
 			new MapCommand(id, {
 				name: "map",
