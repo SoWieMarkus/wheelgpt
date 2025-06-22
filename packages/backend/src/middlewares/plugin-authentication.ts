@@ -67,7 +67,7 @@ export const requiresPluginAuthentication: RequestHandler = (request, response, 
 
 		if (!channel.botActiveWhenOffline && !channel.isLive) {
 			response.status(200).json({
-				message: "Channel is offline, but bot is active.",
+				message: "Channel is offline.",
 			});
 			return;
 		}

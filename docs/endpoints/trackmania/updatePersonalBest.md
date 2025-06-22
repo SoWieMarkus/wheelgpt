@@ -27,6 +27,14 @@ Requires [Plugin Authentication](../../authentication/plugin.md).
 { "message": "Personal best updated successfully." }
 ```
 
+If the channel is currently offline and the bot is set to be disabled while offline, the request will not be processed.
+
+- Status `200 OK`
+
+```js
+{ "message": "Channel is offline." }
+```
+
 - Status `400 Unauthorized`
 
 ```js

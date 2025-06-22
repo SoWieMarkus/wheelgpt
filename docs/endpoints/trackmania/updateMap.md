@@ -39,13 +39,24 @@ Requires [Plugin Authentication](../../authentication/plugin.md).
 ## Response
 
 - Status `200 OK`
+  If a map was provided.
 
 ```js
 { "message": "Successfully updated the map." }
 ```
 
+- Status `200 OK`
+  If no map was provided.
+
 ```js
 { "message": "Map deleted successfully." }
+```
+
+- Status `200 OK`
+  If the channel is currently offline and the bot is set to be disabled while offline, the request will not be processed.
+
+```js
+{ "message": "Channel is offline." }
 ```
 
 - Status `400 Unauthorized`
