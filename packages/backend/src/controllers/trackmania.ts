@@ -44,6 +44,11 @@ export const updateMap: RequestHandler = async (request, response) => {
 		});
 	}
 
+	// Delete all guesses for the channel when the map has changed
+	await database.guess.deleteMany({
+		where: { channelId },
+	});
+
 	if (!map) {
 		response.status(200).json({ message: "Map deleted successfully." });
 		return;
