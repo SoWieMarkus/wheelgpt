@@ -13,7 +13,7 @@ The `web token` is used to authenticate users (channel owners) in the web interf
 1. **Login via Twitch** on the web interface.
 2. After successful login, the backend returns a web token:
 
-```json
+```js
 { "webToken": "<your-web-token>" }
 ```
 

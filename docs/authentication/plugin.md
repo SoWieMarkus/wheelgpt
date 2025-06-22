@@ -23,7 +23,7 @@ Authorization: <web token>
 
 The response will contain your plugin token:
 
-```json
+```js
 { "pluginToken": "<your-plugin-token>" }
 ```
 

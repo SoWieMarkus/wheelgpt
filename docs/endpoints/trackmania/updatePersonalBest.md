@@ -4,36 +4,37 @@ Update the personal best time for the current channel and notify the bot.
 
 ```http
 POST /api/trackmania/update/pb
+Authorization: <plugin token>
 ```
 
 ## Authentication
 
-Requires [Plugin authentication](../../authentication/plugin.md).
+Requires [Plugin Authentication](../../authentication/plugin.md).
 
 ## Request Body
 
-```json
+```js
 {
   "time": 123456 // time in ms
 }
 ```
 
-## Responses
+## Response
 
 - Status `200 OK`
 
-```json
+```js
 { "message": "Personal best updated successfully." }
 ```
 
 - Status `400 Unauthorized`
 
-```json
+```js
 { "error": "Validation error message." }
 ```
 
 - Status `401 Unauthorized`
 
-```json
+```js
 { "error": "Authentication required." }
 ```

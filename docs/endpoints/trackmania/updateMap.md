@@ -6,15 +6,16 @@ If no map is provided, the current map will be deleted.
 
 ```http
 POST /api/trackmania/update/map
+Authorization: <plugin token>
 ```
 
 ## Authentication
 
-Requires [Plugin authentication](../../authentication/plugin.md).
+Requires [Plugin Authentication](../../authentication/plugin.md).
 
 ## Request Body
 
-```json
+```js
 {
   "map": {
     "name": "TMGL - Spring 2024 - 01",
@@ -29,32 +30,32 @@ Requires [Plugin authentication](../../authentication/plugin.md).
 }
 ```
 
-```json
+```js
 {
   "map": null
 }
 ```
 
-## Responses
+## Response
 
 - Status `200 OK`
 
-```json
+```js
 { "message": "Successfully updated the map." }
 ```
 
-```json
+```js
 { "message": "Map deleted successfully." }
 ```
 
 - Status `400 Unauthorized`
 
-```json
+```js
 { "error": "Validation error message." }
 ```
 
 - Status `401 Unauthorized`
 
-```json
+```js
 { "error": "Authentication required." }
 ```
