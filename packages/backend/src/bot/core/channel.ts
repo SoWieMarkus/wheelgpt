@@ -43,13 +43,11 @@ export class TwitchChannel {
 				name: "result",
 				accessLevel: AccessLevel.MOD,
 				cooldown: 0,
-				aliases: [],
 			}),
 			new MapCommand(id, {
 				name: "map",
 				accessLevel: AccessLevel.USER,
 				cooldown: 10,
-				aliases: ["m"],
 			}),
 			new EmotesCommand(id, {
 				name: "wgpt-emotes",
@@ -60,7 +58,6 @@ export class TwitchChannel {
 				name: "format",
 				accessLevel: AccessLevel.USER,
 				cooldown: 5,
-				aliases: ["f"],
 			}),
 		];
 	}
