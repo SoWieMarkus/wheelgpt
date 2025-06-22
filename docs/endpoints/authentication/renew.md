@@ -1,6 +1,6 @@
 # Renew Plugin Token
 
-Whenever you call the endpoint `/api/authentication/token` endpoint you will receive a different token. However the old tokens still remain valid.
+Whenever you call the endpoint `/api/authentication/token` you will receive a different token. However the old tokens still remain valid.
 If you need to rotate your plugin token, this endpoint.
 
 ```http
