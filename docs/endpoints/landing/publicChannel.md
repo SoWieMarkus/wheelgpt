@@ -3,7 +3,7 @@
 Returns a list of `30` Twitch Channels that are using WheelGPT. The Channels need to enable the `Public Channel` setting to be visibile.
 
 ```http
-GET /api/landing
+GET /api/landing/channels
 ```
 
 ## Authentication
