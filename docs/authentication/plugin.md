@@ -34,6 +34,8 @@ POST /api/trackmania/update/map
 Authorization: <plugin token>
 ```
 
+For more detailed information visit [Get Plugin Token](../endpoints/authentication/token.md).
+
 ## Token Renewal
 
 Whenever you call the endpoint `/api/authentication/token` endpoint you will receive a different token. However the old tokens still remain valid.
@@ -47,3 +49,5 @@ Authorization: <web token>
 ```json
 { "pluginToken": "<your-plugin-token>" }
 ```
+
+For more detailed information visit [Renew Plugin Token](../endpoints/authentication/renew.md).
