@@ -38,6 +38,7 @@ export const updateMap: RequestHandler = async (request, response) => {
 		where: { channelId },
 	});
 
+	// If a map exists and the new map is null, delete the existing map
 	if (exisitingMap || !map) {
 		await database.trackmaniaMap.delete({
 			where: { channelId },
