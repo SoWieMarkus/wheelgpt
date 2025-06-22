@@ -71,12 +71,23 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 
 			const channelId = data.event.broadcaster_user_id;
 			const type = data.subscription.type;
-			await database.channel.update({
+			const channel = await database.channel.update({
 				where: { id: channelId },
 				data: {
 					isLive: type === "stream.online",
 				},
 			});
+
+			// If the channel is offline and the bot is not active when offline,
+			// delete the map and guesses
+			if (channel?.botActiveWhenOffline === false && type === "stream.offline") {
+				database.trackmaniaMap.delete({
+					where: { channelId },
+				});
+				database.guess.deleteMany({
+					where: { channelId },
+				});
+			}
 
 			logger.info(
 				`Channel ${data.event.broadcaster_user_name} updated to ${type === "stream.online" ? "live" : "offline"}`,
