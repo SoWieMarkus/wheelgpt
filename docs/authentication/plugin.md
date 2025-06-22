@@ -46,7 +46,7 @@ POST /api/authentication/renew
 Authorization: <web token>
 ```
 
-```json
+```js
 { "pluginToken": "<your-plugin-token>" }
 ```
 
