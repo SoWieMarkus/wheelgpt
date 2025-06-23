@@ -1,7 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 
-@include mat.chips-overrides((elevated-container-color: #1f1f1f,
+:root {
+  --accent-background: #f1f1f1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent-background: #1f1f1f;
+  }
+}
+
+
+@include mat.chips-overrides((elevated-container-color: var(--accent-background),
     container-shape-radius: 8px,
     outline-width: 0,
   ));
@@ -12,6 +23,8 @@ html {
       typography: Roboto,
       density: 0));
 }
+
+
 
 html,
 body {
