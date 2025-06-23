@@ -33,12 +33,12 @@
 }
 
 .token {
-  background-color: #1f1f1f;
+  background-color: var(--accent-background);
   border-radius: 4px;
   padding: 1rem;
   border: none;
   outline: none;
-  color: #fff;
+  color: var(--mat-sys-on-surface);
   font-size: 1rem;
   box-shadow: none;
   /* Remove default appearance for cross-browser consistency */
