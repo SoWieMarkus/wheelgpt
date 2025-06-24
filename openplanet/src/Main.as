@@ -10,12 +10,13 @@ void Main()
 
     Map@ previousMap = null;
     int previousBestTime = DEFAULT_BEST_TIME;
+    Room@ previousRoom = null;
 
     while(true) 
     {
         sleep(CHECK_DELAY);
 
-        auto currentMap = GetCurrentMap(app);
+        Map@ currentMap = GetCurrentMap(app);
 
         if (CheckNewMap(previousMap, currentMap))
         {
@@ -35,6 +36,16 @@ void Main()
         // Update the previous best time to the current one for the next iteration
         // This is always done to initialize the previous best time when entering a new map
         previousBestTime = currentPersonalBestTime;
+
+        Room@ currentRoom = GetCurrentRoom(network);
+        // TODO add condition that last update was not too recent
+
+        if (CheckNewRoom(previousRoom, currentRoom)) 
+        {
+            @previousRoom = currentRoom;
+            DebugPrint("New current room: " + (currentRoom is null ? "null" : currentRoom.name));
+            SendUpdateRoom(previousRoom);
+        }
 
     }
 

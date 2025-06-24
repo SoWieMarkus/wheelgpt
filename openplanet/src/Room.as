@@ -37,6 +37,11 @@ Room@ GetCurrentRoom(CTrackManiaNetwork@ network)
     return Room(serverInfo, numPlayers);
 }
 
+bool CheckNewRoom(Room@ previousRoom, Room@ currentRoom) 
+{
+    return previousRoom != currentRoom;
+}
+
 void SendUpdateRoom(Room@ room) 
 {
     if (!Setting_EnableRooms) 
