@@ -5,6 +5,8 @@ import {
 	GuessResultCommand,
 	MapCommand,
 	MyGuessCommand,
+	ResetGuessesCommand,
+	RoomCommand
 } from "../commands";
 import type { CommandArguments } from "./arguments";
 import type { Command } from "./command";
@@ -58,6 +60,17 @@ export class TwitchChannel {
 				name: "format",
 				accessLevel: AccessLevel.USER,
 				cooldown: 5,
+			}),
+			new RoomCommand(id, {
+				name: "room",
+				accessLevel: AccessLevel.USER,
+				cooldown: 10,
+			}),
+			new ResetGuessesCommand(id, {
+				name: "resetguesses",
+				aliases: ["rg"],
+				accessLevel: AccessLevel.MOD,
+				cooldown: 0,
 			}),
 		];
 	}

@@ -134,6 +134,12 @@
     },
     "format": {
       "description": "Get information about the format in which you can submit your guess."
+    },
+    "room": {
+      "description": "Get information about the current room the streamer is playing in."
+    },
+    "reset-guesses": {
+      "description": "Reset all guesses for the current map."
     }
   },
   "footer": {
