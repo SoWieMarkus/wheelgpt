@@ -6,20 +6,18 @@ import { TMX } from "../external";
 import { logger } from "../utils";
 import { wheelgpt } from "../wheelgpt";
 
-const TrackmaniaMapSchema = z.object({
-	name: z.string(),
-	uid: z.string(),
-	author: z.string(),
-	authorTime: z.number().min(0),
-	goldTime: z.number().min(0),
-	silverTime: z.number().min(0),
-	bronzeTime: z.number().min(0),
-	championTime: z.number().min(0),
-});
-
-const TrackmaniaMapPostSchema = z.object({
-	map: TrackmaniaMapSchema.nullable().optional(),
-});
+const TrackmaniaMapSchema = z
+	.object({
+		name: z.string().min(1).max(1000),
+		uid: z.string().min(1).max(1000),
+		author: z.string().min(1).max(1000),
+		authorTime: z.number().min(0),
+		goldTime: z.number().min(0),
+		silverTime: z.number().min(0),
+		bronzeTime: z.number().min(0),
+		championTime: z.number().min(0),
+	})
+	.nullable();
 
 export const updateMap: RequestHandler = async (request, response) => {
 	const channelId = request.channelId;
@@ -27,36 +25,33 @@ export const updateMap: RequestHandler = async (request, response) => {
 		throw createHttpError(401, "Authentication required.");
 	}
 
-	const { success, data, error } = TrackmaniaMapPostSchema.safeParse(request.body);
+	const { success, data: map, error } = TrackmaniaMapSchema.safeParse(request.body);
 	if (!success) {
 		throw createHttpError(400, error.errors[0].message);
 	}
-
-	const { map } = data;
-
-	const exisitingMap = await database.trackmaniaMap.findUnique({
+	// Delete the map for the channel to store a new one
+	// We use deleteMany here since delete would throw an error if the map doesn't exist
+	await database.trackmaniaMap.delete({
 		where: { channelId },
 	});
-
-	// If a map exists and the new map is null, delete the existing map
-	if (exisitingMap || !map) {
-		await database.trackmaniaMap.delete({
-			where: { channelId },
-		});
-	}
 
 	// Delete all guesses for the channel when the map has changed
 	await database.guess.deleteMany({
 		where: { channelId },
 	});
 
+	// New map is null, we already deleted the map and guesses
+	// so we can just return a success message
 	if (!map) {
 		response.status(200).json({ message: "Map deleted successfully." });
 		return;
 	}
 
-	await database.trackmaniaMap.create({
-		data: {
+	// Upsert the map into the database (even though there shouldn't be a map for the channel at this point)
+	await database.trackmaniaMap.upsert({
+		where: { channelId },
+		update: map,
+		create: {
 			channelId,
 			...map,
 		},
@@ -98,4 +93,48 @@ export const updatePersonalBest: RequestHandler = async (request, response) => {
 	const { time } = data;
 	wheelgpt.notifyNewPB(channelId, time);
 	response.status(200).json({ message: "Personal best updated successfully." });
+};
+
+const RoomSchema = z
+	.object({
+		login: z.string().min(1).max(1000),
+		name: z.string().min(1).max(1000),
+		numberOfPlayers: z.number().min(0).max(2000),
+		maxPlayers: z.number().min(0).max(2000),
+	})
+	.nullable();
+
+export const updateRoom: RequestHandler = async (request, response) => {
+	const channelId = request.channelId;
+	if (!channelId) {
+		throw createHttpError(401, "Authentication required.");
+	}
+
+	const { success, data: room, error } = RoomSchema.safeParse(request.body);
+	if (!success) {
+		throw createHttpError(400, error.errors[0].message);
+	}
+
+	await database.trackmaniaRoom.deleteMany({
+		where: { channelId },
+	});
+
+	// If the room is null, we delete the room from the database
+	// and return a success message
+	if (!room) {
+		response.status(200).json({ message: "Room deleted successfully." });
+		return;
+	}
+
+	// Upsert the room into the database (even though there shouldn't be a room for the channel at this point)
+	await database.trackmaniaRoom.upsert({
+		where: { channelId },
+		update: room,
+		create: {
+			channelId,
+			...room,
+		},
+	});
+
+	response.status(200).json({ message: "Room updated successfully." });
 };

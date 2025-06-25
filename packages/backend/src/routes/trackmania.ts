@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post("/update/map", requiresPluginAuthentication, TrackmaniaController.updateMap);
 router.post("/update/pb", requiresPluginAuthentication, TrackmaniaController.updatePersonalBest);
+router.post("/update/room", requiresPluginAuthentication, TrackmaniaController.updateRoom);
 
 export default router;
