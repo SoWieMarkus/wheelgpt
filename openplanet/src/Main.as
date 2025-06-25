@@ -22,7 +22,6 @@ void Main()
         sleep(CHECK_DELAY);
 
         Map@ currentMap = GetCurrentMap();
-
         if (CheckNewMap(previousMap, currentMap))
         {
             @previousMap = currentMap;
@@ -30,7 +29,6 @@ void Main()
             SendUpdateMap(previousMap);
             previousBestTime = DEFAULT_BEST_TIME; // Reset the previous best time when changing maps
         }
-
 
         int currentPersonalBestTime = GetCurrentPersonalBest();
         // Ensure we are currently on a map to avoid unexpected behavior (e.g. during map loading)
@@ -42,13 +40,11 @@ void Main()
         // Update the previous best time to the current one for the next iteration
         // This is always done to initialize the previous best time when entering a new map
         DebugPrint("Current personal best: " + currentPersonalBestTime + ", Previous best: " + previousBestTime);
-
         previousBestTime = currentPersonalBestTime;
 
         Room@ currentRoom = GetCurrentRoom();
-
         uint delta = Time::Now - previousRoomUpdateTime;
-        DebugPrint("Time delta"  + delta);
+        DebugPrint("Time delta "  + delta);
         if (CheckNewRoom(previousRoom, currentRoom) && delta > TIMEOUT_ROOM_UPDATE)
         {
             @previousRoom = currentRoom;
@@ -56,7 +52,6 @@ void Main()
             SendUpdateRoom(previousRoom);
             previousRoomUpdateTime = Time::Now;
         }
-
     }
 
 }
