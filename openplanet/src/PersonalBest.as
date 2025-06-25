@@ -24,7 +24,7 @@ void SendUpdatePersonalBest(int time)
     }
     Json::Value body = Json::Object();
     body["time"] = time;
-    PostWithRetries("trackmania/update/pb", body, Setting_RetriesPB);
+    PostWithRetries("trackmania/pb", body, Setting_RetriesPB);
 }
 
 int GetCurrentPersonalBest() 

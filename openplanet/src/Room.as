@@ -49,6 +49,13 @@ void SendUpdateRoom(Room@ room)
         DebugPrint("Sending Rooms is deactivated.");
         return;
     }
-    Json::Value body = room is null ? Json::Null : room.ToJson();
-    PostWithRetries("trackmania/update/room", body, Setting_RetriesRoom);
+
+    if (room is null) 
+    {
+        DebugPrint("No room to send.");
+        DeleteWithRetries("trackmania/room", Setting_RetriesRoom);
+        return;
+    }
+    Json::Value body = room.ToJson();
+    PostWithRetries("trackmania/room", body, Setting_RetriesRoom);
 }

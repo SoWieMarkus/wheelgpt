@@ -60,8 +60,16 @@ void SendUpdateMap(Map@ map)
         DebugPrint("Sending Maps is deactivated.");
         return;
     }
-    Json::Value body = map is null ? Json::Null : map.ToJson();
-    PostWithRetries("trackmania/update/map", body, Setting_RetriesMap);
+
+    if (map is null) 
+    {
+        DebugPrint("No map to send.");
+        DeleteWithRetries("trackmania/map", Setting_RetriesMap);
+        return;
+    }
+
+    Json::Value body = map.ToJson();
+    PostWithRetries("trackmania/map", body, Setting_RetriesMap);
 }
 
 Map@ GetCurrentMap() 
