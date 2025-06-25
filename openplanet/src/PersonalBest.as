@@ -1,4 +1,4 @@
-void CheckNewPersonalBest(int previousBestTime, int currentBestTime) 
+bool CheckNewPersonalBest(int previousBestTime, int currentBestTime) 
 {
     // When entering a new map, the previous best time is reset to DEFAULT_BEST_TIME
     // This means we would trigger a new personal best update on map join,
@@ -7,12 +7,12 @@ void CheckNewPersonalBest(int previousBestTime, int currentBestTime)
     // This ensures that we only send updates when the personal best actually changes
     // and not when the player is just joining a new map
     // e.g. previous = DEFAULT_BEST_TIME, current = 1000
-    // don't trigger an update 
+    // don't trigger an update because we just loaded the map
     // e.g. previous = 1000, current = 1000
-    // don't trigger an update
+    // don't trigger an update because the personal best didn't change
     // e.g. previous = 1000, current = 900
-    // trigger an update
-    return currentBestTime != DEFAULT_BEST_TIME && previousBestTime != currentBestTime;
+    // trigger an update since we improved
+    return previousBestTime != DEFAULT_BEST_TIME && previousBestTime != currentBestTime;
 }
 
 void SendUpdatePersonalBest(int time) 
@@ -27,20 +27,23 @@ void SendUpdatePersonalBest(int time)
     PostWithRetries("trackmania/update/pb", body, Setting_RetriesPB);
 }
 
-int GetCurrentPersonalBest(CTrackManiaNetwork@ network) 
+int GetCurrentPersonalBest() 
 {
-    if (network.ClientManiaAppPlayground is null) 
+    if (g_network.ClientManiaAppPlayground is null || 
+        g_app.RootMap is null || 
+        g_app.RootMap.MapInfo.MapUid == "") 
     {
         return DEFAULT_BEST_TIME;
     }
 
-    auto userManager = network.ClientManiaAppPlayground.UserMgr;
+    auto userManager = g_network.ClientManiaAppPlayground.UserMgr;
     MwId userId = uint(-1);
-    if (userManager.Users.Length > 0) 
+    if (userManager.Users.Length == 0) 
     {
-        userId = userManager.Users[0].Id;
+        return DEFAULT_BEST_TIME;
     }
+    userId = userManager.Users[0].Id;
 
-    auto scoreManager = network.ClientManiaAppPlayground.ScoreMgr;
+    auto scoreManager = g_network.ClientManiaAppPlayground.ScoreMgr;
     return scoreManager.Map_GetRecord_v2(userId, g_app.RootMap.MapInfo.MapUid, "PersonalBest", "", "TimeAttack", "");
 }

@@ -8,7 +8,7 @@ class Room
     Room(CGameCtnNetServerInfo@ serverInfo, int numPlayers) 
     {
         login = serverInfo.ServerLogin;
-        name = StripFormatCodes(serverInfo.ServerName);
+        name = Text::StripFormatCodes(serverInfo.ServerName);
         numberOfPlayers = numPlayers;
         maxPlayers = serverInfo.MaxPlayerCount;
     }
@@ -25,20 +25,21 @@ class Room
 };
 
 
-Room@ GetCurrentRoom(CTrackManiaNetwork@ network)
+Room@ GetCurrentRoom()
 {
-    auto serverInfo = cast<CGameCtnNetServerInfo>(network.ServerInfo);
+    auto serverInfo = cast<CGameCtnNetServerInfo>(g_network.ServerInfo);
     if (serverInfo is null || serverInfo.ServerLogin == "") 
     {
         return null;
     }
-    int numPlayers = network.PlayerInfos.Length;
+    int numPlayers = g_network.PlayerInfos.Length;
     return Room(serverInfo, numPlayers);
 }
 
 bool CheckNewRoom(Room@ previousRoom, Room@ currentRoom) 
 {
-    return previousRoom != currentRoom;
+    if (previousRoom is null || currentRoom is null) return previousRoom !is currentRoom;
+    return previousRoom.login != currentRoom.login;
 }
 
 void SendUpdateRoom(Room@ room) 
@@ -48,6 +49,6 @@ void SendUpdateRoom(Room@ room)
         DebugPrint("Sending Rooms is deactivated.");
         return;
     }
-    Json::Value body = room is null ? Json::Null() : room.ToJson();
+    Json::Value body = room is null ? Json::Null : room.ToJson();
     PostWithRetries("trackmania/update/room", body, Setting_RetriesRoom);
 }

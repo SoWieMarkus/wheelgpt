@@ -1,6 +1,6 @@
 string TEST_ENVIRONMENT_URL = "http://localhost:3000/api/";
 
-string GetBackend(string endpoint) 
+string GetBackendUrl(string endpoint) 
 {
     string url = Setting_TestLocal ? TEST_ENVIRONMENT_URL : Setting_Backend_Url;
     return url + endpoint;
@@ -13,7 +13,7 @@ int PostRequestAsync(const string &in path, const Json::Value &in data)
     request.Body = Json::Write(data);
     request.Headers['Content-Type'] = 'application/json';
     request.Headers['Authorization'] = Settings_Token;
-    request.Url = GetBackend(path);
+    request.Url = GetBackendUrl(path);
     request.Start();
     
     while(!request.Finished()) 
@@ -48,7 +48,7 @@ void PostWithRetries(const string &in path, const Json::Value &in data, int retr
         return;
     }
 
-    DebugPrint("Problem while sending data to" + path + " (" + responseCode + "). Retries left: " + retries);
+    DebugPrint("Problem while sending data to " + path + " (" + responseCode + "). Retries left: " + retries);
     sleep(5000);
     PostWithRetries(path, data, retries - 1);
 }

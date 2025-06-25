@@ -13,7 +13,7 @@ class Map
     Map(CGameCtnChallengeInfo@ mapInfo) 
     {
         uid = mapInfo.MapUid;
-        name = StripFormatCodes(mapInfo.Name);
+        name = Text::StripFormatCodes(mapInfo.Name);
         author = mapInfo.AuthorNickName;
 
         authorTime = mapInfo.TMObjective_AuthorTime;
@@ -49,7 +49,8 @@ class Map
 
 bool CheckNewMap(Map@ previousMap, Map@ currentMap) 
 {
-    return previousMap != currentMap;
+    if (previousMap is null || currentMap is null) return previousMap !is currentMap;
+    return previousMap.uid != currentMap.uid;
 }
 
 void SendUpdateMap(Map@ map) 
@@ -59,15 +60,15 @@ void SendUpdateMap(Map@ map)
         DebugPrint("Sending Maps is deactivated.");
         return;
     }
-    Json::Value body = map is null ? Json::Null() : map.ToJson();
+    Json::Value body = map is null ? Json::Null : map.ToJson();
     PostWithRetries("trackmania/update/map", body, Setting_RetriesMap);
 }
 
-CGameCtnChallenge@ GetCurrentMap(CTrackMania@ app) 
+Map@ GetCurrentMap() 
 {
-    if (app is null || app.RootMap is null || app.RootMap.MapInfo.MapUid == "") 
+    if (g_app is null || g_app.RootMap is null || g_app.RootMap.MapInfo.MapUid == "") 
     {
         return null;
     }
-    return Map(app.RootMap.MapInfo);
+    return Map(g_app.RootMap.MapInfo);
 }
