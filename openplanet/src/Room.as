@@ -8,9 +8,8 @@ class Room
     Room(CGameCtnNetServerInfo@ serverInfo, int numPlayers) 
     {
         login = serverInfo.ServerLogin;
-		name = StripFormatCodes(serverInfo.ServerName);
-
-		numberOfPlayers = numPlayers;
+        name = StripFormatCodes(serverInfo.ServerName);
+        numberOfPlayers = numPlayers;
         maxPlayers = serverInfo.MaxPlayerCount;
     }
 

@@ -22,7 +22,8 @@ class Map
         bronzeTime = mapInfo.TMObjective_BronzeTime;
 #if DEPENDENCY_CHAMPIONMEDALS
         uint currentChampionTime = ChampionMedals::GetCMTime();
-        if (championTime != 0) {
+        if (championTime != 0) 
+        {
             championTime = currentChampionTime;
             DebugPrint("Champions Medal: " + championTime);
         }

@@ -29,13 +29,15 @@ void SendUpdatePersonalBest(int time)
 
 int GetCurrentPersonalBest(CTrackManiaNetwork@ network) 
 {
-    if (network.ClientManiaAppPlayground is null) {
+    if (network.ClientManiaAppPlayground is null) 
+    {
         return DEFAULT_BEST_TIME;
     }
 
     auto userManager = network.ClientManiaAppPlayground.UserMgr;
     MwId userId = uint(-1);
-    if (userManager.Users.Length > 0) {
+    if (userManager.Users.Length > 0) 
+    {
         userId = userManager.Users[0].Id;
     }
 

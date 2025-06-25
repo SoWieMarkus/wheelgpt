@@ -33,7 +33,7 @@ int PostRequestAsync(const string &in path, const Json::Value &in data)
 void PostWithRetries(const string &in path, const Json::Value &in data, int retries = Setting_RetriesMap)        
 {
 
-    // At least try to send the Map once
+    // At least try to send the data once
     int responseCode = PostRequestAsync(path, data);
     if (responseCode == 200) 
     {
@@ -41,7 +41,7 @@ void PostWithRetries(const string &in path, const Json::Value &in data, int retr
         return;
     }
 
-    // Sending the Map failed, check if we have retries left
+    // Sending the data failed, check if we have retries left
     if (retries <= 0) 
     {
         DebugPrint("No Retries left.");

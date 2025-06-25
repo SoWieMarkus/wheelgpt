@@ -29,7 +29,8 @@ void Main()
 
         int currentPersonalBestTime = GetCurrentPersonalBest(network);
         // Ensure we are currently on a map to avoid unexpected behavior (e.g. during map loading)
-        if (CheckNewPersonalBest(previousBestTime, currentPersonalBestTime) && currentMap !is null) {
+        if (CheckNewPersonalBest(previousBestTime, currentPersonalBestTime) && currentMap !is null) 
+        {
             DebugPrint("New personal best detected: " + currentPersonalBestTime);
             SendUpdatePersonalBest(personalBestTime);
         }
