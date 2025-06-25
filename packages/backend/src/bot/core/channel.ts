@@ -6,7 +6,7 @@ import {
 	MapCommand,
 	MyGuessCommand,
 	ResetGuessesCommand,
-	RoomCommand
+	RoomCommand,
 } from "../commands";
 import type { CommandArguments } from "./arguments";
 import type { Command } from "./command";
