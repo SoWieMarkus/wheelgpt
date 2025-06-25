@@ -43,3 +43,11 @@ model Guess {
 
   @@id([channelId, userId])
 }
+
+model TrackmaniaRoom {
+  channelId       String @id
+  login           String
+  name            String
+  numberOfPlayers Int
+  maxPlayers      Int
+}

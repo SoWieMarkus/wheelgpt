@@ -1,13 +1,13 @@
 import { database } from "../../database";
-import { Command } from "../core";
+import { Command, type User } from "../core";
 
 export class ResetGuessesCommand extends Command {
-	protected async onExecute(): Promise<string | null> {
+	protected async onExecute(user: User, _: string[]): Promise<string | null> {
 		await database.guess.deleteMany({
 			where: {
 				channelId: this.channelId,
 			},
 		});
-		return null;
+		return `@${user.displayName} All guesses have been reset.`;
 	}
 }

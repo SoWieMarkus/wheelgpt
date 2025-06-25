@@ -79,12 +79,17 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 			});
 
 			// If the channel is offline and the bot is not active when offline,
-			// delete the map and guesses
+			// delete the map, room and guesses
 			if (channel?.botActiveWhenOffline === false && type === "stream.offline") {
-				database.trackmaniaMap.delete({
+				// We use deleteMany here since delete would throw an error if the map/room doesn't exist
+				// We also don't await these operations since they are not irrelevant for the response
+				database.trackmaniaMap.deleteMany({
 					where: { channelId },
 				});
 				database.guess.deleteMany({
+					where: { channelId },
+				});
+				database.trackmaniaRoom.deleteMany({
 					where: { channelId },
 				});
 			}

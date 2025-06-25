@@ -135,6 +135,12 @@
     },
     "format": {
       "description": "Erhalte Informationen darüber in welchem Format du deine Tipps abgeben kannst."
+    },
+    "room": {
+      "description": "Erhalte Informationen über den aktuellen Raum, in dem der Streamer spielst."
+    },
+    "reset-guesses": {
+      "description": "Setze alle Tipps für die aktuelle Karte zurück."
     }
   },
   "footer": {

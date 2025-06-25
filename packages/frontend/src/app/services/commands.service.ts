@@ -19,6 +19,26 @@ export type Command = {
 export class CommandsService {
 	public readonly commands = signal<Command[]>([
 		{
+			name: "!map",
+			aliases: [],
+			description: "commands.map.description",
+			example: [
+				{ isBot: false, text: "!map" },
+				{ isBot: true, text: '"MyCoolTrack" by MyCoolMapper | $$AUTHOR_MEDAL$$ 1:23.458' },
+			],
+			accessLevel: "User",
+		},
+		{
+			name: "!room",
+			aliases: [],
+			description: "commands.room.description",
+			example: [
+				{ isBot: false, text: "!room" },
+				{ isBot: true, text: "Your Mamas Room [5/100]" },
+			],
+			accessLevel: "User",
+		},
+		{
 			name: "!guess",
 			aliases: ["!g"],
 			description: "commands.guess.description",
@@ -54,14 +74,16 @@ export class CommandsService {
 			accessLevel: "Mod",
 		},
 		{
-			name: "!map",
-			aliases: [],
-			description: "commands.map.description",
+			name: "!reset-guesses",
+			aliases: ["!rg"],
+			description: "commands.reset-guesses.description",
 			example: [
-				{ isBot: false, text: "!map" },
-				{ isBot: true, text: '"MyCoolTrack" by MyCoolMapper | $$AUTHOR_MEDAL$$ 1:23.458' },
+				{ isBot: false, text: "!reset-guesses" },
+				{ isBot: true, text: "@sowiemarkus All guesses have been reset." },
+				{ isBot: false, text: "!rg" },
+				{ isBot: true, text: "@sowiemarkus All guesses have been reset." },
 			],
-			accessLevel: "User",
+			accessLevel: "Mod",
 		},
 		{
 			name: "!wgpt-emotes",

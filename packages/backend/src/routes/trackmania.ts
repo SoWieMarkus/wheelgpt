@@ -4,7 +4,10 @@ import { requiresPluginAuthentication } from "../middlewares/plugin-authenticati
 
 const router = express.Router();
 
-router.post("/update/map", requiresPluginAuthentication, TrackmaniaController.updateMap);
-router.post("/update/pb", requiresPluginAuthentication, TrackmaniaController.updatePersonalBest);
+router.post("/map", requiresPluginAuthentication, TrackmaniaController.updateMap);
+router.post("/pb", requiresPluginAuthentication, TrackmaniaController.updatePersonalBest);
+router.post("/room", requiresPluginAuthentication, TrackmaniaController.updateRoom);
+router.delete("/map", requiresPluginAuthentication, TrackmaniaController.deleteMap);
+router.delete("/room", requiresPluginAuthentication, TrackmaniaController.deleteRoom);
 
 export default router;

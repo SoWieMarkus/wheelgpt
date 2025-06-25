@@ -135,6 +135,12 @@
     },
     "format": {
       "description": "Obtenez des informations sur le format dans lequel vous pouvez soumettre votre pronostic."
+    },
+    "room": {
+      "description": "Obtenez des informations sur la salle actuelle dans laquelle le streamer joue."
+    },
+    "reset-guesses": {
+      "description": "Réinitialisez tous les pronostics pour la carte actuelle."
     }
   },
   "footer": {
