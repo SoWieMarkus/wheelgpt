@@ -2,7 +2,7 @@
 
 More information on [wheelgpt.dev](https://wheelgpt.dev). Get the [OpenPlanet Plugin](https://openplanet.dev/plugin/wheelgpt-plugin).
 
-WheelGPT is a [Trackmania](https://www.trackmania.com/) Twitch bot that was originally developed for the Twitch channel of GranaDyy - the wheel guy. With the bot, viewers can ask for the current map of the streamer. They can also guess the next personal best time of the streamer. To automate the evaluation of the guesses and the updating of the map, an openplanet plugin was developed.
+WheelGPT is a [Trackmania](https://www.trackmania.com/) Twitch bot that lets viewers interact with the stream in real time. Viewers can use chat commands to check the current map, guess the streamer’s next personal best time, and get information about the current Trackmania room the streamer is playing in. All in-game data is collected and sent to the server by a dedicated Openplanet plugin, ensuring the bot always provides up-to-date information. Originally developed for GranaDyy – the wheel guy – WheelGPT now brings interactive Trackmania experiences to any Twitch channel.
 
 ## Any Questions? Feedback?
 
@@ -34,6 +34,13 @@ With the Twitch bot, viewers can use the command `!map` to find out which map yo
 If the plugin is activated, whenever you enter a new map, this map is sent to our server. If you use the `Champion Medals` plugin, the Champion Medal time will also be sent to the server.
 
 If you want to disable this feature, you can deactivate this under `Settings`->`WheelGPT-Plugin`->` Send Maps to Server`.
+
+### Room
+
+With the Twitch bot, viewers can use the command `!room` to get information about the current Trackmania room the streamer is playing in.  
+If the plugin is activated, whenever you join a room, the room information (such as name, host, and player count) is sent to our server. This allows viewers to always see up-to-date room details via the bot.
+
+If you want to disable this feature, you can deactivate it under `Settings` -> `WheelGPT-Plugin` -> `Send Rooms to Server`.
 
 ## Getting Started
 
