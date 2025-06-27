@@ -1,6 +1,9 @@
 // Time to wait between each check in milliseconds
 const int CHECK_DELAY = 1000;
-const int DEFAULT_BEST_TIME = -1;
+// Used whenever we are not on a map
+const int DEFAULT_BEST_TIME_NO_MAP = -2;
+// Used when on a map with no best time
+const int DEFAULT_NO_BEST_TIME = -1;
 const uint TIMEOUT_ROOM_UPDATE = 60000;
 
 CTrackMania@ g_app;
@@ -13,7 +16,7 @@ void Main()
     @g_network = cast<CTrackManiaNetwork>(g_app.Network);
 
     Map@ previousMap = null;
-    int previousBestTime = DEFAULT_BEST_TIME;
+    int previousBestTime = DEFAULT_BEST_TIME_NO_MAP;
     Room@ previousRoom = null;
 
     // If the previous room update is more then 2 * TIMEOUT_ROOM_UPDATE ago, we set the timestamp to now - TIMEOUT_ROOM_UPDATE
@@ -30,7 +33,7 @@ void Main()
             @previousMap = currentMap;
             DebugPrint("New current map: " + (previousMap is null ? "null" : previousMap.name));
             SendUpdateMap(previousMap);
-            previousBestTime = DEFAULT_BEST_TIME; // Reset the previous best time when changing maps
+            previousBestTime = DEFAULT_BEST_TIME_NO_MAP; // Reset the previous best time when changing maps
         }
 
         int currentPersonalBestTime = GetCurrentPersonalBest();

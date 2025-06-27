@@ -22,7 +22,7 @@ int PostRequestAsync(const string &in path, const Json::Value &in data)
     }
 
     int responseCode = request.ResponseCode();
-    if (responseCode == Net::HttpResponseCode::Unauthorized) 
+    if (responseCode == 401) 
     {
         UI::ShowNotification(Icons::ExclamationTriangle + " WheelGPT", "Your WheelGPT Token is not valid. Please request a new one on https://wheelgpt.dev", UI::HSV(.1, .8, .8));
         DebugPrint("Please set a valid token.");
@@ -45,7 +45,7 @@ int DeleteRequestAsync(const string &in path)
     }
 
     int responseCode = request.ResponseCode();
-    if (responseCode == Net::HttpResponseCode::Unauthorized) 
+    if (responseCode == 401) 
     {
         UI::ShowNotification(Icons::ExclamationTriangle + " WheelGPT", "Your WheelGPT Token is not valid. Please request a new one on https://wheelgpt.dev", UI::HSV(.1, .8, .8));
         DebugPrint("Please set a valid token.");
@@ -58,7 +58,7 @@ void PostWithRetries(const string &in path, const Json::Value &in data, int retr
 
     // At least try to send the data once
     int responseCode = PostRequestAsync(path, data);
-    if (responseCode == Net::HttpResponseCode::Ok) 
+    if (responseCode == 200) 
     {
         DebugPrint("Successfully sent data to Server.");
         return;
@@ -80,7 +80,7 @@ void DeleteWithRetries(const string &in path, int retries = Setting_RetriesMap)
 {
     // At least try to send the data once
     int responseCode = DeleteRequestAsync(path);
-    if (responseCode == Net::HttpResponseCode::Ok) 
+    if (responseCode == 200) 
     {
         DebugPrint("Successfully deleted data from Server.");
         return;

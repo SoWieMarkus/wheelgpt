@@ -33,7 +33,8 @@ Room@ GetCurrentRoom()
         return null;
     }
     int numPlayers = g_network.PlayerInfos.Length;
-    return Room(serverInfo, numPlayers);
+    // Subtract 1 for some reason there is always one more player than the number of players in the room
+    return Room(serverInfo, numPlayers - 1);
 }
 
 bool CheckNewRoom(Room@ previousRoom, Room@ currentRoom) 
