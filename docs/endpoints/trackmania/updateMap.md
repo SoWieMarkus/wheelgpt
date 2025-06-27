@@ -2,7 +2,6 @@
 
 Update or delete the current Trackmania map for a channel.
 If a map is provided, it will be saved and TMX data will be fetched asynchronously.
-If no map is provided, the current map will be deleted.
 
 ```http
 POST /api/trackmania/update/map
