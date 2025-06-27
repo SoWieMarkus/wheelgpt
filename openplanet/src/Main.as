@@ -15,6 +15,9 @@ void Main()
     Map@ previousMap = null;
     int previousBestTime = DEFAULT_BEST_TIME;
     Room@ previousRoom = null;
+
+    // If the previous room update is more then 2 * TIMEOUT_ROOM_UPDATE ago, we set the timestamp to now - TIMEOUT_ROOM_UPDATE
+    // This is to ensure we will never get an integer overflow when no room updates are sent for a long time
     uint previousRoomUpdateTime = Time::Now;
 
     while(true) 
