@@ -17,22 +17,14 @@ Requires [Plugin Authentication](../../authentication/plugin.md).
 
 ```js
 {
-  "map": {
-    "name": "TMGL - Spring 2024 - 01",
-    "uid": "abcdef1234567890",
-    "author": "AuthorName",
-    "authorTime": 123456, // time in ms
-    "goldTime": 130000, // time in ms
-    "silverTime": 140000, // time in ms
-    "bronzeTime": 150000, // time in ms
-    "championTime": 120000 // time in ms
-  }
-}
-```
-
-```js
-{
-  "map": null
+  "name": "TMGL - Spring 2024 - 01",
+  "uid": "abcdef1234567890",
+  "author": "AuthorName",
+  "authorTime": 123456, // time in ms
+  "goldTime": 130000, // time in ms
+  "silverTime": 140000, // time in ms
+  "bronzeTime": 150000, // time in ms
+  "championTime": 120000 // time in ms
 }
 ```
 
@@ -43,13 +35,6 @@ Requires [Plugin Authentication](../../authentication/plugin.md).
 
 ```js
 { "message": "Successfully updated the map." }
-```
-
-- Status `200 OK`
-  If no map was provided.
-
-```js
-{ "message": "Map deleted successfully." }
 ```
 
 - Status `200 OK`
