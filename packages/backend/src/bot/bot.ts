@@ -21,6 +21,7 @@ export const commandCounterMetric = new Counter({
 });
 
 export class WheelGPT extends Client {
+	private _initialized = false;
 	private readonly channelMap: Map<string, TwitchChannel>;
 
 	constructor(username: string, password: string) {
@@ -73,6 +74,7 @@ export class WheelGPT extends Client {
 		for (const channel of channels) {
 			await this.register(channel);
 		}
+		this._initialized = true;
 	}
 
 	public async register(channel: ChannelConfig) {
@@ -130,5 +132,9 @@ export class WheelGPT extends Client {
 			return;
 		}
 		this.channelMap.set(channel.login, new TwitchChannel(channel.id, channel));
+	}
+
+	public get initialized(): boolean {
+		return this._initialized;
 	}
 }

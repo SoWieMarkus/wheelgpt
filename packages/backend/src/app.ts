@@ -2,6 +2,7 @@ import path from "node:path";
 import cors from "cors";
 import express, { json, type NextFunction, type Request, type Response } from "express";
 import createHttpError, { isHttpError } from "http-errors";
+import { requiresWheelGPTInitializedAuthentication } from "./middlewares/wheelgpt-initialized";
 import {
 	AuthenticationRouter,
 	ChannelRouter,
@@ -25,6 +26,7 @@ app.use(
 app.use(express.static(path.join(__dirname, "../../frontend/dist/frontend/browser")));
 app.use(cors());
 app.use(json({ limit: "7mb" }));
+app.use(requiresWheelGPTInitializedAuthentication);
 
 const apiRouter = express.Router();
 apiRouter.use("/metrics", MetricsRouter);
