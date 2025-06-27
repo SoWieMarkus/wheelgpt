@@ -97,18 +97,18 @@ export class WheelGPT extends Client {
 		return this.channelMap.get(channelId) ?? null;
 	}
 
-	public async notifyNewPB(channelId: string, time: number) {
-		const channel = this.getChannel(channelId);
+	public async notifyNewPB(login: string, time: number) {
+		const channel = this.getChannel(login);
 		if (!channel) {
-			logger.warn(`Channel ${channelId} not found for PB notification.`);
+			logger.warn(`Channel ${login} not found for PB notification.`);
 			return;
 		}
 
 		setTimeout(async () => {
 			const result = new TrackmaniaTime(time);
-			const message = await guessResultHandler(channelId, result);
+			const message = await guessResultHandler(channel.id, result);
 			if (message === null) return;
-			this.say(channelId, message);
+			this.say(login, message);
 		}, channel.config.guessDelayTime * 1000);
 	}
 
