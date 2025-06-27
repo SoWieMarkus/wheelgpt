@@ -112,10 +112,10 @@ export class WheelGPT extends Client {
 		}, channel.config.guessDelayTime * 1000);
 	}
 
-	public async reload(id: string) {
-		this.channelMap.delete(id);
+	public async reload(login: string, channelId: string) {
+		this.channelMap.delete(login);
 		const channel = await database.channel.findUnique({
-			where: { id },
+			where: { id: channelId },
 			select: {
 				id: true,
 				login: true,
@@ -126,7 +126,7 @@ export class WheelGPT extends Client {
 			},
 		});
 		if (!channel) {
-			logger.warn(`Channel ${id} not found for reload.`);
+			logger.warn(`Channel ${login} not found for reload.`);
 			return;
 		}
 		this.channelMap.set(channel.login, new TwitchChannel(channel.id, channel));

@@ -2,9 +2,11 @@ import { Schema } from "@wheelgpt/shared";
 import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import { database } from "../database";
+import { wheelgpt } from "../wheelgpt";
 
 const query = {
 	id: true,
+	login: true,
 	displayName: true,
 	profileImage: true,
 	botActiveWhenOffline: true,
@@ -50,6 +52,12 @@ export const updateSettings: RequestHandler = async (request, response) => {
 		},
 		select: query,
 	});
+
+	if (!updatedChannel) {
+		throw createHttpError(404, "Channel not found.");
+	}
+
+	wheelgpt.reload(updatedChannel.login, updatedChannel.id);
 
 	response.status(200).json(updatedChannel);
 };
