@@ -33,7 +33,7 @@ export const buildGuessResultMessage = (
 
 const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) => {
 	if (winners.length === 0) {
-		return `But no chatter participated ${Emote.REALLY_FUCKING_MAP.name}`;
+		return `But no chatter participated ${Emote.REALLY_FUCKING_MAD.name}`;
 	}
 
 	const bestGuess = winners[0];
