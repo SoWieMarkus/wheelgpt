@@ -83,8 +83,8 @@ const PersonalBestSchema = z.object({
 });
 
 export const updatePersonalBest: RequestHandler = async (request, response) => {
-	const channelId = request.channelId;
-	if (!channelId) {
+	const { channelId, login } = request;
+	if (!channelId || !login) {
 		throw createHttpError(401, "Authentication required.");
 	}
 
@@ -94,7 +94,7 @@ export const updatePersonalBest: RequestHandler = async (request, response) => {
 	}
 
 	const { time } = data;
-	wheelgpt.notifyNewPB(channelId, time);
+	wheelgpt.notifyNewPB(login, time);
 	response.status(200).json({ message: "Personal best updated successfully." });
 };
 

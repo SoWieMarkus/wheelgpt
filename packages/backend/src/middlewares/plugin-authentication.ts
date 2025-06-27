@@ -73,6 +73,7 @@ export const requiresPluginAuthentication: RequestHandler = (request, response, 
 		}
 
 		request.channelId = channel.id;
+		request.login = channel.login;
 		next();
 	});
 };
