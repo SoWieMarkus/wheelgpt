@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "regexManagers:biomeVersions"
+    "customManagers:biomeVersions"
   ],
   "commitMessageAction": "Renovate: Update",
   "assignees": [
