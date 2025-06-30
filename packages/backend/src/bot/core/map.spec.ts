@@ -1,3 +1,4 @@
+import { Emote } from "./emotes";
 import { Medal, TrackmaniaMap } from "./map";
 import { TrackmaniaTime } from "./time";
 
@@ -115,5 +116,11 @@ describe("TrackmaniaMap", () => {
 		expect(map.getMedalTime(Medal.GOLD)).toEqual(new TrackmaniaTime(2000));
 		expect(map.getMedalTime(Medal.SILVER)).toEqual(new TrackmaniaTime(3000));
 		expect(map.getMedalTime(Medal.BRONZE)).toEqual(new TrackmaniaTime(4000));
+	});
+
+	it("should return the correct string representation", () => {
+		const map = new TrackmaniaMap(validMapData);
+		const expectedString = `"MapName" by AuthorName | ${Emote.CHAMPION_MEDAL.name}  0.500 | ${Emote.AUTHOR_MEDAL.name}  1.000 | https://trackmania.exchange/maps/12345 | https://trackmania.io/#/leaderboard/abc123`;
+		expect(map.toString()).toBe(expectedString);
 	});
 });

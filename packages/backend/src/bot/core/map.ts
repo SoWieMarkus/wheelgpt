@@ -101,6 +101,12 @@ export class TrackmaniaMap {
 		return `https://trackmania.exchange/maps/${tmxId}`;
 	}
 
+	public get trackmaniaIOLink() {
+		const { uid } = this.data;
+		if (uid === null) return undefined;
+		return `https://trackmania.io/#/leaderboard/${uid}`;
+	}
+
 	public toString() {
 		const hasChampionTime = this.hasChampionTime();
 		const hasTrackmaniaExchangeId = this.hasTrackmaniaExchangeId();
@@ -113,18 +119,18 @@ export class TrackmaniaMap {
 
 		if (hasTrackmaniaExchangeId && hasChampionTime) {
 			assertIsDefined(tmx, "TrackmaniaExchange Link");
-			return `"${name}" by ${author} | ${Emote.CHAMPION_MEDAL.name}  ${champion} | ${Emote.AUTHOR_MEDAL.name}  ${authorMedal} | ${tmx}`;
+			return `"${name}" by ${author} | ${Emote.CHAMPION_MEDAL.name}  ${champion} | ${Emote.AUTHOR_MEDAL.name}  ${authorMedal} | ${tmx} | ${this.trackmaniaIOLink}`;
 		}
 
 		if (!hasTrackmaniaExchangeId && hasChampionTime) {
-			return `"${name}" by ${author} | ${Emote.CHAMPION_MEDAL.name}  ${champion} | ${Emote.AUTHOR_MEDAL.name}  ${authorMedal}`;
+			return `"${name}" by ${author} | ${Emote.CHAMPION_MEDAL.name}  ${champion} | ${Emote.AUTHOR_MEDAL.name}  ${authorMedal} | ${this.trackmaniaIOLink}`;
 		}
 
 		if (hasTrackmaniaExchangeId && !hasChampionTime) {
 			assertIsDefined(tmx, "TrackmaniaExchange Link");
-			return `"${name}" by ${author} | ${Emote.AUTHOR_MEDAL.name}  ${authorMedal} | ${tmx}`;
+			return `"${name}" by ${author} | ${Emote.AUTHOR_MEDAL.name}  ${authorMedal} | ${tmx} | ${this.trackmaniaIOLink}`;
 		}
 
-		return `"${name}" by ${author} | ${Emote.AUTHOR_MEDAL.name}  ${authorMedal}`;
+		return `"${name}" by ${author} | ${Emote.AUTHOR_MEDAL.name}  ${authorMedal} | ${this.trackmaniaIOLink}`;
 	}
 }
