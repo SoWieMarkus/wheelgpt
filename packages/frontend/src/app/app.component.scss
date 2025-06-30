@@ -62,9 +62,15 @@ footer .footer-container {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+footer a {
+  text-decoration: none;
 }
 
 footer .footer-container>* {
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
 }
