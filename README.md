@@ -6,6 +6,10 @@ More information on [wheelgpt.dev](https://wheelgpt.dev). Get the [OpenPlanet Pl
 
 WheelGPT is a [Trackmania](https://www.trackmania.com/) Twitch bot that lets viewers interact with the stream in real time. Viewers can use chat commands to check the current map, guess the streamer’s next personal best time, and get information about the current Trackmania room the streamer is playing in. All in-game data is collected and sent to the server by a dedicated Openplanet plugin, ensuring the bot always provides up-to-date information. Originally developed for GranaDyy – the wheel guy – WheelGPT now brings interactive Trackmania experiences to any Twitch channel.
 
+The frontend application, built with Angular and available at [wheelgpt.dev](https://wheelgpt.dev), provides an intuitive interface to configure the bot and connect it to your Twitch channel. The web application features support for both light and dark themes, and offers multilingual support for German, French, and English.
+
+See the [Screenshots](#screenshots) section below for visual examples of the interface.
+
 ## Any Questions? Feedback?
 
 For more detailed information, check out the [documentation](./docs/).
@@ -69,5 +73,7 @@ If you want to disable this feature, you can deactivate it under `Settings` -> `
 
 ## Screenshots
 
-<img src="./screenshots/landing.jpg" alt="Landing" width="100%" />
-<img src="./screenshots/profile.jpg" alt="Profile" width="100%" />
+<img src="./images/landing.jpg" alt="Landing" width="100%" />
+<img src="./images/profile.jpg" alt="Profile" width="100%" />
+<img src="./images/landing_light.jpg" alt="Landing" width="100%" />
+<img src="./images/profile_light.jpg" alt="Profile" width="100%" />
