@@ -2,7 +2,7 @@
 name = "WheelGPT Plugin"
 author = "sowiemarkus"
 category = "Utilities"
-version = "1.4.1"
+version = "1.4.2"
 
 [script]
 optional_dependencies = [ "ChampionMedals" ]

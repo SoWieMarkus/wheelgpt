@@ -59,7 +59,7 @@ void Main()
             previousRoomUpdateTime = Time::Now;
         }
 
-        if (delta > TIMEOUT_ROOM_UPDATE) 
+        if (Time::Now - previousRoomUpdateTime > 2 * TIMEOUT_ROOM_UPDATE) 
         {
             // Reset the previous room update time to now - TIMEOUT_ROOM_UPDATE
             // This ensures that we will not miss any room updates that might come in after a long period of inactivity
