@@ -66,3 +66,8 @@ If you want to disable this feature, you can deactivate it under `Settings` -> `
 
 1. Run `npm run setup`
 2. Run `npm run dev:all`
+
+## Screenshots
+
+<img src="./screenshots/landing.jpg" alt="Landing" width="100%" />
+<img src="./screenshots/profile.jpg" alt="Profile" width="100%" />
