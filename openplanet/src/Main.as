@@ -58,6 +58,14 @@ void Main()
             SendUpdateRoom(previousRoom);
             previousRoomUpdateTime = Time::Now;
         }
+
+        if (delta > TIMEOUT_ROOM_UPDATE) 
+        {
+            // Reset the previous room update time to now - TIMEOUT_ROOM_UPDATE
+            // This ensures that we will not miss any room updates that might come in after a long period of inactivity
+            // and avoids integer overflow issues.
+            previousRoomUpdateTime = Time::Now - TIMEOUT_ROOM_UPDATE;
+        }        
     }
 
 }
