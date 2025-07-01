@@ -5,6 +5,10 @@ export const Emote: Record<
 		url: string;
 	}
 > = {
+	HEY_GUYS: {
+		name: "HeyGuys",
+		url: "https://7tv.app/emotes/01F6MZGCNG000255K4X1K7NTHR",
+	},
 	YEK: {
 		name: "YEK",
 		url: "https://7tv.app/emotes/01GH7JSW200009M1346QW1QZT6",

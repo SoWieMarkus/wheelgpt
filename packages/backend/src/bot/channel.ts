@@ -7,10 +7,10 @@ import {
 	MyGuessCommand,
 	ResetGuessesCommand,
 	RoomCommand,
-} from "../commands";
-import type { CommandArguments } from "./arguments";
-import type { Command } from "./command";
-import { AccessLevel } from "./user";
+	WheelGPTCommand,
+} from "./commands";
+import type { Command, CommandArguments } from "./core";
+import { AccessLevel } from "./core/user";
 
 export type ChannelConfig = {
 	id: string;
@@ -71,6 +71,12 @@ export class TwitchChannel {
 				aliases: ["rg"],
 				accessLevel: AccessLevel.MOD,
 				cooldown: 0,
+			}),
+			new WheelGPTCommand(id, {
+				name: "wheelgpt",
+				accessLevel: AccessLevel.USER,
+				cooldown: 10,
+				aliases: ["wgpt"],
 			}),
 		];
 	}

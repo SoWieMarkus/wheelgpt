@@ -105,5 +105,23 @@ export class CommandsService {
 			],
 			accessLevel: "User",
 		},
+		{
+			name: "!wheelgpt",
+			aliases: ["!wgpt"],
+			description: "commands.wheelgpt.description",
+			example: [
+				{ isBot: false, text: "!wheelgpt" },
+				{
+					isBot: true,
+					text: "$$HEY_GUYS$$ I am Trackmania Twitch Bot!...",
+				},
+				{ isBot: false, text: "!wgpt" },
+				{
+					isBot: true,
+					text: "$$HEY_GUYS$$ I am Trackmania Twitch Bot!...",
+				},
+			],
+			accessLevel: "User",
+		},
 	]);
 }

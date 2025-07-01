@@ -141,6 +141,9 @@
     },
     "reset-guesses": {
       "description": "Setze alle Tipps für die aktuelle Karte zurück."
+    },
+    "wheelgpt": {
+      "description": "Erhalte Informationen über den Twitch Bot."
     }
   },
   "footer": {
