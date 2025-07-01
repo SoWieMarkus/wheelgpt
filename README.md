@@ -34,6 +34,24 @@ If the plugin is activated, whenever you set a new best time on a map, this time
 
 If you want to deactivate that your best times are sent to our server, you can deactivate this under `Settings` -> `WheelGPT-Plugin` -> ` Send PBs to Server`.
 
+WheelGPT features a leaderboard that tracks viewer performance across guessing sessions. The leaderboard is accessible at `https://wheelgpt.dev/leaderboard/{channelId}` and provides:
+
+**Scoring System:**
+
+- **Perfect Guess**: 5 points for guessing the exact time
+- **Closest Guess**: 1 point for being the closest in a round
+
+**Features:**
+
+- **Public Rankings**: View the top guessers in each channel
+- **User Search**: Find specific users and their current position
+- **Paginated Results**: Browse through all participants
+- **Real-time Updates**: Leaderboard updates automatically as new scores are recorded
+
+Viewers can use the `!lb` command in chat to get a quick link to the leaderboard, or use `!lb <username>` to check a specific user's position and points.
+
+The leaderboard encourages friendly competition among viewers and adds a persistent progression element to the guessing game, making each stream more engaging for regular participants.
+
 ### Map
 
 With the Twitch bot, viewers can use the command `!map` to find out which map you are currently playing.
