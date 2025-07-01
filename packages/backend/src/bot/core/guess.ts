@@ -1,7 +1,43 @@
 import type { Guess } from "../../../../../generated/prisma";
+import { database } from "../../database";
 import { Emote } from "./emotes";
 import { Medal, type TrackmaniaMap } from "./map";
 import { TrackmaniaTime } from "./time";
+
+export const POINTS_PERFECT_GUESS = 5;
+export const POINTS_CLOSEST_GUESS = 1;
+
+export const updateGuessResultLeaderboard = async (winners: Guess[], result: TrackmaniaTime) => {
+	if (winners.length === 0) {
+		return;
+	}
+
+	const perfectGuess = winners[0].time === result.getTotalInMilliSeconds();
+	const points = perfectGuess ? POINTS_PERFECT_GUESS : POINTS_CLOSEST_GUESS;
+
+	for (const winner of winners) {
+		await database.guesserLeaderboard.upsert({
+			where: {
+				channelId_userId: {
+					channelId: winner.channelId,
+					userId: winner.userId,
+				},
+			},
+			update: {
+				points: {
+					increment: points,
+				},
+				displayName: winner.displayName,
+			},
+			create: {
+				channelId: winner.channelId,
+				userId: winner.userId,
+				displayName: winner.displayName,
+				points,
+			},
+		});
+	}
+};
 
 export const evaluateGuesses = (guesses: Guess[], result: TrackmaniaTime) => {
 	let minDifference: number | null = null;
@@ -53,8 +89,8 @@ const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) 
 
 	const usernames = winners.map((winner) => winner.displayName).join(", ");
 	return hasPerfectGuess
-		? `@${usernames} the ${Emote.GIGACHAD.name} 's guessed it correctly! ${Emote.BWOAH.name}`
-		: `Nobody guessed it correctly but @${usernames} guessed ${bestGuessAsString} (${differenceAsString}) ${Emote.OK.name}`;
+		? `@${usernames} the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`
+		: `Nobody guessed it correctly but @${usernames} guessed ${bestGuessAsString} (${differenceAsString}) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`;
 };
 
 const buildPbMapResultMessage = (currentMap: TrackmaniaMap | null, newBestTime: TrackmaniaTime) => {

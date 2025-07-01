@@ -7,6 +7,7 @@ import {
 	evaluateGuesses,
 	TrackmaniaMap,
 	TrackmaniaTime,
+	updateGuessResultLeaderboard,
 } from "../core";
 
 export const guessResultHandler = async (channelId: string, time: TrackmaniaTime) => {
@@ -23,11 +24,14 @@ export const guessResultHandler = async (channelId: string, time: TrackmaniaTime
 	const trackmaniaMap = map ? new TrackmaniaMap(map) : null;
 
 	const winners = evaluateGuesses(guesses, time);
-	await database.guess.deleteMany({
+	database.guess.deleteMany({
 		where: {
 			channelId,
 		},
 	});
+
+	updateGuessResultLeaderboard(winners, time);
+
 	return buildGuessResultMessage(trackmaniaMap, time, winners);
 };
 

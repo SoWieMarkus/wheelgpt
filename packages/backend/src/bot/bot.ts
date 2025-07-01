@@ -3,8 +3,9 @@ import { Client } from "tmi.js";
 import { database } from "../database";
 import { prometheus } from "../prometheus";
 import { logger } from "../utils";
+import { type ChannelConfig, TwitchChannel } from "./channel";
 import { guessResultHandler } from "./commands";
-import { type ChannelConfig, getCommandArguments, getUser, TrackmaniaTime, TwitchChannel } from "./core";
+import { getCommandArguments, getUser, TrackmaniaTime } from "./core";
 
 export const failedConnectionAttemptsCounterMetric = new Counter({
 	name: "wheelgpt_failed_connection_attempts_total",
