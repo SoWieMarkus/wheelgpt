@@ -9,7 +9,7 @@ COPY . .
 RUN npm install
 RUN npm install -g @angular/cli
 ENV DATABASE_URL=file:/usr/src/app/wheelgpt.db
-RUN npx prisma generate
+RUN npx prisma generate --sql
 RUN npm run build
 
 FROM node:24-alpine
