@@ -140,6 +140,9 @@
     },
     "reset-guesses": {
       "description": "Reset all guesses for the current map."
+    },
+    "wheelgpt": {
+      "description": "Get information about the Twitch Bot."
     }
   },
   "footer": {

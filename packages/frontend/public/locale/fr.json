@@ -141,6 +141,9 @@
     },
     "reset-guesses": {
       "description": "Réinitialisez tous les pronostics pour la carte actuelle."
+    },
+    "wheelgpt": {
+      "description": "Obtenez des informations sur le bot Twitch."
     }
   },
   "footer": {

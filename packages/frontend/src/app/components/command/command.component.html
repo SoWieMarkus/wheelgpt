@@ -6,7 +6,7 @@
 
   @if (command().example.length > 0 ) {
   <div class="example-messages">
-    @for (message of command().example; track message.text) {
+    @for (message of command().example; track $index) {
     @if (message.isBot) {
     <div class="twitch-message-container">
       <img class="twitch-badge" alt="Twitch Bot Badge" src="badges/mod.png">

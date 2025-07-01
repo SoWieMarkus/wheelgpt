@@ -7,6 +7,7 @@ const EMOTES: Record<string, string> = {
 	OK: "emotes/ok.avif",
 	BWOAH: "emotes/bwoah.avif",
 	GIGACHAD: "emotes/gigachad.avif",
+	HEY_GUYS: "emotes/hey_guys.avif",
 };
 
 @Pipe({
