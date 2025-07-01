@@ -6,7 +6,7 @@ import { requiresWheelGPTInitializedAuthentication } from "./middlewares/wheelgp
 import {
 	AuthenticationRouter,
 	ChannelRouter,
-	LandingRouter,
+	LeaderboardRouter,
 	MetricsRouter,
 	TrackmaniaRouter,
 	TwitchWebhookRouter,
@@ -32,8 +32,8 @@ const apiRouter = express.Router();
 apiRouter.use("/metrics", MetricsRouter);
 apiRouter.use("/authentication", AuthenticationRouter);
 apiRouter.use("/trackmania", TrackmaniaRouter);
-apiRouter.use("/landing", LandingRouter);
 apiRouter.use("/channel", ChannelRouter);
+apiRouter.use("/leaderboard", LeaderboardRouter);
 
 app.use("/api", apiRouter);
 app.get("*name", (_, response) => {

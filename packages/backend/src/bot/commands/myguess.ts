@@ -1,5 +1,5 @@
 import { database } from "../../database";
-import { Command, TrackmaniaTime, type User } from "../core";
+import { Command, mentionUser, TrackmaniaTime, type User } from "../core";
 import { Emote } from "../core/emotes";
 
 export class MyGuessCommand extends Command {
@@ -14,9 +14,9 @@ export class MyGuessCommand extends Command {
 		});
 
 		if (guess === null) {
-			return `@${user.displayName} I can't find any guess from you ${Emote.YEK.name}`;
+			return `${mentionUser(user.displayName)} I can't find any guess from you ${Emote.YEK.name}`;
 		}
 		const time = new TrackmaniaTime(guess.time);
-		return `@${user.displayName} ${time.toString()}`;
+		return `${mentionUser(user.displayName)} ${time.toString()}`;
 	}
 }

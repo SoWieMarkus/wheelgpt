@@ -1,5 +1,30 @@
 {
   "pages": {
+    "leaderboard": {
+      "title": "Tipp Rangliste",
+      "description": "Hier findest du die Rangliste der besten Guesser des Kanals. Sammle Punkte durch präzise Zeitschätzungen: Ein perfekter Tipp bringt dir 5 Punkte, der beste Tipp einer Runde immerhin noch 1 Punkt. Suchst du nach deiner Position? Gib einfach deinen Benutzernamen in die Suchleiste ein.",
+      "actions": {
+        "search": {
+          "placeholder": "Suche nach Namen",
+          "error": "Kein Eintrag für diesen Namen gefunden."
+        },
+        "load-channel": {
+          "error": "Fehler beim Laden des Kanals. Bitte versuche es später erneut."
+        },
+        "load-leaderboard": {
+          "title": "Lade mehr ...",
+          "error": "Fehler beim Laden der Rangliste. Bitte versuche es später erneut."
+        }
+      },
+      "columns": {
+        "position": "Platz",
+        "username": "Name",
+        "points": "Punkte"
+      },
+      "empty": {
+        "message": "Es gibt noch keine Einträge in der Rangliste. Sei der Erste, der einen Tipp abgibt!"
+      }
+    },
     "landing": {
       "login": "Login mit Twitch",
       "commands": "Befehle",
@@ -144,6 +169,9 @@
     },
     "wheelgpt": {
       "description": "Erhalte Informationen über den Twitch Bot."
+    },
+    "leaderboard": {
+      "description": "Zeige die All-Time Rangliste der besten Guesser des Kanals."
     }
   },
   "footer": {

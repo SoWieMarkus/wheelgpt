@@ -1,5 +1,30 @@
 {
   "pages": {
+    "leaderboard": {
+      "title": "Classement des pronostics",
+      "description": "Ici, vous trouverez le classement des meilleurs pronostiqueurs de la chaîne. Gagnez des points en faisant des estimations précises : une estimation parfaite vous rapporte 5 points, la meilleure estimation d'un tour vous rapporte encore 1 point. Vous cherchez votre position ? Il vous suffit d'entrer votre nom d'utilisateur dans la barre de recherche.",
+      "actions": {
+        "search": {
+          "placeholder": "Rechercher par nom",
+          "error": "Aucun résultat trouvé pour ce nom."
+        },
+        "load-channel": {
+          "error": "Erreur lors du chargement de la chaîne. Veuillez réessayer plus tard."
+        },
+        "load-leaderboard": {
+          "title": "Charger plus ...",
+          "error": "Erreur lors du chargement du classement. Veuillez réessayer plus tard."
+        }
+      },
+      "columns": {
+        "position": "Position",
+        "username": "Nom",
+        "points": "Points"
+      },
+      "empty": {
+        "message": "Il n'y a pas encore d'entrées dans le classement. Soyez le premier à faire un pronostic !"
+      }
+    },
     "landing": {
       "login": "Connexion via Twitch",
       "commands": "Commandes",
@@ -144,6 +169,9 @@
     },
     "wheelgpt": {
       "description": "Obtenez des informations sur le bot Twitch."
+    },
+    "leaderboard": {
+      "description": "Affichez le classement des meilleurs pronostiqueurs de la chaîne."
     }
   },
   "footer": {

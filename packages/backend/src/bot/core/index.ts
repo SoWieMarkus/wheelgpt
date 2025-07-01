@@ -1,4 +1,3 @@
-export * from "../channel";
 export * from "./arguments";
 export * from "./assert-defined";
 export * from "./command";

@@ -1,5 +1,5 @@
 import { database } from "../../database";
-import { Command, TrackmaniaMap, type User } from "../core";
+import { Command, mentionUser, TrackmaniaMap, type User } from "../core";
 
 export class MapCommand extends Command {
 	protected async onExecute(user: User, _: string[]): Promise<string | null> {
@@ -9,10 +9,10 @@ export class MapCommand extends Command {
 			},
 		});
 		if (map === null) {
-			return `@${user.displayName} No map is currently set for this channel.`;
+			return `${mentionUser(user.displayName)} No map is currently set for this channel.`;
 		}
 
 		const trackmaniaMap = new TrackmaniaMap(map);
-		return `@${user.displayName} ${trackmaniaMap.toString()}`;
+		return `${mentionUser(user.displayName)} ${trackmaniaMap.toString()}`;
 	}
 }

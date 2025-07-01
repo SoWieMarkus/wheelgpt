@@ -3,6 +3,7 @@ import {
 	FormatCommand,
 	GuessCommand,
 	GuessResultCommand,
+	LeaderboardCommand,
 	MapCommand,
 	MyGuessCommand,
 	ResetGuessesCommand,
@@ -77,6 +78,12 @@ export class TwitchChannel {
 				accessLevel: AccessLevel.USER,
 				cooldown: 10,
 				aliases: ["wgpt"],
+			}),
+			new LeaderboardCommand(id, {
+				name: "wgpt-leaderboard",
+				accessLevel: AccessLevel.USER,
+				cooldown: 10,
+				aliases: ["lb"],
 			}),
 		];
 	}

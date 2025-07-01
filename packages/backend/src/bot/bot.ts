@@ -3,8 +3,9 @@ import { Client } from "tmi.js";
 import { database } from "../database";
 import { prometheus } from "../prometheus";
 import { logger } from "../utils";
+import { type ChannelConfig, TwitchChannel } from "./channel";
 import { guessResultHandler } from "./commands";
-import { type ChannelConfig, getCommandArguments, getUser, TrackmaniaTime, TwitchChannel } from "./core";
+import { getCommandArguments, getUser, TrackmaniaTime } from "./core";
 
 export const failedConnectionAttemptsCounterMetric = new Counter({
 	name: "wheelgpt_failed_connection_attempts_total",
@@ -32,7 +33,7 @@ export class WheelGPT extends Client {
 		this.channelMap = new Map();
 		this.on("message", async (tmiChannel, userstate, message, self) => {
 			if (self) return; // Ignore messages from the bot itself
-
+			console.log(message);
 			const commandArguments = getCommandArguments(message);
 			if (commandArguments === null) return;
 

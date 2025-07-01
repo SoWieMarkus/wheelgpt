@@ -49,6 +49,41 @@ export class CommandsService {
 			accessLevel: "User",
 		},
 		{
+			name: "!leaderboard",
+			aliases: ["!lb"],
+			description: "commands.leaderboard.description",
+			example: [
+				{ isBot: false, text: "!leaderboard" },
+				{
+					isBot: true,
+					text: "Top 5 Guessers 🏆 Perfect guess = 5pts, Closest guess = 1pt: 1. sowiemarkus - 10pts | 2. viewer - 5pts ...",
+				},
+				{ isBot: false, text: "!lb" },
+				{
+					isBot: true,
+					text: "Top 5 Guessers 🏆 ...",
+				},
+				{ isBot: false, text: "!lb @sowiemarkus" },
+				{
+					isBot: true,
+					text: "@sowiemarkus is currently in position 1 with 10 pts.",
+				},
+			],
+			accessLevel: "User",
+		},
+		{
+			name: "!format",
+			aliases: [],
+			description: "commands.format.description",
+			example: [
+				{ isBot: false, text: "!format" },
+				{ isBot: true, text: "@sowiemarkus hh:mm:ss.xxx (hours and minutes are optional)" },
+				{ isBot: false, text: "!format viewer" },
+				{ isBot: true, text: "@viewer hh:mm:ss.xxx (hours and minutes are optional)" },
+			],
+			accessLevel: "User",
+		},
+		{
 			name: "!myguess",
 			aliases: ["!mg"],
 			description: "commands.myguess.description",
@@ -96,16 +131,6 @@ export class CommandsService {
 			accessLevel: "Mod",
 		},
 		{
-			name: "!format",
-			aliases: [],
-			description: "commands.format.description",
-			example: [
-				{ isBot: false, text: "!format viewer" },
-				{ isBot: true, text: "@viewer hh:mm:ss.xxx (hours and minutes are optional)" },
-			],
-			accessLevel: "User",
-		},
-		{
 			name: "!wheelgpt",
 			aliases: ["!wgpt"],
 			description: "commands.wheelgpt.description",
@@ -113,12 +138,12 @@ export class CommandsService {
 				{ isBot: false, text: "!wheelgpt" },
 				{
 					isBot: true,
-					text: "$$HEY_GUYS$$ I am Trackmania Twitch Bot!...",
+					text: "$$HEY_GUYS$$ I am a Trackmania Twitch Bot!...",
 				},
 				{ isBot: false, text: "!wgpt" },
 				{
 					isBot: true,
-					text: "$$HEY_GUYS$$ I am Trackmania Twitch Bot!...",
+					text: "$$HEY_GUYS$$ I am a Trackmania Twitch Bot!...",
 				},
 			],
 			accessLevel: "User",

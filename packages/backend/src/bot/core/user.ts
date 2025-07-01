@@ -36,3 +36,9 @@ export const getUser = (chatUser: ChatUserstate, channelId: string): User | null
 	const accessLevel = getAccessLevel(chatUser, channelId);
 	return { name, id, displayName, accessLevel, channelId };
 };
+
+export const mentionUser = (username: string): string => {
+	if (!username) return "";
+	const usernameWithoutAt = username.replace(/^@/, "");
+	return `@${usernameWithoutAt} `;
+};

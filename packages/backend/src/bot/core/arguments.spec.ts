@@ -31,4 +31,11 @@ describe("getCommandArguments", () => {
 	it("handles command symbol only", () => {
 		expect(getCommandArguments("!")).toBeNull();
 	});
+
+	it("ignores non-visible characters in arguments", () => {
+		expect(getCommandArguments("!lb 󠀀")).toEqual({
+			key: "lb",
+			args: [],
+		});
+	});
 });

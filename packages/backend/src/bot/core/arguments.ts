@@ -20,6 +20,9 @@ export const getCommandArguments = (message: string): CommandArguments | null =>
 	if (key.length === 0) {
 		return null;
 	}
-	const args = tokens.filter((arg) => arg.length > 0).slice(1);
+	const args = tokens.slice(1).filter((arg) => {
+		const visibleChars = arg.replace(/[^\x20-\x7E]/g, "").trim();
+		return visibleChars.length > 0;
+	});
 	return { key, args };
 };

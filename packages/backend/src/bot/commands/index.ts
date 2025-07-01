@@ -1,6 +1,7 @@
 export * from "./emotes";
 export * from "./format";
 export * from "./guess";
+export * from "./leaderboard";
 export * from "./map";
 export * from "./myguess";
 export * from "./reset-guesses";
