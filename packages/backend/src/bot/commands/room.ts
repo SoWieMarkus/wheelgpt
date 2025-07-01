@@ -1,5 +1,5 @@
 import { database } from "../../database";
-import { Command, type User } from "../core";
+import { Command, mentionUser, type User } from "../core";
 
 export class RoomCommand extends Command {
 	protected async onExecute(user: User, _: string[]): Promise<string | null> {
@@ -9,10 +9,10 @@ export class RoomCommand extends Command {
 			},
 		});
 		if (room === null) {
-			return `@${user.displayName} I am currently not in a room.`;
+			return `${mentionUser(user.displayName)} I am currently not in a room.`;
 		}
 
 		const message = `${room.name} [${room.numberOfPlayers}/${room.maxPlayers}]`;
-		return `@${user.displayName} ${message}`;
+		return `${mentionUser(user.displayName)} ${message}`;
 	}
 }

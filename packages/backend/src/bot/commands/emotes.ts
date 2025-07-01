@@ -1,4 +1,4 @@
-import { Command, type User } from "../core";
+import { Command, mentionUser, type User } from "../core";
 import { Emote } from "../core/emotes";
 
 export class EmotesCommand extends Command {
@@ -6,6 +6,6 @@ export class EmotesCommand extends Command {
 		const emotes = Object.values(Emote)
 			.map((emote) => emote.name)
 			.join(" ");
-		return `@${user.displayName} ${emotes} ${Emote.YEK.name}`;
+		return `${mentionUser(user.displayName)} ${emotes} ${Emote.YEK.name}`;
 	}
 }

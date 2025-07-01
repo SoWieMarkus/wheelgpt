@@ -5,6 +5,7 @@ import {
 	Command,
 	EXAMPLE_FORMAT,
 	evaluateGuesses,
+	mentionUser,
 	TrackmaniaMap,
 	TrackmaniaTime,
 	updateGuessResultLeaderboard,
@@ -38,11 +39,11 @@ export const guessResultHandler = async (channelId: string, time: TrackmaniaTime
 export class GuessResultCommand extends Command {
 	protected async onExecute(user: User, args: string[]): Promise<string | null> {
 		if (args.length === 0) {
-			return `@${user.displayName} ${EXAMPLE_FORMAT}`;
+			return `${mentionUser(user.displayName)} ${EXAMPLE_FORMAT}`;
 		}
 		const time = TrackmaniaTime.parse(args[0]);
 		if (time === null) {
-			return `@${user.displayName} smh granadyy mods are all degens. Wrong format you idiot. ${EXAMPLE_FORMAT}`;
+			return `${mentionUser(user.displayName)} smh granadyy mods are all degens. Wrong format you idiot. ${EXAMPLE_FORMAT}`;
 		}
 
 		return guessResultHandler(this.channelId, time);

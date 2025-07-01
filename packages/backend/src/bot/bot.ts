@@ -33,7 +33,7 @@ export class WheelGPT extends Client {
 		this.channelMap = new Map();
 		this.on("message", async (tmiChannel, userstate, message, self) => {
 			if (self) return; // Ignore messages from the bot itself
-
+			console.log(message);
 			const commandArguments = getCommandArguments(message);
 			if (commandArguments === null) return;
 

@@ -1,5 +1,5 @@
 import { database } from "../../database";
-import { Command, type User } from "../core";
+import { Command, mentionUser, type User } from "../core";
 
 export class ResetGuessesCommand extends Command {
 	protected async onExecute(user: User, _: string[]): Promise<string | null> {
@@ -8,6 +8,6 @@ export class ResetGuessesCommand extends Command {
 				channelId: this.channelId,
 			},
 		});
-		return `@${user.displayName} All guesses have been reset.`;
+		return `${mentionUser(user.displayName)} All guesses have been reset.`;
 	}
 }
