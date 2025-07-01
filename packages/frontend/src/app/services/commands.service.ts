@@ -138,12 +138,12 @@ export class CommandsService {
 				{ isBot: false, text: "!wheelgpt" },
 				{
 					isBot: true,
-					text: "$$HEY_GUYS$$ I am Trackmania Twitch Bot!...",
+					text: "$$HEY_GUYS$$ I am a Trackmania Twitch Bot!...",
 				},
 				{ isBot: false, text: "!wgpt" },
 				{
 					isBot: true,
-					text: "$$HEY_GUYS$$ I am Trackmania Twitch Bot!...",
+					text: "$$HEY_GUYS$$ I am a Trackmania Twitch Bot!...",
 				},
 			],
 			accessLevel: "User",
