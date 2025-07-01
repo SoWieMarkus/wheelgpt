@@ -73,6 +73,7 @@ If you want to disable this feature, you can deactivate it under `Settings` -> `
 
 ## Screenshots
 
+<img src="./images/example.jpg" alt="Twitch Example" width="100%" />
 <img src="./images/landing.jpg" alt="Landing" width="100%" />
 <img src="./images/profile.jpg" alt="Profile" width="100%" />
 <img src="./images/landing_light.jpg" alt="Landing" width="100%" />
