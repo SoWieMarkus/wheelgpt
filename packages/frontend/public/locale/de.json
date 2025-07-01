@@ -19,6 +19,7 @@
       "columns": {
         "position": "Platz",
         "username": "Name",
+        "perfect": "Perfekt",
         "points": "Punkte"
       },
       "empty": {

@@ -40,13 +40,18 @@
       <mat-cell *matCellDef="let entry">{{ entry.displayName }}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="perfectGuessCount">
+      <mat-header-cell *matHeaderCellDef>{{'pages.leaderboard.columns.perfect' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let entry">{{ entry.perfectGuessCount }}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="points">
       <mat-header-cell *matHeaderCellDef>{{'pages.leaderboard.columns.points' | translate}}</mat-header-cell>
       <mat-cell *matCellDef="let entry">{{ entry.points }}</mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="['position', 'displayName', 'points']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['position', 'displayName', 'points']"></mat-row>
+    <mat-header-row *matHeaderRowDef="['position', 'displayName', 'perfectGuessCount', 'points']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['position', 'displayName', 'perfectGuessCount', 'points']"></mat-row>
 
     <div *matNoDataRow class="no-data">
       {{'pages.leaderboard.empty' | translate}}

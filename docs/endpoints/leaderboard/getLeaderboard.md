@@ -31,6 +31,7 @@ No authentication is required.
     displayName: "PlayerName",
     points: 1500,
     position: 1,
+    perfectGuessCount: 1,
   },
   // ... up to 100 entries per page
 ];

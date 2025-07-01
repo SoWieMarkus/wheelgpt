@@ -28,6 +28,7 @@ export const updateGuessResultLeaderboard = async (winners: Guess[], result: Tra
 				points: {
 					increment: points,
 				},
+				perfectGuessCount: perfectGuess ? { increment: 1 } : undefined,
 				displayName: winner.displayName,
 			},
 			create: {
@@ -35,6 +36,7 @@ export const updateGuessResultLeaderboard = async (winners: Guess[], result: Tra
 				userId: winner.userId,
 				displayName: winner.displayName,
 				points,
+				perfectGuessCount: perfectGuess ? 1 : 0,
 			},
 		});
 	}

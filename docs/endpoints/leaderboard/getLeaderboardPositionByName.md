@@ -27,7 +27,8 @@ When player is found
   userId: "987654321",
   displayName: "PlayerName",
   points: 1500,
-  position: 15
+  position: 15,
+  perfectGuessCount: 1
 }
 ```
 

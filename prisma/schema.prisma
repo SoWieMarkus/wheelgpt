@@ -53,10 +53,11 @@ model TrackmaniaRoom {
 }
 
 model GuesserLeaderboard {
-  channelId   String
-  userId      String
-  displayName String
-  points      Int
+  channelId         String
+  userId            String
+  displayName       String
+  points            Int
+  perfectGuessCount Int    @default(0)
 
   @@id([channelId, userId])
 }
