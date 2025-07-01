@@ -21,7 +21,7 @@ export const getCommandArguments = (message: string): CommandArguments | null =>
 		return null;
 	}
 	const args = tokens.slice(1).filter((arg) => {
-		const visibleChars = arg.replace(/[^\x20-\x7E]/g, '').trim();
+		const visibleChars = arg.replace(/[^\x20-\x7E]/g, "").trim();
 		return visibleChars.length > 0;
 	});
 	return { key, args };

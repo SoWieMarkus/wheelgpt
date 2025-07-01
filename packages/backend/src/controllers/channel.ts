@@ -96,4 +96,3 @@ export const getPublicChannels: RequestHandler = async (_, response) => {
 	});
 	response.status(200).json(channels);
 };
-

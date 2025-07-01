@@ -41,4 +41,4 @@ export const mentionUser = (username: string): string => {
 	if (!username) return "";
 	const usernameWithoutAt = username.replace(/^@/, "");
 	return `@${usernameWithoutAt} `;
-}
+};
