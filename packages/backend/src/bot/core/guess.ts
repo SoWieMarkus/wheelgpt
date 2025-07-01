@@ -37,8 +37,8 @@ const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) 
 	}
 
 	const bestGuess = winners[0];
-	const bestGuessAsString = bestGuess.time.toString();
 	const bestGuessTime = new TrackmaniaTime(bestGuess.time);
+	const bestGuessAsString = bestGuessTime.toString();
 
 	const difference = newBestTime.getDifference(bestGuessTime);
 	const differenceAsString = `${difference < 0 ? "+" : "-"} ${new TrackmaniaTime(Math.abs(difference)).toString()}`;
