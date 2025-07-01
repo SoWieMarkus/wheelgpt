@@ -1,4 +1,4 @@
-import type { Guess } from "../../../../../generated/prisma";
+import type { Guess } from "@prisma/client";
 import { database } from "../../database";
 import { Emote } from "./emotes";
 import { Medal, type TrackmaniaMap } from "./map";
