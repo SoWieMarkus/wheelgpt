@@ -58,6 +58,42 @@ export const updateSettings: RequestHandler = async (request, response) => {
 	}
 
 	wheelgpt.reload(updatedChannel.login, updatedChannel.id);
-
 	response.status(200).json(updatedChannel);
 };
+
+export const getChannelById: RequestHandler = async (request, response) => {
+	const channelId = request.params.channelId;
+	if (!channelId) {
+		throw createHttpError(400, "Channel ID is required.");
+	}
+	const channel = await database.channel.findUnique({
+		where: { id: channelId },
+		select: { id: true, displayName: true, profileImage: true, isLive: true },
+	});
+
+	if (!channel) {
+		throw createHttpError(404, "Channel not found.");
+	}
+	response.status(200).json(channel);
+};
+
+export const getPublicChannels: RequestHandler = async (_, response) => {
+	const channels = await database.channel.findMany({
+		where: {
+			usagePublic: true,
+		},
+		select: {
+			displayName: true,
+			profileImage: true,
+			isLive: true,
+			login: true,
+		},
+		orderBy: {
+			isLive: "desc",
+		},
+		skip: 0,
+		take: 30,
+	});
+	response.status(200).json(channels);
+};
+

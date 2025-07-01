@@ -6,5 +6,7 @@ const router = express.Router();
 
 router.get("/me", requiresWebAuthentication, ChannelController.me);
 router.post("/settings", requiresWebAuthentication, ChannelController.updateSettings);
+router.get("/:channelId", ChannelController.getChannelById)
+router.get("/", ChannelController.getPublicChannels);
 
 export default router;
