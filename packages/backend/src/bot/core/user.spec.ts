@@ -1,5 +1,5 @@
 import type { ChatUserstate } from "tmi.js";
-import { AccessLevel, getUser } from "./user";
+import { AccessLevel, getUser, mentionUser } from "./user";
 
 describe("getUser", () => {
 	const baseChatUser: ChatUserstate = {
@@ -43,5 +43,22 @@ describe("getUser", () => {
 		expect(getUser({ ...baseChatUser, vip: true }, "#otherchannel")?.accessLevel).toBe(AccessLevel.VIP);
 		expect(getUser({ ...baseChatUser, subscriber: true }, "#otherchannel")?.accessLevel).toBe(AccessLevel.SUBSCRIBER);
 		expect(getUser({ ...baseChatUser }, "#otherchannel")?.accessLevel).toBe(AccessLevel.USER);
+	});
+});
+
+describe("mentionUser", () => {
+	test("returns a mention string with @", () => {
+		const mention = mentionUser("testuser");
+		expect(mention).toBe("@testuser ");
+	});
+
+	test("removes leading @ from username", () => {
+		const mention = mentionUser("@testuser");
+		expect(mention).toBe("@testuser ");
+	});
+
+	test("handles empty username", () => {
+		const mention = mentionUser("");
+		expect(mention).toBe("");
 	});
 });
