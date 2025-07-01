@@ -32,5 +32,5 @@ export const getLeaderboardPositionByName: RequestHandler = async (request, resp
         throw createHttpError(400, "Channel ID and display name are required.");
     }
     const leaderboard = await database.$queryRawTyped(getLeaderboardByName(channelId, displayName));
-    response.status(200).json(leaderboard);
+    response.status(200).json(leaderboard.length > 0 ? leaderboard[0] : null);
 };
