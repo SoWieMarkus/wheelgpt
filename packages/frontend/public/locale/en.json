@@ -1,5 +1,30 @@
 {
   "pages": {
+    "leaderboard": {
+      "title": "Guessing Leaderboard",
+      "description": "Here you can find the leaderboard of the best guessers of the channel. Earn points by making accurate time guesses: A perfect guess gives you 5 points, while the best guess of a round still earns you 1 point. Looking for your position? Just enter your username in the search bar.",
+      "actions": {
+        "search": {
+          "placeholder": "Search by name",
+          "error": "No entry found for this name."
+        },
+        "load-channel": {
+          "error": "Error loading channel. Please try again later."
+        },
+        "load-leaderboard": {
+          "title": "Load more...",
+          "error": "Error loading leaderboard. Please try again later."
+        }
+      },
+      "columns": {
+        "position": "Position",
+        "username": "Name",
+        "points": "Points"
+      },
+      "empty": {
+        "message": "There are no entries in the leaderboard yet. Be the first to submit a guess!"
+      }
+    },
     "landing": {
       "login": "Login via Twitch",
       "commands": "Commands",
@@ -143,6 +168,9 @@
     },
     "wheelgpt": {
       "description": "Get information about the Twitch Bot."
+    },
+    "leaderboard": {
+      "description": "Show the all-time leaderboard of the channel's best guessers."
     }
   },
   "footer": {

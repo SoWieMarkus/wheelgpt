@@ -1,0 +1,61 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+.mat-column-points {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.mat-column-position {
+  flex: 0 0 10rem;
+}
+
+.profile-image {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.channel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 0.2rem;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-result {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-self: center;
+  gap: 0.2rem;
+  background-color: var(--accent-background);
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 8px;
+}

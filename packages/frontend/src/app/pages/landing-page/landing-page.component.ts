@@ -5,7 +5,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
 import { CommandComponent } from "../../components/command/command.component";
-import type { PublicChannels } from "../../schemas/landing";
+import type { LandingPageChannels } from "../../schemas/channel";
 import { AuthenticationService } from "../../services/authentication.service";
 import { BackendService } from "../../services/backend.service";
 import { CommandsService } from "../../services/commands.service";
@@ -22,10 +22,10 @@ export class LandingPage {
 	protected readonly profileService = inject(ProfileService);
 	protected readonly commandsService = inject(CommandsService);
 
-	protected readonly data = signal<PublicChannels>([]);
+	protected readonly data = signal<LandingPageChannels>([]);
 
 	public ngOnInit() {
-		this.backendService.landing
+		this.backendService.channel
 			.publicChannels()
 			.then((data) => {
 				// sort channels by live status and display name

@@ -5,8 +5,8 @@ import type { Observable } from "rxjs";
 import type { z } from "zod";
 import { environment } from "../../environments/environment";
 import { PluginTokenSchema, WebTokenSchema } from "../schemas/authentication";
-import { ChannelSchema } from "../schemas/channel";
-import { PublicChannelsSchema } from "../schemas/landing";
+import { ChannelSchema, LandingPageChannelsSchema, PublicChannelDetailsSchema } from "../schemas/channel";
+import { LeaderboardEntrySchema } from "../schemas/leaderboard";
 
 const BACKEND_URL = environment.backend;
 
@@ -56,6 +56,8 @@ export class BackendService {
 			me: () => this.get("channel/me", ChannelSchema),
 			updateSettings: (settings: z.infer<typeof Schema.channel.settings>) =>
 				this.post("channel/settings", settings, ChannelSchema),
+			publicChannels: () => this.get("channel", LandingPageChannelsSchema),
+			getChannelById: (channelId: string) => this.get(`channel/${channelId}`, PublicChannelDetailsSchema),
 		};
 	}
 
@@ -68,9 +70,12 @@ export class BackendService {
 		};
 	}
 
-	public get landing() {
+	public get leaderboard() {
 		return {
-			publicChannels: () => this.get("landing/channels", PublicChannelsSchema),
+			get: (channelId: string, page = 1) =>
+				this.get(`leaderboard/${channelId}?page=${page}`, LeaderboardEntrySchema.array()),
+			getByName: (channelId: string, username: string) =>
+				this.get(`leaderboard/${channelId}/user/${username}`, LeaderboardEntrySchema),
 		};
 	}
 }
