@@ -50,7 +50,7 @@ WheelGPT features a leaderboard that tracks viewer performance across guessing s
 
 Viewers can use the `!lb` command in chat to get a quick link to the leaderboard, or use `!lb <username>` to check a specific user's position and points.
 
-The leaderboard encourages friendly competition among viewers and adds a persistent progression element to the guessing game, making each stream more engaging for regular participants.
+The leaderboard encourages friendly competition among viewers and adds a persistent progression element to the guessing game, making each stream more engaging for regular participants. (And more YEK ofc)
 
 ### Map
 
