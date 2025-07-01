@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
+  previewFeatures = ["typedSql"]
 }
 
 datasource db {
@@ -50,4 +51,13 @@ model TrackmaniaRoom {
   name            String
   numberOfPlayers Int
   maxPlayers      Int
+}
+
+model GuesserLeaderboard {
+  channelId   String
+  userId      String
+  displayName String
+  points      Int
+
+  @@id([channelId, userId])
 }
