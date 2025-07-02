@@ -82,14 +82,13 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 			// delete the map, room and guesses
 			if (channel?.botActiveWhenOffline === false && type === "stream.offline") {
 				// We use deleteMany here since delete would throw an error if the map/room doesn't exist
-				// We also don't await these operations since they are not irrelevant for the response
-				database.trackmaniaMap.deleteMany({
+				await database.trackmaniaMap.deleteMany({
 					where: { channelId },
 				});
-				database.guess.deleteMany({
+				await database.guess.deleteMany({
 					where: { channelId },
 				});
-				database.trackmaniaRoom.deleteMany({
+				await database.trackmaniaRoom.deleteMany({
 					where: { channelId },
 				});
 			}

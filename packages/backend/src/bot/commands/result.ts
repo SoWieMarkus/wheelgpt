@@ -25,7 +25,7 @@ export const guessResultHandler = async (channelId: string, time: TrackmaniaTime
 	const trackmaniaMap = map ? new TrackmaniaMap(map) : null;
 
 	const winners = evaluateGuesses(guesses, time);
-	database.guess.deleteMany({
+	await database.guess.deleteMany({
 		where: {
 			channelId,
 		},

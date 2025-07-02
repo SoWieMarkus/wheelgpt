@@ -106,6 +106,8 @@ const RoomSchema = z.object({
 });
 
 export const updateRoom: RequestHandler = async (request, response) => {
+	console.log(request.body)
+
 	const channelId = request.channelId;
 	if (!channelId) {
 		throw createHttpError(401, "Authentication required.");
