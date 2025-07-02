@@ -83,16 +83,16 @@ const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) 
 	const differenceAsString = `${difference < 0 ? "+" : "-"}${new TrackmaniaTime(Math.abs(difference)).toString()}`;
 	const hasPerfectGuess = difference === 0;
 
-	if (winners.length === 0) {
+	if (winners.length === 1) {
 		const username = bestGuess.displayName;
 		return hasPerfectGuess
 			? `${mentionUser(username)} the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name}`
 			: `Nobody guessed it correctly but ${mentionUser(username)} guessed ${bestGuessAsString} (${differenceAsString}) ${Emote.OK.name}`;
 	}
 
-	const usernames = winners.map((winner) => winner.displayName).join(", ");
+	const usernames = winners.map((winner) => mentionUser(winner.displayName)).join(", ");
 	return hasPerfectGuess
-		? `${mentionUser(usernames)} the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`
+		? `${usernames} the ${Emote.GIGACHAD.name} 's guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`
 		: `Nobody guessed it correctly but ${mentionUser(usernames)} guessed ${bestGuessAsString} (${differenceAsString}) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`;
 };
 
