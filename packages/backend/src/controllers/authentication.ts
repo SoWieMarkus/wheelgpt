@@ -122,6 +122,10 @@ export const remove: RequestHandler = async (request, response) => {
 
 	await wheelgpt.remove(channel.login);
 	await database.channel.delete({ where: { id: channelId } });
+	await database.trackmaniaMap.deleteMany({ where: { channelId } });
+	await database.guess.deleteMany({ where: { channelId } });
+	await database.guesserLeaderboard.deleteMany({ where: { channelId } });
+	await database.trackmaniaRoom.deleteMany({ where: { channelId } });
 
 	// Don't update webhook in development mode since this would remove the webhooks in production
 	// The webhook endpoints need an SSL certificate to work properly
