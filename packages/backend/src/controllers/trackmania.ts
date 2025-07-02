@@ -106,7 +106,7 @@ const RoomSchema = z.object({
 });
 
 export const updateRoom: RequestHandler = async (request, response) => {
-	console.log(request.body)
+	console.log(request.body);
 
 	const channelId = request.channelId;
 	if (!channelId) {
