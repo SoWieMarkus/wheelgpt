@@ -6,7 +6,7 @@ WITH RankedLeaderboard AS (
         "points",
         "perfectGuessCount",
         "updatedAt",
-        CAST(ROW_NUMBER() OVER (ORDER BY "points" DESC) AS TEXT) as position
+         CAST(ROW_NUMBER() OVER (ORDER BY "points" DESC, "updatedAt" ASC) AS TEXT) as position
     FROM "GuesserLeaderboard"
     WHERE "channelId" = :channelId
 )
