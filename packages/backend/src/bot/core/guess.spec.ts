@@ -34,7 +34,9 @@ describe("buildBestGuesserMessage", () => {
 
 		const result = buildBestGuesserMessage(winners, newBestTime);
 
-		expect(result).toBe(`@Alice the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`);
+		expect(result).toBe(
+			`@Alice the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`,
+		);
 	});
 
 	test("should return perfect guess message for multiple winners", () => {
@@ -46,7 +48,9 @@ describe("buildBestGuesserMessage", () => {
 
 		const result = buildBestGuesserMessage(winners, newBestTime);
 
-		expect(result).toBe(`@Alice, @Bob the ${Emote.GIGACHAD.name} 's guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`);
+		expect(result).toBe(
+			`@Alice, @Bob the ${Emote.GIGACHAD.name} 's guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`,
+		);
 	});
 
 	test("should return closest guess message for single winner", () => {
@@ -62,7 +66,9 @@ describe("buildBestGuesserMessage", () => {
 
 		const result = buildBestGuesserMessage(winners, newBestTime);
 
-		expect(result).toBe(`Nobody guessed it correctly but @Alice guessed 29.500 (-0.500) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`);
+		expect(result).toBe(
+			`Nobody guessed it correctly but @Alice guessed 29.500 (-0.500) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`,
+		);
 	});
 
 	test("should return closest guess message for multiple winners", () => {
@@ -74,7 +80,9 @@ describe("buildBestGuesserMessage", () => {
 
 		const result = buildBestGuesserMessage(winners, newBestTime);
 
-		expect(result).toBe(`Nobody guessed it correctly but @Alice, @Bob guessed 29.500 (-0.500) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`);
+		expect(result).toBe(
+			`Nobody guessed it correctly but @Alice, @Bob guessed 29.500 (-0.500) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`,
+		);
 	});
 
 	test("should show positive difference when guess is higher than result", () => {
@@ -90,7 +98,9 @@ describe("buildBestGuesserMessage", () => {
 
 		const result = buildBestGuesserMessage(winners, newBestTime);
 
-		expect(result).toBe(`Nobody guessed it correctly but @Alice guessed 31.000 (+1.000) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`);
+		expect(result).toBe(
+			`Nobody guessed it correctly but @Alice guessed 31.000 (+1.000) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`,
+		);
 	});
 });
 
@@ -113,7 +123,9 @@ describe("buildPbMapResultMessage", () => {
 
 		const result = buildPbMapResultMessage(mockMap, newBestTime);
 
-		expect(result).toBe(`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} That's Champion Medal ${Emote.CHAMPION_MEDAL.name} ${Emote.BWOAH.name}`);
+		expect(result).toBe(
+			`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} That's Champion Medal ${Emote.CHAMPION_MEDAL.name} ${Emote.BWOAH.name}`,
+		);
 	});
 
 	test("should return missed champion message when close to champion", () => {
@@ -126,7 +138,9 @@ describe("buildPbMapResultMessage", () => {
 
 		const result = buildPbMapResultMessage(mockMap, newBestTime);
 
-		expect(result).toBe(`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} HAHAHAHAH HE MISSED CHAMPION BY 0.005s ${Emote.OMEGALUL.name} ${Emote.ICANT.name} ${Emote.PEPE_POINT.name}`);
+		expect(result).toBe(
+			`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} HAHAHAHAH HE MISSED CHAMPION BY 0.005s ${Emote.OMEGALUL.name} ${Emote.ICANT.name} ${Emote.PEPE_POINT.name}`,
+		);
 	});
 
 	test("should return author medal message", () => {
@@ -139,7 +153,9 @@ describe("buildPbMapResultMessage", () => {
 
 		const result = buildPbMapResultMessage(mockMap, newBestTime);
 
-		expect(result).toBe(`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} That's ${Emote.AUTHOR_MEDAL.name} ${Emote.OK.name}`);
+		expect(result).toBe(
+			`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} That's ${Emote.AUTHOR_MEDAL.name} ${Emote.OK.name}`,
+		);
 	});
 
 	test("should return missed author message when close to author", () => {
@@ -155,7 +171,9 @@ describe("buildPbMapResultMessage", () => {
 
 		const result = buildPbMapResultMessage(mockMap, newBestTime);
 
-		expect(result).toBe(`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} HAHAHAHAH HE MISSED AUTHOR BY 0.008s ${Emote.OMEGALUL.name} ${Emote.ICANT.name} ${Emote.PEPE_POINT.name}`);
+		expect(result).toBe(
+			`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} HAHAHAHAH HE MISSED AUTHOR BY 0.008s ${Emote.OMEGALUL.name} ${Emote.ICANT.name} ${Emote.PEPE_POINT.name}`,
+		);
 	});
 
 	test("should return gold medal message", () => {
@@ -210,7 +228,9 @@ describe("buildPbMapResultMessage", () => {
 
 		const result = buildPbMapResultMessage(mockMap, newBestTime);
 
-		expect(result).toBe(`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} Not even ${Emote.BRONZE_MEDAL.name} ${Emote.PEPE_POINT.name}`);
+		expect(result).toBe(
+			`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} Not even ${Emote.BRONZE_MEDAL.name} ${Emote.PEPE_POINT.name}`,
+		);
 	});
 });
 
@@ -233,7 +253,9 @@ describe("buildGuessResultMessage", () => {
 
 		const result = buildGuessResultMessage(mockMap, newBestTime, winners);
 
-		expect(result).toBe(`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} That's Champion Medal ${Emote.CHAMPION_MEDAL.name} ${Emote.BWOAH.name} @Alice the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+5 points)`);
+		expect(result).toBe(
+			`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} That's Champion Medal ${Emote.CHAMPION_MEDAL.name} ${Emote.BWOAH.name} @Alice the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+5 points)`,
+		);
 	});
 
 	test("should handle null map with winners", () => {
@@ -249,7 +271,9 @@ describe("buildGuessResultMessage", () => {
 
 		const result = buildGuessResultMessage(null, newBestTime, winners);
 
-		expect(result).toBe(`${Emote.YEK.name} I got a new PB but I didn't know you are on a map? @Alice the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+5 points)`);
+		expect(result).toBe(
+			`${Emote.YEK.name} I got a new PB but I didn't know you are on a map? @Alice the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+5 points)`,
+		);
 	});
 
 	test("should handle map with no winners", () => {
@@ -263,10 +287,11 @@ describe("buildGuessResultMessage", () => {
 
 		const result = buildGuessResultMessage(mockMap, newBestTime, winners);
 
-		expect(result).toBe(`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} That's ${Emote.AUTHOR_MEDAL.name} ${Emote.OK.name} But no chatter participated ${Emote.REALLY_FUCKING_MAD.name}`);
+		expect(result).toBe(
+			`NEW PERSONAL BEST 30.000 ${Emote.DINK_DONK.name} That's ${Emote.AUTHOR_MEDAL.name} ${Emote.OK.name} But no chatter participated ${Emote.REALLY_FUCKING_MAD.name}`,
+		);
 	});
 });
-
 
 describe("evaluateGuesses", () => {
 	test("should handle all guesses being equidistant from the result", () => {
