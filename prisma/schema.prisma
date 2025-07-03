@@ -57,7 +57,8 @@ model GuesserLeaderboard {
   userId            String
   displayName       String
   points            Int
-  perfectGuessCount Int    @default(0)
+  perfectGuessCount Int      @default(0)
+  updatedAt         DateTime @default(now()) @updatedAt
 
   @@id([channelId, userId])
 }
