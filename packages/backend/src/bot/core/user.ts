@@ -40,5 +40,5 @@ export const getUser = (chatUser: ChatUserstate, channelId: string): User | null
 export const mentionUser = (username: string): string => {
 	if (!username) return "";
 	const usernameWithoutAt = username.replace(/^@/, "");
-	return `@${usernameWithoutAt} `;
+	return `@${usernameWithoutAt}`;
 };

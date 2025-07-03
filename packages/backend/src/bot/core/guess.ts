@@ -70,7 +70,7 @@ export const buildGuessResultMessage = (
 	return `${message} ${guessResult}`;
 };
 
-const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) => {
+export const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) => {
 	if (winners.length === 0) {
 		return `But no chatter participated ${Emote.REALLY_FUCKING_MAD.name}`;
 	}
@@ -96,7 +96,7 @@ const buildBestGuesserMessage = (winners: Guess[], newBestTime: TrackmaniaTime) 
 		: `Nobody guessed it correctly but ${mentionUser(usernames)} guessed ${bestGuessAsString} (${differenceAsString}) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`;
 };
 
-const buildPbMapResultMessage = (currentMap: TrackmaniaMap | null, newBestTime: TrackmaniaTime) => {
+export const buildPbMapResultMessage = (currentMap: TrackmaniaMap | null, newBestTime: TrackmaniaTime) => {
 	if (currentMap === null) return `${Emote.YEK.name} I got a new PB but I didn't know you are on a map?`;
 
 	const medal = currentMap.getMedal(newBestTime);
@@ -124,7 +124,7 @@ const buildPbMapResultMessage = (currentMap: TrackmaniaMap | null, newBestTime: 
 		case Medal.BRONZE:
 			return `NEW PERSONAL BEST ${newBestTime.toString()} ${Emote.DINK_DONK.name} That's only ${Emote.BRONZE_MEDAL.name}`;
 		case Medal.NONE:
-			return `NEW PERSONAL BEST ${newBestTime.toString()} ${Emote.DINK_DONK.name} Not even §{Emote.BRO} ${Emote.PEPE_POINT.name}`;
+			return `NEW PERSONAL BEST ${newBestTime.toString()} ${Emote.DINK_DONK.name} Not even ${Emote.BRONZE_MEDAL.name} ${Emote.PEPE_POINT.name}`;
 	}
 	return "";
 };

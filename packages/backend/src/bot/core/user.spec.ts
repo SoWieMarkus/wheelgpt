@@ -49,12 +49,12 @@ describe("getUser", () => {
 describe("mentionUser", () => {
 	test("returns a mention string with @", () => {
 		const mention = mentionUser("testuser");
-		expect(mention).toBe("@testuser ");
+		expect(mention).toBe("@testuser");
 	});
 
 	test("removes leading @ from username", () => {
 		const mention = mentionUser("@testuser");
-		expect(mention).toBe("@testuser ");
+		expect(mention).toBe("@testuser");
 	});
 
 	test("handles empty username", () => {
