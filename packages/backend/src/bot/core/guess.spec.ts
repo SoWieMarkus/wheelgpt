@@ -46,7 +46,7 @@ describe("buildBestGuesserMessage", () => {
 
 		const result = buildBestGuesserMessage(winners, newBestTime);
 
-		expect(result).toBe(`@Alice, Bob the ${Emote.GIGACHAD.name} guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`);
+		expect(result).toBe(`@Alice, @Bob the ${Emote.GIGACHAD.name} 's guessed it correctly! ${Emote.BWOAH.name} (+${POINTS_PERFECT_GUESS} points)`);
 	});
 
 	test("should return closest guess message for single winner", () => {
@@ -74,7 +74,7 @@ describe("buildBestGuesserMessage", () => {
 
 		const result = buildBestGuesserMessage(winners, newBestTime);
 
-		expect(result).toBe(`Nobody guessed it correctly but @Alice, Bob guessed 29.500 (-0.500) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`);
+		expect(result).toBe(`Nobody guessed it correctly but @Alice, @Bob guessed 29.500 (-0.500) ${Emote.OK.name} (+${POINTS_CLOSEST_GUESS} point)`);
 	});
 
 	test("should show positive difference when guess is higher than result", () => {
