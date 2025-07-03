@@ -5,7 +5,7 @@ import { prometheus } from "../prometheus";
 import { env, logger } from "../utils";
 
 export const failedTwitchAPIMetric = new Counter({
-	name: "wheelgpt_twitch_failed_requests_total",
+	name: "twitch_failed_requests_total",
 	help: "Total number of failed requests to Twitch API",
 	labelNames: ["endpoint"],
 	registers: [prometheus],
