@@ -107,10 +107,14 @@ export class WheelGPT extends Client {
 		}
 
 		setTimeout(async () => {
-			const result = new TrackmaniaTime(time);
-			const message = await guessResultHandler(channel.id, result);
-			if (message === null) return;
-			this.say(login, message);
+			try {
+				const result = new TrackmaniaTime(time);
+				const message = await guessResultHandler(channel.id, result);
+				if (message === null) return;
+				this.say(login, message);
+			} catch (error) {
+				logger.error(`Error notifying new PB for channel ${login}:`, error);
+			}
 		}, channel.config.guessDelayTime * 1000);
 	}
 
