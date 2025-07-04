@@ -9,7 +9,12 @@ import { ProfileService } from "./profile.service";
 export class AuthenticationService {
 	private readonly router = inject(Router);
 	private readonly profileService = inject(ProfileService);
+
+	// Indicates if the service is currently initializing the profile data
 	public readonly isFetchingData = signal(false);
+
+	// Indicates if the user is currently in the process of logging in via Twitch
+	public readonly twitchLoginProcess = signal<boolean>(false);
 
 	public getToken(): string | null {
 		return localStorage.getItem("token");

@@ -30,6 +30,7 @@ export class TwitchRedirectPage implements OnInit {
 			return;
 		}
 
+		this.authenticationService.twitchLoginProcess.set(true);
 		this.backendService.authentication
 			.login(code)
 			.then((data) => {
@@ -45,6 +46,7 @@ export class TwitchRedirectPage implements OnInit {
 			})
 			.finally(() => {
 				this.router.navigate(["/"]);
+				this.authenticationService.twitchLoginProcess.set(false);
 			});
 	}
 }

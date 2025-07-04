@@ -1,6 +1,8 @@
 import { Component, inject } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
+import { MatToolbarModule } from "@angular/material/toolbar";
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router, RouterLink, RouterOutlet } from "@angular/router";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
@@ -10,7 +12,16 @@ import { ProfileService } from "./services/profile.service";
 
 @Component({
 	selector: "app-root",
-	imports: [RouterOutlet, MatDividerModule, TranslatePipe, MatIconModule, LoadingComponent, RouterLink],
+	imports: [
+		RouterOutlet,
+		MatDividerModule,
+		TranslatePipe,
+		MatIconModule,
+		LoadingComponent,
+		RouterLink,
+		MatToolbarModule,
+		MatButtonModule,
+	],
 	templateUrl: "./app.component.html",
 	styleUrl: "./app.component.scss",
 })
