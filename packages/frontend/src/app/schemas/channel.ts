@@ -15,6 +15,7 @@ export const PublicChannelDetailsSchema = z.object({
 	id: z.string(),
 	displayName: z.string(),
 	profileImage: z.string().url(),
+	isLive: z.boolean(),
 });
 
 export type PublicChannelDetails = z.infer<typeof PublicChannelDetailsSchema>;

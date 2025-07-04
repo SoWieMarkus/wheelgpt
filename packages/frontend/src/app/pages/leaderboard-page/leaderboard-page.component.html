@@ -3,7 +3,10 @@
     <h2>{{'pages.leaderboard.title' | translate}}</h2>
     <p>{{'pages.leaderboard.description' | translate}}</p>
     @if (channel() != null) {
-    <h3>{{channel()?.displayName}} </h3>
+    <h3 class="channel-name">{{channel()?.displayName}} @if (channel()?.isLive) {
+      <mat-icon matChipTrailingIcon svgIcon="live" style="color: red"> </mat-icon>
+      }
+    </h3>
     <img class="profile-image" [src]="channel()?.profileImage" alt="Channel Avatar" />
     }
   </div>
@@ -26,6 +29,7 @@
       <span>{{ userResult()?.position }}. </span>
       <span> {{ userResult()?.displayName }} </span>
       <span>({{ userResult()?.points }})</span>
+      <span>({{ userResult()?.perfectGuessCount }} perfect)</span>
     </div>
     }
   </div>

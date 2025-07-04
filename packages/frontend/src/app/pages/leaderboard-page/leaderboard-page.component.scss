@@ -12,6 +12,20 @@
   justify-content: flex-end;
 }
 
+.channel-name {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  mat-icon {
+    font-size: 1.2rem;
+    height: 1.2rem;
+    width: 1.2rem;
+  }
+}
+
 .mat-column-perfectGuessCount {
   text-align: right;
   justify-content: flex-end;
