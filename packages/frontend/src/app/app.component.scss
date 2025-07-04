@@ -5,15 +5,16 @@ mat-toolbar {
   top: 0;
   z-index: 1000;
   height: 56px !important;
-  padding: 0 20%;
+  padding: 0 calc(20% + 1rem);
   color: var(--mat-sys-on-surface);
   @include mat.toolbar-overrides((container-text-color: var(--mat-sys-on-surface),
     ));
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .toolbar-content {
@@ -42,7 +43,7 @@ mat-toolbar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: .5rem 1rem;
+  padding: .2rem .7rem;
   flex-direction: row;
   cursor: pointer;
   transition: background-color 0.2s;

@@ -1,4 +1,7 @@
 {
+  "navigation": {
+    "twitch": "Ajouter à la chaîne"
+  },
   "pages": {
     "leaderboard": {
       "title": "Classement des pronostics",

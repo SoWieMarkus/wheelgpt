@@ -1,4 +1,7 @@
 {
+  "navigation": {
+    "twitch": "Zu Kanal hinzufügen"
+  },
   "pages": {
     "leaderboard": {
       "title": "Tipp Rangliste",

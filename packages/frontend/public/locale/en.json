@@ -1,4 +1,7 @@
 {
+  "navigation": {
+    "twitch": "Add to Channel"
+  },
   "pages": {
     "leaderboard": {
       "title": "Guessing Leaderboard",
