@@ -8,14 +8,14 @@ import { guessResultHandler } from "./commands";
 import { getCommandArguments, getUser, TrackmaniaTime } from "./core";
 
 export const failedConnectionAttemptsCounterMetric = new Counter({
-	name: "failed_connection_attempts_total",
+	name: "wheelgpt_failed_connection_attempts_total",
 	help: "Total failed connection attempts per channel",
 	labelNames: ["login"],
 	registers: [prometheus],
 });
 
 export const commandCounterMetric = new Counter({
-	name: "commands_total",
+	name: "wheelgpt_commands_total",
 	help: "Total number of commands executed",
 	labelNames: ["login", "commandName"],
 	registers: [prometheus],
