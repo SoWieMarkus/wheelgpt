@@ -9,7 +9,7 @@
       }
       <button mat-icon-button (click)="logout()"><mat-icon>logout</mat-icon></button>
     </a>
-    } @else {
+    } @else if (!authenticationService.twitchLoginProcess()) {
     <a class="twitch-login-button" [href]="authenticationService.twitchSSOUrl">
       <mat-icon svgIcon="twitch" style="color: white;"></mat-icon>
       {{ "navigation.twitch" | translate }}
