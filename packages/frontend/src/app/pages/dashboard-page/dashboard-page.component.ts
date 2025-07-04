@@ -81,11 +81,6 @@ export class DashboardPage implements OnInit {
 			});
 	}
 
-	protected logout(): void {
-		this.authenticationService.removeToken();
-		this.router.navigate(["/landing"]);
-	}
-
 	protected removeChannel(): void {
 		const confirmation = confirm(this.translate.instant("pages.dashboard.remove.confirmation"));
 		if (!confirmation) return;
