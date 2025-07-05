@@ -29,7 +29,7 @@
   <mat-chip-set>
     @for (channel of data(); track channel.displayName) {
 
-    <mat-chip (click)="openTwitch(channel.login)" style="box-sizing: border-box; padding: 1.2rem;">
+    <mat-chip [routerLink]="'/channel/' + channel.id" style="box-sizing: border-box; padding: 1.2rem;">
       <img matChipAvatar [src]="channel.profileImage" alt="Profile Avatar of channel" />
       {{channel.displayName}}
       @if (channel.isLive) {

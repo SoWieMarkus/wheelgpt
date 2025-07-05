@@ -23,6 +23,7 @@ export type PublicChannelDetails = z.infer<typeof PublicChannelDetailsSchema>;
 
 export const LandingPageChannelsSchema = z
 	.object({
+		id: z.string(),
 		login: z.string(),
 		displayName: z.string(),
 		profileImage: z.string().url(),

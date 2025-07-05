@@ -6,6 +6,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatTableModule } from "@angular/material/table";
+import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { LoadingComponent } from "../../components/loading/loading.component";
@@ -53,10 +54,12 @@ export class LeaderboardPage {
 	protected readonly userResult = signal<LeaderboardEntry | null>(null);
 
 	private readonly translateService = inject(TranslateService);
+	private readonly title = inject(Title);
 
 	public ngOnInit(): void {
 		this.route.params.subscribe({
 			next: (params) => {
+				window.scrollTo(0, 0);
 				// biome-ignore lint/complexity/useLiteralKeys: Doesn't work here
 				const channelId = params["channelId"];
 				if (!channelId) {
@@ -74,6 +77,7 @@ export class LeaderboardPage {
 				this.backendService.channel
 					.getChannelById(channelId)
 					.then((data) => {
+						this.title.setTitle(`WheelGPT: ${data.displayName}`);
 						this.channel.set(data);
 					})
 					.catch((error) => {

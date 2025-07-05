@@ -6,7 +6,7 @@
     <h3>{{channel()?.displayName}}
     </h3>
     <a class="twitch-link" href="https://twitch.tv/{{channel()?.login}}" target="_blank" rel="noopener noreferrer">
-      https://twitch.tv/{{channel()?.login}} @if (!channel()?.isLive) {
+      https://twitch.tv/{{channel()?.login}} @if (channel()?.isLive) {
       <mat-icon matChipTrailingIcon svgIcon="live" style="color: red"> </mat-icon>
       }
     </a>

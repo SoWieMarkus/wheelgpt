@@ -29,9 +29,9 @@ export const routes: Routes = [
 		title: "WheelGPT: Imprint",
 	},
 	{
-		path: "leaderboard/:channelId",
+		path: "channel/:channelId",
 		component: LeaderboardPage,
-		title: "WheelGPT: Leaderboard",
+		title: "WheelGPT: Channel",
 	},
 	{
 		path: "",

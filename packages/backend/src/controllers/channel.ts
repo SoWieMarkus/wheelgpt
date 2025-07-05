@@ -83,6 +83,7 @@ export const getPublicChannels: RequestHandler = async (_, response) => {
 			usagePublic: true,
 		},
 		select: {
+			id: true,
 			displayName: true,
 			profileImage: true,
 			isLive: true,

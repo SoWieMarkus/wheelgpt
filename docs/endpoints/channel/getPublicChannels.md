@@ -17,6 +17,7 @@ No authentication is required.
 ```js
 [
   {
+    id: "channel_id",
     login: "channel_login",
     displayName: "Channel Display Name",
     profileImage: "https://example.com/image.png",
