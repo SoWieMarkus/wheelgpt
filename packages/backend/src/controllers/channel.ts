@@ -68,7 +68,7 @@ export const getChannelById: RequestHandler = async (request, response) => {
 	}
 	const channel = await database.channel.findUnique({
 		where: { id: channelId },
-		select: { id: true, displayName: true, profileImage: true, isLive: true },
+		select: { id: true, login: true, displayName: true, profileImage: true, isLive: true },
 	});
 
 	if (!channel) {

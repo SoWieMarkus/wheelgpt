@@ -3,10 +3,13 @@
     <h2>{{'pages.leaderboard.title' | translate}}</h2>
     <p>{{'pages.leaderboard.description' | translate}}</p>
     @if (channel() != null) {
-    <h3 class="channel-name">{{channel()?.displayName}} @if (channel()?.isLive) {
+    <h3>{{channel()?.displayName}}
+    </h3>
+    <a class="twitch-link" href="https://twitch.tv/{{channel()?.login}}" target="_blank" rel="noopener noreferrer">
+      https://twitch.tv/{{channel()?.login}} @if (!channel()?.isLive) {
       <mat-icon matChipTrailingIcon svgIcon="live" style="color: red"> </mat-icon>
       }
-    </h3>
+    </a>
     <img class="profile-image" [src]="channel()?.profileImage" alt="Channel Avatar" />
     }
   </div>
@@ -62,7 +65,7 @@
     </div>
   </mat-table>
 
-  @if(hasNext()) {
+  @if(hasNext() && leaderboard().length > 0) {
   <button mat-flat-button [disabled]="isLeaderboardLoading()"
     (click)="loadMore()">{{'pages.leaderboard.actions.load-leaderboard.title' | translate}}</button>
   }
