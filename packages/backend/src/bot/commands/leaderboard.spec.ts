@@ -118,7 +118,7 @@ describe("LeaderboardCommand", () => {
 		const result = await leaderboardCommand.execute(mockUser, []);
 
 		expect(result).toBe(
-			"Top 5 Guessers 🏆 Perfect guess = 5pts, Closest guess = 1pt: 1. OnlyUser - 3 | You can view the full leaderboard here: https://wheelgpt.dev/leaderboard/test-channel",
+			"Top 5 Guessers 🏆 Perfect guess = 5pts, Closest guess = 1pt: 1. OnlyUser - 3 | You can view the full leaderboard here: https://wheelgpt.dev/c/test-channel",
 		);
 	});
 
@@ -161,6 +161,6 @@ describe("LeaderboardCommand", () => {
 
 		const result = await differentChannelCommand.execute(mockUser, []);
 
-		expect(result).toContain("https://wheelgpt.dev/leaderboard/my-special-channel");
+		expect(result).toContain("https://wheelgpt.dev/c/my-special-channel");
 	});
 });
