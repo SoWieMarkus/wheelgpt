@@ -108,9 +108,15 @@ mat-toolbar {
   }
 
   .container {
+    flex: 1 1 auto;
     width: 100%;
     padding: 1rem;
     margin: 0;
+  }
+
+  .page {
+    max-height: unset;
+    overflow-y: unset;
   }
 }
 
