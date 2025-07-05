@@ -43,7 +43,7 @@ describe("LeaderboardCommand", () => {
 		const result = await leaderboardCommand.execute(mockUser, []);
 
 		expect(result).toBe(
-			"Top 5 Guessers 🏆 Perfect guess = 5pts, Closest guess = 1pt: 1. Alice - 15 | 2. Bob - 10 | 3. Charlie - 5 | You can view the full leaderboard here: https://wheelgpt.dev/leaderboard/test-channel",
+			"Top 5 Guessers 🏆 Perfect guess = 5pts, Closest guess = 1pt: 1. Alice - 15 | 2. Bob - 10 | 3. Charlie - 5 | You can view the full leaderboard here: https://wheelgpt.dev/c/test-channel",
 		);
 		expect(mockQueryRawTyped).toHaveBeenCalledWith(getLeaderboard("test-channel", 5, 0));
 	});

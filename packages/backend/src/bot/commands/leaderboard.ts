@@ -22,7 +22,7 @@ export class LeaderboardCommand extends Command {
 		if (leaderboard.length === 0) {
 			return "No guesses have been made yet.";
 		}
-		const leaderboardUrl = `https://wheelgpt.dev/leaderboard/${this.channelId}`;
+		const leaderboardUrl = `https://wheelgpt.dev/c/${this.channelId}`;
 		const leaderboardMessage = leaderboard
 			.map((entry) => `${entry.position}. ${entry.displayName} - ${entry.points}`)
 			.join(" | ");

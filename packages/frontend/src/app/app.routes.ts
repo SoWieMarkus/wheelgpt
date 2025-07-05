@@ -29,6 +29,11 @@ export const routes: Routes = [
 		title: "WheelGPT: Imprint",
 	},
 	{
+		path: "c/:channelId",
+		redirectTo: "channel/:channelId",
+		pathMatch: "full",
+	},
+	{
 		path: "channel/:channelId",
 		component: LeaderboardPage,
 		title: "WheelGPT: Channel",
