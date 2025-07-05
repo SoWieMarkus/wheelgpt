@@ -25,9 +25,7 @@
         "perfect": "Parfait",
         "points": "Points"
       },
-      "empty": {
-        "message": "Il n'y a pas encore d'entrées dans le classement. Soyez le premier à faire un pronostic !"
-      }
+      "empty":  "Il n'y a pas encore d'entrées dans le classement. Soyez le premier à faire un pronostic !"
     },
     "landing": {
       "login": "Connexion via Twitch",

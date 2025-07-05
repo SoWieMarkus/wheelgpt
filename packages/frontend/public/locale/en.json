@@ -25,9 +25,7 @@
         "perfect": "Perfect",
         "points": "Points"
       },
-      "empty": {
-        "message": "There are no entries in the leaderboard yet. Be the first to submit a guess!"
-      }
+      "empty": "There are no entries in the leaderboard yet. Be the first to submit a guess!"
     },
     "landing": {
       "login": "Login via Twitch",

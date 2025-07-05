@@ -25,9 +25,7 @@
         "perfect": "Perfekt",
         "points": "Punkte"
       },
-      "empty": {
-        "message": "Es gibt noch keine Einträge in der Rangliste. Sei der Erste, der einen Tipp abgibt!"
-      }
+      "empty":  "Es gibt noch keine Einträge in der Rangliste. Sei der Erste, der einen Tipp abgibt!"
     },
     "landing": {
       "login": "Login mit Twitch",
