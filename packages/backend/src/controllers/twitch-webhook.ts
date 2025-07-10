@@ -44,7 +44,7 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 
 	const { success, data, error } = TwitchEventSubHeaderSchema.safeParse(request.headers);
 	if (!success) {
-		logger.error("Failed to parse Twitch EventSub headers", { error: error.errors[0].message });
+		logger.error("Failed to parse Twitch EventSub headers", { error: z.prettifyError(error) });
 		throw createHttpError(403, "Bad Request. Invalid Twitch EventSub headers.");
 	}
 
