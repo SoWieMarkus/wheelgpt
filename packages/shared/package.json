@@ -17,7 +17,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "zod": "^3.25.28"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "tsup": "^8.5.0"
