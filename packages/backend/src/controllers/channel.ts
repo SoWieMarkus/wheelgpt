@@ -1,6 +1,7 @@
 import { Schema } from "@wheelgpt/shared";
 import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
+import z from "zod";
 import { database } from "../database";
 import { wheelgpt } from "../wheelgpt";
 
@@ -40,7 +41,7 @@ export const updateSettings: RequestHandler = async (request, response) => {
 
 	const { success, data, error } = Schema.channel.settings.safeParse(request.body);
 	if (!success) {
-		throw createHttpError(400, `Invalid request body: ${error.errors[0].message}`);
+		throw createHttpError(400, z.prettifyError(error));
 	}
 
 	const updatedChannel = await database.channel.update({

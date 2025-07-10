@@ -21,7 +21,7 @@ export const verifyTwitchSignature: RequestHandler = (request, _, next) => {
 
 	if (!success) {
 		const httpError = createHttpError(403, "Bad Request. Invalid Twitch EventSub headers.");
-		logger.error("Failed to parse Twitch EventSub headers", { error: error.errors[0].message });
+		logger.error(`Failed to parse Twitch EventSub headers ${z.prettifyError(error)}`);
 		return next(httpError);
 	}
 

@@ -17,7 +17,7 @@ export const getLeaderboardPage: RequestHandler = async (request, response) => {
 
 	const query = QuerySchema.safeParse(request.query);
 	if (!query.success) {
-		throw createHttpError(400, `Invalid query parameters: ${query.error.errors[0].message}`);
+		throw createHttpError(400, `Invalid query parameters: ${z.prettifyError(query.error)}`);
 	}
 
 	const leaderboard = await database.$queryRawTyped(

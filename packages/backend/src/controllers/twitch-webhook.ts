@@ -44,7 +44,7 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 
 	const { success, data, error } = TwitchEventSubHeaderSchema.safeParse(request.headers);
 	if (!success) {
-		logger.error("Failed to parse Twitch EventSub headers", { error: error.errors[0].message });
+		logger.error(`Invalid Twitch EventSub headers ${z.prettifyError(error)} `);
 		throw createHttpError(403, "Bad Request. Invalid Twitch EventSub headers.");
 	}
 
@@ -94,7 +94,7 @@ export const streamStateWebhook: RequestHandler = async (request, response) => {
 			}
 
 			logger.info(
-				`Channel ${data.event.broadcaster_user_name} updated to ${type === "stream.online" ? "live" : "offline"}`,
+				`Channel ${data.event.broadcaster_user_name} updated to ${type === "stream.online" ? "live" : "offline"} `,
 			);
 			response.status(204).send();
 			return;

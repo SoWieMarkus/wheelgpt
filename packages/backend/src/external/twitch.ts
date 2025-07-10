@@ -35,9 +35,7 @@ export const requestAppAccessToken = async (): Promise<string | null> => {
 
 	const { success, data, error } = AppAccessTokenSchema.safeParse(response.data);
 	if (!success) {
-		logger.error("Failed to parse user access token response", {
-			error: error.errors[0].message,
-		});
+		logger.error(`Failed to parse app access token response ${z.prettifyError(error)}`);
 		failedTwitchAPIMetric.inc({ endpoint: "app_access_token" });
 		return null;
 	}
@@ -76,9 +74,7 @@ export const requestUserAccessToken = async (code: string): Promise<string | nul
 
 	const { success, data, error } = UserAccessTokenSchema.safeParse(response.data);
 	if (!success) {
-		logger.error("Failed to parse user access token response", {
-			error: error.errors[0].message,
-		});
+		logger.error(`Failed to parse user access token response: ${z.prettifyError(error)}`);
 		failedTwitchAPIMetric.inc({ endpoint: "user_access_token" });
 		return null;
 	}
@@ -108,9 +104,7 @@ export const getUser = async (accessToken: string) => {
 
 	const { success, data, error } = HelixUsersSchema.safeParse(response.data);
 	if (!success) {
-		logger.error("Failed to parse user response", {
-			error: error.errors[0].message,
-		});
+		logger.error(`Failed to parse user response: ${z.prettifyError(error)}`);
 		failedTwitchAPIMetric.inc({ endpoint: "get_user" });
 		return null;
 	}
@@ -149,9 +143,7 @@ export const getUsers = async (channelIds: string[]) => {
 
 		const { success, data, error } = HelixUsersSchema.safeParse(response.data);
 		if (!success) {
-			logger.error("Failed to parse user response", {
-				error: error.errors[0].message,
-			});
+			logger.error(`Failed to parse users response: ${z.prettifyError(error)}`);
 			failedTwitchAPIMetric.inc({ endpoint: "get_users" });
 			continue;
 		}
@@ -196,9 +188,7 @@ export const getStreams = async (channelIds: string[]) => {
 
 		const { success, data, error } = HelixStreamsSchema.safeParse(response.data);
 		if (!success) {
-			logger.error("Failed to parse streams response", {
-				error: error.errors[0].message,
-			});
+			logger.error(`Failed to parse streams response: ${z.prettifyError(error)}`);
 			failedTwitchAPIMetric.inc({ endpoint: "get_streams" });
 			continue;
 		}
@@ -239,7 +229,7 @@ export const getRegisteredWebhooks = async () => {
 	});
 	const { success, data, error } = HelixEventSubSchema.safeParse(response.data);
 	if (!success) {
-		logger.error("Failed to parse EventSub subscriptions", { error: error.errors[0].message });
+		logger.error(`Failed to parse registered webhooks response: ${z.prettifyError(error)}`);
 		return [];
 	}
 	return data.data;

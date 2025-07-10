@@ -25,7 +25,7 @@ export const updateMap: RequestHandler = async (request, response) => {
 
 	const { success, data: map, error } = TrackmaniaMapSchema.safeParse(request.body);
 	if (!success) {
-		throw createHttpError(400, error.errors[0].message);
+		throw createHttpError(400, z.prettifyError(error));
 	}
 
 	// Delete all guesses for the channel when the map has changed
@@ -90,7 +90,7 @@ export const updatePersonalBest: RequestHandler = async (request, response) => {
 
 	const { success, data, error } = PersonalBestSchema.safeParse(request.body);
 	if (!success) {
-		throw createHttpError(400, error.errors[0].message);
+		throw createHttpError(400, z.prettifyError(error));
 	}
 
 	const { time } = data;
@@ -113,7 +113,7 @@ export const updateRoom: RequestHandler = async (request, response) => {
 
 	const { success, data: room, error } = RoomSchema.safeParse(request.body);
 	if (!success) {
-		throw createHttpError(400, error.errors[0].message);
+		throw createHttpError(400, z.prettifyError(error));
 	}
 
 	await database.trackmaniaRoom.upsert({

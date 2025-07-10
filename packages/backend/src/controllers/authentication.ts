@@ -32,7 +32,7 @@ const generateWebToken = (id: string) => {
 export const login: RequestHandler = async (request, response) => {
 	const { success, data, error } = TwitchCodeSchema.safeParse(request.body);
 	if (!success) {
-		throw createHttpError(400, error.errors[0].message);
+		throw createHttpError(400, z.prettifyError(error));
 	}
 
 	const { code } = data;
