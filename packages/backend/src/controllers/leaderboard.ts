@@ -1,7 +1,7 @@
 import { getLeaderboard, getLeaderboardByName } from "@prisma/client/sql";
 import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import { z } from "zod";
+import * as z from "zod";
 import { database } from "../database";
 
 const LEADERBOARD_PAGE_SIZE = 100;

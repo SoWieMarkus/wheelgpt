@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import { z } from "zod";
+import * as z from "zod";
 import { env, logger } from "../utils";
 
 const TWITCH_MESSAGE_ID = "twitch-eventsub-message-id";

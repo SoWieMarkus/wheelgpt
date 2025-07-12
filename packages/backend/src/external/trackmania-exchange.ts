@@ -1,5 +1,5 @@
 import axios from "axios";
-import { z } from "zod";
+import * as z from "zod";
 
 // See: https://api2.mania.exchange/Method/Index/37
 export const getTrackmaniaExchangeData = async (mapUid: string) => {

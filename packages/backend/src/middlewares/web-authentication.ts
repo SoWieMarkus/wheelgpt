@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
-import { z } from "zod";
+import * as z from "zod";
 import { database } from "../database";
 import { env } from "../utils";
 

@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import { z } from "zod";
+import * as z from "zod";
 import { database } from "../database";
 import { TMX } from "../external";
 import { logger } from "../utils";
