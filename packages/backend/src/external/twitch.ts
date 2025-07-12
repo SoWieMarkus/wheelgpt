@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Counter } from "prom-client";
-import { z } from "zod";
+import * as z from "zod";
 import { prometheus } from "../prometheus";
 import { env, logger } from "../utils";
 
