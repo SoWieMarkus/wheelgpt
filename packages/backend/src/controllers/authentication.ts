@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
 import * as uuid from "uuid";
-import z from "zod";
+import * as z from "zod";
 import { database } from "../database";
 import { Twitch } from "../external";
 import { env, logger } from "../utils";
