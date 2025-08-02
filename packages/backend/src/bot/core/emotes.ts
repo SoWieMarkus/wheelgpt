@@ -38,7 +38,7 @@ export const Emote: Record<
 		url: "https://7tv.app/emotes/01EZPJCXQ8000C438200A44F38",
 	},
 	OMEGALUL: {
-		name: "OMEAGLUL",
+		name: "OMEGALUL",
 		url: "https://7tv.app/emotes/01F00Z3A9G0007E4VV006YKSK9",
 	},
 	ICANT: {
