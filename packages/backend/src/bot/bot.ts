@@ -2,7 +2,7 @@ import { Counter } from "prom-client";
 import { Client } from "tmi.js";
 import { database } from "../database";
 import { prometheus } from "../prometheus";
-import { logger } from "../utils";
+import { logger, sleep } from "../utils";
 import { type ChannelConfig, TwitchChannel } from "./channel";
 import { guessResultHandler } from "./commands";
 import { getCommandArguments, getUser, TrackmaniaTime } from "./core";
@@ -73,6 +73,8 @@ export class WheelGPT extends Client {
 		});
 		for (const channel of channels) {
 			await this.register(channel);
+			// Sleep 500ms to avoid rate limiting issues
+			await sleep(500);
 		}
 		this._initialized = true;
 	}
@@ -85,7 +87,7 @@ export class WheelGPT extends Client {
 			logger.info(`Registered channel ${channel.id} (${channel.login})`);
 		} catch (error) {
 			failedConnectionAttemptsCounterMetric.inc({ login: channel.login });
-			logger.error(`Failed to register channel ${channel.id}:`, error);
+			logger.error(`Failed to register channel ${channel.id} (${channel.login}):`, error);
 			console.error(error);
 		}
 	}
