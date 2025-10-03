@@ -40,7 +40,7 @@ export class AppComponent {
 	}
 
 	private initializeLanguageService() {
-		this.translateService.setDefaultLang("en");
+		this.translateService.setFallbackLang("en");
 		const cachedLanguage = localStorage.getItem("language");
 		if (cachedLanguage) {
 			this.translateService.use(cachedLanguage);
