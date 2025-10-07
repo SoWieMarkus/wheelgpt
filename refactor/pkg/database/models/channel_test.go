@@ -8,10 +8,10 @@ import (
 )
 
 func TestChannel_NoDuplicatePrimaryKey(t *testing.T) {
-	dbEnv := testdb.SQLite(t)
-	testDB := db.Database{DbMap: dbEnv.DbMap}
+	sqlite := testdb.SQLite(t)
+	testDB := db.Database{DbMap: sqlite.DbMap}
 	defer testDB.Close()
-	defer dbEnv.Close()
+	defer sqlite.Close()
 
 	// Create dependency tables
 	if err := testDB.CreateTable(
