@@ -1,0 +1,1 @@
+SELECT * FROM guesses WHERE user_id = $1;
