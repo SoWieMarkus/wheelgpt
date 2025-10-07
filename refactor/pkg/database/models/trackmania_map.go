@@ -34,6 +34,7 @@ func (TrackmaniaMap) Indexes() []db.Index {
 	return []db.Index{}
 }
 
+// Get the link to the Trackmania.io page for this map.
 func (m *TrackmaniaMap) TrackmaniaIOLink() string {
 	return fmt.Sprintf("https://trackmania.io/#/map/%s", m.UID)
 }
