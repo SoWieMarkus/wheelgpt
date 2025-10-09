@@ -1,0 +1,34 @@
+name: Build and Release Openplanet Plugin
+
+on:
+  push:
+    tags:
+      - "v*" # Triggers on tags like v1.0.0, v2.3, etc.
+    paths:
+      - "openplanet/**"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Zip openplanet folder
+        run: |
+          cd openplanet
+          zip -r ../wheelgpt.zip .
+          cd ..
+
+      - name: Rename zip to .op
+        run: mv wheelgpt.zip wheelgpt.op
+
+      - name: Create Release and Upload .op
+        uses: softprops/action-gh-release@v2
+        with:
+          files: wheelgpt.op
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
