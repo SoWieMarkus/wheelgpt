@@ -1,6 +1,6 @@
-![WheelGPT Banner](images/header.jpg)
+# ![WheelGPT Banner](images/header.jpg)
 
-[![](https://github.com/jpoehnelt/in-solidarity-bot/raw/main/static//badge-flat.png)](https://github.com/apps/in-solidarity)
+[![In Solidarity Banner](https://github.com/jpoehnelt/in-solidarity-bot/raw/main/static//badge-flat.png)](https://github.com/apps/in-solidarity)
 
 More information on [wheelgpt.dev](https://wheelgpt.dev). Get the [OpenPlanet Plugin](https://openplanet.dev/plugin/wheelgpt-plugin).
 
@@ -32,7 +32,7 @@ With the Twitch Bot, your viewers can guess what your next best time will be wit
 
 If the plugin is activated, whenever you set a new best time on a map, this time will be sent to our server. Afterwards all received guesses of your users will be checked and in the bot will announce in the chat which viewer was closest with the guess.
 
-If you want to deactivate that your best times are sent to our server, you can deactivate this under `Settings` -> `WheelGPT-Plugin` -> ` Send PBs to Server`.
+If you want to deactivate that your best times are sent to our server, you can deactivate this under `Settings` -> `WheelGPT-Plugin` -> `Send PBs to Server`.
 
 WheelGPT features a leaderboard that tracks viewer performance across guessing sessions. The leaderboard is accessible at `https://wheelgpt.dev/leaderboard/{channelId}` and provides:
 
@@ -57,11 +57,11 @@ The leaderboard encourages friendly competition among viewers and adds a persist
 With the Twitch bot, viewers can use the command `!map` to find out which map you are currently playing.
 If the plugin is activated, whenever you enter a new map, this map is sent to our server. If you use the `Champion Medals` plugin, the Champion Medal time will also be sent to the server.
 
-If you want to disable this feature, you can deactivate this under `Settings`->`WheelGPT-Plugin`->` Send Maps to Server`.
+If you want to disable this feature, you can deactivate this under `Settings`->`WheelGPT-Plugin`->`Send Maps to Server`.
 
 ### Room
 
-With the Twitch bot, viewers can use the command `!room` to get information about the current Trackmania room the streamer is playing in.  
+With the Twitch bot, viewers can use the command `!room` to get information about the current Trackmania room the streamer is playing in.
 If the plugin is activated, whenever you join a room, the room information (such as name, host, and player count) is sent to our server. This allows viewers to always see up-to-date room details via the bot.
 
 If you want to disable this feature, you can deactivate it under `Settings` -> `WheelGPT-Plugin` -> `Send Rooms to Server`.
@@ -81,7 +81,7 @@ If you want to disable this feature, you can deactivate it under `Settings` -> `
    docker run -p 3000:<port_from_env> wheelgpt-app
    ```
 
-   This will start the backend server on port 3000.  
+   This will start the backend server on port 3000.
    You can adjust the port mapping as needed.
 
 ## Development
