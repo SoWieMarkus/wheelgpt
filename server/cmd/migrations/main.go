@@ -19,7 +19,11 @@ var tables []db.Table = []db.Table{
 }
 
 func main() {
-	config := config.LoadDatabaseConfig()
+	config, err := config.LoadDatabaseConfig()
+	if err != nil {
+		panic("Failed to load database configuration: " + err.Error())
+	}
+
 	ctx := context.Background()
 
 	// Initialize database connection
