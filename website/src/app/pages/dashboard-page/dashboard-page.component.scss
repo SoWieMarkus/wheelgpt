@@ -1,0 +1,120 @@
+@use '@angular/material' as mat;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 5rem;
+  margin-top: 3rem;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+
+.token-manager {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+}
+
+.commands {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.token {
+  background-color: var(--accent-background);
+  border-radius: 4px;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  color: var(--mat-sys-on-surface);
+  font-size: 1rem;
+  box-shadow: none;
+  /* Remove default appearance for cross-browser consistency */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  flex: 1 0 auto;
+}
+
+.token-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.settings-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+  box-sizing: border-box;
+}
+
+.setting-header {
+  font-weight: bold;
+}
+
+.warning {
+  @include mat.button-overrides((filled-container-color: red));
+}
+
+.slider-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.slider {
+  flex: 1 0 auto;
+}
+
+.slider-value {
+  min-width: 5rem;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}

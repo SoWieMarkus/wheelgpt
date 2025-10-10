@@ -1,0 +1,182 @@
+{
+  "navigation": {
+    "twitch": "Add to Channel"
+  },
+  "pages": {
+    "leaderboard": {
+      "title": "Guessing Leaderboard",
+      "description": "Here you can find the leaderboard of the best guessers of the channel. Earn points by making accurate time guesses: A perfect guess gives you 5 points, while the best guess of a round still earns you 1 point. Looking for your position? Just enter your username in the search bar.",
+      "actions": {
+        "search": {
+          "placeholder": "Search by name",
+          "error": "No entry found for this name."
+        },
+        "load-channel": {
+          "error": "Error loading channel. Please try again later."
+        },
+        "load-leaderboard": {
+          "title": "Load more...",
+          "error": "Error loading leaderboard. Please try again later."
+        }
+      },
+      "columns": {
+        "position": "Position",
+        "username": "Name",
+        "perfect": "Perfect",
+        "points": "Points"
+      },
+      "empty": "There are no entries in the leaderboard yet. Be the first to submit a guess!"
+    },
+    "landing": {
+      "login": "Login via Twitch",
+      "commands": "Commands",
+      "channels": "Channels using WheelGPT",
+      "dashboard": "Go to Dashboard",
+      "introduction": "Jaaa hello guys! My name is WheelGPT! And especially mothers love me!<br><br>I am a Twitch bot made especially for Trackmania streamers. With me, your viewers can always check which map you are currently playing. They can also guess your next personal best time. To make everything run smoothly, you should install the <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">OpenPlanet Plugin</a>. Curious? Then add WheelGPT to your channel now!"    },
+    "redirect": {
+      "message": "You will be redirected shortly...",
+      "login-failed": {
+        "message": "Failed to log in to Twitch. Please try again.",
+        "close": "Close"
+      }
+    },
+    "privacy-policy": {
+      "title": "Privacy Policy",
+      "sections": {
+        "account": {
+          "title": "Account Information",
+          "text": "When you log in to wheelgpt.dev, some of your account information will be added to a local database. This information includes your Twitch Channel Name, your Twitch Channel ID, your Twitch Channel Display Name and an URL to your Twitch Channel Profile Pitcure.<br><br>Note that while we do use your authorized access token to verify it's your account, we don't actually store the access token. It is kept in memory for a very short period of time and then discarded."
+        },
+        "access-log": {
+          "title": "Access Log",
+          "text": "We store traffic logs which may contain your IP address and browser user agent, in order to see how the site is being used. These logs are regularly rotated out and are not permanent. In most cases, they are stored for a maximum of 24 hours."
+        },
+        "questions": {
+          "title": "Questions",
+          "text": "If you have any questions related to our privacy policy, please send an email to markus.u.wieland&#64;gmail.com or ask &#64;sowiemarkus on Discord."
+        }
+      }
+    },
+    "imprint": {
+      "title": "Imprint",
+      "text": "This website is operated by Markus Wieland.<br><br>Contact: <a href=\"mailto:markus.u.wieland@gmail.com\"> markus.u.wieland&#64;gmail.com</a><br><br>All content on this website is provided without any warranty. The author assumes no liability for the correctness, completeness, and topicality of the content. The use of the website is at your own risk."
+    },
+    "dashboard": {
+      "logout": "Logout",
+      "tutorial": {
+        "title": "Tutorial",
+        "description": "Now that WheelGPT has been added to your channel, here is a brief guide on how to connect the bot with your game.",
+        "steps": {
+          "install-openplanet": {
+            "title": "Step 0: Install OpenPlanet",
+            "text": "For optimal use of WheelGPT, you need OpenPlanet. Install <a href=\"https://openplanet.dev/\">OpenPlanet</a> and start Trackmania."
+          },
+          "install-plugin": {
+            "title": "Step 1: Install OpenPlanet Plugin",
+            "text": "Install the <a href=\"https://openplanet.dev/plugin/wheelgpt-plugin\">OpenPlanet Plugin</a>."
+          },
+          "token": {
+            "title": "Step 2: Copy Token",
+            "text": "Copy your WheelGPT token from this page. This token is required to connect the OpenPlanet Plugin with WheelGPT."
+          },
+          "insert-token": {
+            "title": "Step 3: Insert Token in Plugin",
+            "text": "Paste the generated token into the settings of the OpenPlanet Plugin. First, press the F3 key to open the OpenPlanet overlay. Then go to OpenPlanet > Settings > WheelGPT and paste the token into the appropriate field."
+          },
+          "done":{
+            "title": "Step 4: Done!",
+            "text": "You can now use WheelGPT in your channel! Your viewers can now submit their guesses and check the current map."
+          }
+        }
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Here you can adjust the settings for WheelGPT.",
+        "save": {
+          "title":"Save",
+          "success": "Settings saved successfully.",
+          "error": "Error saving settings. Please try again later."
+        },
+        "setting": {
+          "guess-delay": {
+            "title": "Guess Delay",
+            "description": "The delay in seconds before a new best time reported by the plugin is displayed in chat to prevent spoilers."
+          },
+          "bot-active-offline": {
+            "title": "Bot active when stream is offline",
+            "description": "If this option is enabled, WheelGPT will also be active when your stream is offline and you are playing Trackmania. Viewers can still submit their guesses and query the current map. Note: WheelGPT remains continuously connected to your channel. This option does not change that. However, requests from the plugin will not be answered during this time."
+          },
+          "public": {
+            "title": "Public Channel",
+            "description": "If this option is enabled, your channel will appear on the homepage of WheelGPT.dev and others can see that you are using the bot."
+          }
+        }
+      },
+      "token": {
+        "title": "Your WheelGPT Token",
+        "description": "This token is required to connect the OpenPlanet Plugin with WheelGPT. Copy the token and paste it into the plugin's settings.",
+        "note": "The token is automatically generated when you open this page. Previous tokens remain valid and can still be used. If you have shown the token on stream, you should click \"Renew Token\" to generate a new one.",
+        "actions": {
+          "copy": {
+            "title": "Copy token to clipboard.",
+            "success": "Token copied to clipboard.",
+            "error": "Error copying the token. Please try again."
+          },
+          "renew": {
+            "title": "Renew Token",
+            "success": "Token renewed successfully.",
+            "error": "Error renewing the token. Please try again later."
+          }
+        }
+      },
+      "init": {
+        "error": "Error retrieving the plugin token. Please try again later."
+      },
+      "remove": {
+        "title": "Remove WheelGPT from Channel",
+        "confirmation": "Are you sure you want to remove WheelGPT from your channel? This action cannot be undone.",
+        "success": "WheelGPT was successfully removed from your channel.",
+        "error": "Error removing WheelGPT. Please try again later."
+      },
+      "commands": {
+        "title": "Commands"
+      }
+    }
+  },
+  "commands": {
+    "guess": {
+      "description": "Submit your guess for the best time on the current map."
+    },
+    "myguess": {
+      "description": "View your current guess for the best time on the current map."
+    },
+    "result": {
+      "description": "Manually end the guessing game with the final time."
+    },
+    "map": {
+      "description": "Get information about the current map."
+    },
+    "wgpt-emotes": {
+      "description": "Get a list of all emotes that WheelGPT uses. You should add them all to your channel."
+    },
+    "format": {
+      "description": "Get information about the format in which you can submit your guess."
+    },
+    "room": {
+      "description": "Get information about the current room the streamer is playing in."
+    },
+    "reset-guesses": {
+      "description": "Reset all guesses for the current map."
+    },
+    "wheelgpt": {
+      "description": "Get information about the Twitch Bot."
+    },
+    "leaderboard": {
+      "description": "Show the all-time leaderboard of the channel's best guessers."
+    }
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "imprint": "Imprint"
+  }
+}

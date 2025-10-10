@@ -1,0 +1,164 @@
+@use '@angular/material' as mat;
+
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  height: 56px !important;
+  padding: 0 calc(20% + 1rem);
+  color: var(--mat-sys-on-surface);
+  @include mat.toolbar-overrides((container-text-color: var(--mat-sys-on-surface),
+    ));
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.toolbar-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.profile-image {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.twitch-login-button {
+  font-size: 0.8rem;
+  background-color: #5865F2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: .2rem .7rem;
+  flex-direction: row;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  width: fit-content;
+}
+
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh;
+}
+
+.page {
+  margin-top: 56px;
+  /* Adjust for fixed toolbar height */
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 56px);
+  max-height: calc(100vh - 56px);
+  overflow-y: scroll;
+}
+
+.container {
+  flex: 1 0 auto;
+  width: 60%;
+  margin: 0 20%;
+  padding: 1rem;
+  box-sizing: border-box;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.flag {
+  height: 1rem;
+  cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+  mat-toolbar {
+    padding: 0 calc(5% + 1rem);
+  }
+
+  .container {
+    width: 90%;
+    margin: 0 5%;
+  }
+}
+
+@media (max-width: 1000px) {
+  mat-toolbar {
+    padding: 0 1rem;
+  }
+
+  .container {
+    flex: 1 1 auto;
+    width: 100%;
+    padding: 1rem;
+    margin: 0;
+  }
+
+  .page {
+    max-height: unset;
+    overflow-y: unset;
+  }
+}
+
+@media (min-width: 2000px) {
+  mat-toolbar {
+    padding: 0 calc(25% + 1rem);
+  }
+
+  .container {
+    width: 50%;
+    margin: 0 25%;
+  }
+}
+
+
+h2 {
+  text-align: center;
+}
+
+footer {
+  flex-shrink: 0;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+footer .footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+footer a {
+  text-decoration: none;
+}
+
+footer .footer-container>* {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}

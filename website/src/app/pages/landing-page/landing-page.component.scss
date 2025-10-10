@@ -1,0 +1,54 @@
+.commands {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 5rem;
+  padding-top: 3rem;
+}
+
+.introduction {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.twitch-login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.profile-image {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.twitch-login-button {
+  background-color: #5865F2;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: row;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  width: fit-content;
+}

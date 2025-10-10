@@ -1,0 +1,43 @@
+.example-messages {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 0.2rem;
+  background-color: var(--accent-background);
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 8px;
+
+}
+
+.twitch-message-container {
+  vertical-align: middle;
+}
+
+.twitch-message {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.twitch-badge {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.twitch-badge img {
+  width: 100%;
+  height: 100%;
+}
+
+.twitch-user {
+  font-weight: bold;
+  color: #FF4500;
+}
+
+.twitch-bot {
+  font-weight: bold;
+  color: #1E90FF;
+}

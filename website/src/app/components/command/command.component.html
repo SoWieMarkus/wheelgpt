@@ -1,0 +1,29 @@
+<div>
+  <h3>{{command().name}}</h3>
+  <p>{{command().description | translate }}</p>
+
+
+
+  @if (command().example.length > 0 ) {
+  <div class="example-messages">
+    @for (message of command().example; track $index) {
+    @if (message.isBot) {
+    <div class="twitch-message-container">
+      <img class="twitch-badge" alt="Twitch Bot Badge" src="badges/mod.png">
+      <span class="twitch-bot">WheelGPT</span>: <span class="twitch-message"
+        [innerHTML]=" message.text | twitch"></span>
+    </div>
+
+    } @else {
+    <div class="twitch-message-container">
+      @if (showUserBadge) {
+      <img class="twitch-badge" alt="Twitch User Badge" [src]="userBadge">
+      }
+      <span class="twitch-user">sowiemarkus</span>: <span class="twitch-message"
+        [innerHTML]=" message.text | twitch"></span>
+    </div>
+    }
+    }
+  </div>
+  }
+</div>

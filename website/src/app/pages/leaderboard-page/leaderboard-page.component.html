@@ -1,0 +1,73 @@
+<div class="page">
+  <div class="channel-container">
+    <h2>{{'pages.leaderboard.title' | translate}}</h2>
+    <p>{{'pages.leaderboard.description' | translate}}</p>
+    @if (channel() != null) {
+    <h3>{{channel()?.displayName}}
+    </h3>
+    <a class="twitch-link" href="https://twitch.tv/{{channel()?.login}}" target="_blank" rel="noopener noreferrer">
+      https://twitch.tv/{{channel()?.login}} @if (channel()?.isLive) {
+      <mat-icon matChipTrailingIcon svgIcon="live" style="color: red"> </mat-icon>
+      }
+    </a>
+    <img class="profile-image" [src]="channel()?.profileImage" alt="Channel Avatar" />
+    }
+  </div>
+  @if (isLeaderboardLoading() == null) {
+  <app-loading />
+  } @else {
+
+  <div class="card">
+    <form class="search-bar" (ngSubmit)="searchUserDetails()">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'pages.leaderboard.actions.search.placeholder' | translate}}</mat-label>
+        <input matInput [(ngModel)]="searchUsername" name="searchUsername" (keydown.enter)="searchUserDetails()">
+        <button matSuffix mat-icon-button [disabled]="isLoadingUser()" type="button" (click)="searchUserDetails()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+    @if (userResult() != null) {
+    <div class="user-result">
+      <span>{{ userResult()?.position }}. </span>
+      <span> {{ userResult()?.displayName }} </span>
+      <span>({{ userResult()?.points }})</span>
+      <span>({{ userResult()?.perfectGuessCount }} perfect)</span>
+    </div>
+    }
+  </div>
+  <mat-table [dataSource]="leaderboard()">
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef>{{'pages.leaderboard.columns.position' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let entry">{{ entry.position }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="displayName">
+      <mat-header-cell *matHeaderCellDef>{{'pages.leaderboard.columns.username' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let entry">{{ entry.displayName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="perfectGuessCount">
+      <mat-header-cell *matHeaderCellDef>{{'pages.leaderboard.columns.perfect' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let entry">{{ entry.perfectGuessCount }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="points">
+      <mat-header-cell *matHeaderCellDef>{{'pages.leaderboard.columns.points' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let entry">{{ entry.points }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['position', 'displayName', 'perfectGuessCount', 'points']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['position', 'displayName', 'perfectGuessCount', 'points']"></mat-row>
+
+    <div *matNoDataRow class="no-data">
+      {{'pages.leaderboard.empty' | translate}}
+    </div>
+  </mat-table>
+
+  @if(hasNext() && leaderboard().length > 0) {
+  <button mat-flat-button [disabled]="isLeaderboardLoading()"
+    (click)="loadMore()">{{'pages.leaderboard.actions.load-leaderboard.title' | translate}}</button>
+  }
+  }
+</div>
