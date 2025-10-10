@@ -16,7 +16,7 @@ services:
       retries: 5
 
   migrations:
-    build: .
+    build: ./server
     command: [ "./migrations" ]
     depends_on:
       postgres:
@@ -29,7 +29,7 @@ services:
       DB_PASSWORD: secret
 
   api:
-    build: .
+    build: ./server
     command: [ "./api" ]
     depends_on:
       migrations:
@@ -44,7 +44,7 @@ services:
       DB_PASSWORD: secret
 
   wheelgpt:
-    build: .
+    build: ./server
     command: [ "./wheelgpt" ]
     depends_on:
       migrations:
@@ -55,6 +55,14 @@ services:
       DB_NAME: wheelgpt
       DB_USER: wheelgpt
       DB_PASSWORD: secret
+
+  website:
+    build: ./website
+    ports:
+      - "4200:3000" # Host:Container
+    depends_on:
+      api:
+        condition: service_started
 
 volumes:
   postgres_data:
