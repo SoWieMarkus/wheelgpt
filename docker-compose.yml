@@ -51,7 +51,7 @@ services:
   website:
     build: ./website
     ports:
-      - "4200:3000" # Host:Container
+      - "4200:3000"
     depends_on:
       api:
         condition: service_started
