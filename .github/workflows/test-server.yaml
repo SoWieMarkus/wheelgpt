@@ -1,4 +1,4 @@
-name: Run Tests
+name: Server Module Tests
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - 'server/**'
 
 jobs:
-  test:
+  test-server:
     runs-on: ubuntu-latest
     defaults:
       run:
