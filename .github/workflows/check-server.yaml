@@ -1,0 +1,30 @@
+name: Check Server Module
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'server/**'
+  pull_request:
+    branches:
+      - '*'
+    paths:
+      - 'server/**'
+
+jobs:
+  check-server:
+    name: Check Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          check-latest: true
+          go-version-file: 'go.mod'
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: latest

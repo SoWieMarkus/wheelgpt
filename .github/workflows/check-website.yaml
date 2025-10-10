@@ -1,0 +1,33 @@
+name: Check Website Module
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - 'website/**'
+  pull_request:
+    branches:
+      - "*"
+    paths:
+      - 'website/**'
+
+jobs:
+  check-website:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./website
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Run Biome CI check
+        run: npx @biomejs/biome ci
