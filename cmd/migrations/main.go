@@ -19,9 +19,7 @@ var tables []db.Table = []db.Table{
 }
 
 func main() {
-	// TODO load config
-	var config config.DatabaseConfig
-
+	config := config.LoadDatabaseConfig()
 	ctx := context.Background()
 
 	// Initialize database connection

@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	_ "github.com/lib/pq"
+
 	"github.com/SoWieMarkus/wheelgpt/core/config"
 	"github.com/go-gorp/gorp/v3"
 )
@@ -42,7 +44,7 @@ func getDatabaseURL(conf config.DatabaseConfig) string {
 // Create a new Postgres database connection.
 func NewPostgresDB(ctx context.Context, conf config.DatabaseConfig) Database {
 	databaseURL := getDatabaseURL(conf)
-	slog.Info("connecting to database", "url", strings.ReplaceAll(databaseURL, conf.Password, "****"))
+	slog.Info("connecting to database", "url", strings.Replace(databaseURL, conf.Password, "****", -1))
 	db, err := sql.Open("postgres", databaseURL)
 	if err != nil {
 		panic(err)

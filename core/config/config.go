@@ -8,3 +8,14 @@ type DatabaseConfig struct {
 	Password     string
 	DatabaseName string
 }
+
+func LoadDatabaseConfig() DatabaseConfig {
+	// TODO load from environment variables
+	return DatabaseConfig{
+		HostName:     "postgres",
+		Port:         5432,
+		User:         "wheelgpt",
+		Password:     "secret",
+		DatabaseName: "wheelgpt",
+	}
+}
