@@ -133,3 +133,91 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 		})
 	}
 }
+
+func Test_LoadTwitchConfig(t *testing.T) {
+	tests := []struct {
+		Name        string
+		EnvVars     map[string]string
+		Expected    TwitchConfig
+		ExpectError bool
+	}{
+		{
+			Name: "Set all variables",
+			EnvVars: map[string]string{
+				"TWITCH_CLIENT_ID":     "myclientid",
+				"TWITCH_CLIENT_SECRET": "secret",
+				"TWITCH_BOT_USERNAME":  "mybot",
+				"TWITCH_OAUTH_TOKEN":   "oauth:token",
+			},
+			Expected: TwitchConfig{
+				ClientID:     "myclientid",
+				ClientSecret: "secret",
+				BotUsername:  "mybot",
+				OAuthToken:   "oauth:token",
+			},
+			ExpectError: false,
+		},
+		{
+			Name: "Required TWITCH_CLIENT_ID missing",
+			EnvVars: map[string]string{
+				"TWITCH_CLIENT_SECRET": "secret",
+				"TWITCH_BOT_USERNAME":  "mybot",
+				"TWITCH_OAUTH_TOKEN":   "oauth:token",
+			},
+			Expected:    TwitchConfig{},
+			ExpectError: true,
+		},
+		{
+			Name: "Required TWITCH_CLIENT_SECRET missing",
+			EnvVars: map[string]string{
+				"TWITCH_CLIENT_ID":    "myclientid",
+				"TWITCH_BOT_USERNAME": "mybot",
+				"TWITCH_OAUTH_TOKEN":  "oauth:token",
+			},
+			Expected:    TwitchConfig{},
+			ExpectError: true,
+		},
+		{
+			Name: "Required TWITCH_BOT_USERNAME missing",
+			EnvVars: map[string]string{
+				"TWITCH_CLIENT_ID":     "myclientid",
+				"TWITCH_CLIENT_SECRET": "secret",
+				"TWITCH_OAUTH_TOKEN":   "oauth:token",
+			},
+			Expected:    TwitchConfig{},
+			ExpectError: true,
+		},
+		{
+			Name: "Required TWITCH_OAUTH_TOKEN missing",
+			EnvVars: map[string]string{
+				"TWITCH_CLIENT_ID":     "myclientid",
+				"TWITCH_CLIENT_SECRET": "secret",
+				"TWITCH_BOT_USERNAME":  "mybot",
+			},
+			Expected:    TwitchConfig{},
+			ExpectError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.Name, func(t *testing.T) {
+			// Set environment variables
+			for key, value := range tt.EnvVars {
+				t.Setenv(key, value)
+			}
+
+			config, err := LoadTwitchConfig()
+			if tt.ExpectError != (err != nil) {
+				t.Errorf("Expected error: %v, but got error: %v", tt.ExpectError, err)
+			}
+
+			if tt.ExpectError {
+				return
+			}
+
+			if config != tt.Expected {
+				t.Errorf("Expected config %+v but got %+v", tt.Expected, config)
+			}
+		})
+	}
+}

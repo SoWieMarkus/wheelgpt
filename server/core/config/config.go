@@ -16,3 +16,16 @@ func LoadDatabaseConfig() (DatabaseConfig, error) {
 	err := envconfig.Process("", &config)
 	return config, err
 }
+
+type TwitchConfig struct {
+	ClientID     string `envconfig:"TWITCH_CLIENT_ID" required:"true"`
+	ClientSecret string `envconfig:"TWITCH_CLIENT_SECRET" required:"true"`
+	BotUsername  string `envconfig:"TWITCH_BOT_USERNAME" required:"true"`
+	OAuthToken   string `envconfig:"TWITCH_OAUTH_TOKEN" required:"true"`
+}
+
+func LoadTwitchConfig() (TwitchConfig, error) {
+	var config TwitchConfig
+	err := envconfig.Process("", &config)
+	return config, err
+}
