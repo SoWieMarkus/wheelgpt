@@ -1,6 +1,29 @@
 package events
 
 // See: https://dev.twitch.tv/docs/eventsub/eventsub-reference/#channel-chat-message-event
+type ChatMessageEvent struct {
+	BroadcasterUserID           string      `json:"broadcaster_user_id"`
+	BroadcasterUserName         string      `json:"broadcaster_user_name"`
+	BroadcasterUserLogin        string      `json:"broadcaster_user_login"`
+	ChatterUserID               string      `json:"chatter_user_id"`
+	ChatterUserName             string      `json:"chatter_user_name"`
+	ChatterUserLogin            string      `json:"chatter_user_login"`
+	MessageID                   string      `json:"message_id"`
+	Message                     ChatMessage `json:"message"`
+	MessageType                 string      `json:"message_type"`
+	Badges                      []Badge     `json:"badges"`
+	Cheer                       *CheerInfo  `json:"cheer,omitempty"`
+	Color                       string      `json:"color"`
+	Reply                       *ReplyInfo  `json:"reply,omitempty"`
+	ChannelPointsCustomRewardID string      `json:"channel_points_custom_reward_id,omitempty"`
+	SourceBroadcasterUserID     string      `json:"source_broadcaster_user_id,omitempty"`
+	SourceBroadcasterUserName   string      `json:"source_broadcaster_user_name,omitempty"`
+	SourceBroadcasterUserLogin  string      `json:"source_broadcaster_user_login,omitempty"`
+	SourceMessageID             string      `json:"source_message_id,omitempty"`
+	SourceBadges                []Badge     `json:"source_badges,omitempty"`
+	IsSourceOnly                bool        `json:"is_source_only,omitempty"`
+}
+
 type ChatMessage struct {
 	Text      string                `json:"text"`
 	Fragments []ChatMessageFragment `json:"fragments"`
@@ -50,27 +73,4 @@ type ReplyInfo struct {
 	ParentUserName    string `json:"parent_user_name"`
 	ParentUserLogin   string `json:"parent_user_login"`
 	ThreadMessageID   string `json:"thread_message_id"`
-}
-
-type ChatMessageEvent struct {
-	BroadcasterUserID           string      `json:"broadcaster_user_id"`
-	BroadcasterUserName         string      `json:"broadcaster_user_name"`
-	BroadcasterUserLogin        string      `json:"broadcaster_user_login"`
-	ChatterUserID               string      `json:"chatter_user_id"`
-	ChatterUserName             string      `json:"chatter_user_name"`
-	ChatterUserLogin            string      `json:"chatter_user_login"`
-	MessageID                   string      `json:"message_id"`
-	Message                     ChatMessage `json:"message"`
-	MessageType                 string      `json:"message_type"`
-	Badges                      []Badge     `json:"badges"`
-	Cheer                       *CheerInfo  `json:"cheer,omitempty"`
-	Color                       string      `json:"color"`
-	Reply                       *ReplyInfo  `json:"reply,omitempty"`
-	ChannelPointsCustomRewardID string      `json:"channel_points_custom_reward_id,omitempty"`
-	SourceBroadcasterUserID     string      `json:"source_broadcaster_user_id,omitempty"`
-	SourceBroadcasterUserName   string      `json:"source_broadcaster_user_name,omitempty"`
-	SourceBroadcasterUserLogin  string      `json:"source_broadcaster_user_login,omitempty"`
-	SourceMessageID             string      `json:"source_message_id,omitempty"`
-	SourceBadges                []Badge     `json:"source_badges,omitempty"`
-	IsSourceOnly                bool        `json:"is_source_only,omitempty"`
 }
