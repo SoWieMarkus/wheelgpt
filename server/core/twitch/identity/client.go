@@ -13,20 +13,20 @@ import (
 
 type Client struct {
 	client  *http.Client
-	baseURL string
+	BaseURL string
 	config  *config.TwitchConfig
 }
 
 func NewClient(config *config.TwitchConfig) *Client {
 	return &Client{
 		client:  &http.Client{},
-		baseURL: "https://id.twitch.tv/oauth2",
+		BaseURL: "https://id.twitch.tv/oauth2",
 		config:  config,
 	}
 }
 
 func (c *Client) post(endpoint string, data url.Values, result any) error {
-	url := c.baseURL + endpoint
+	url := c.BaseURL + endpoint
 
 	// Create POST request
 	req, err := http.NewRequest("POST", url, strings.NewReader(data.Encode()))

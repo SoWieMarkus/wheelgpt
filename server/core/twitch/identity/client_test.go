@@ -24,8 +24,8 @@ func Test_NewClient(t *testing.T) {
 		t.Fatal("expected client to be created, got nil")
 	}
 
-	if client.baseURL != "https://id.twitch.tv/oauth2" {
-		t.Errorf("expected baseURL to be 'https://id.twitch.tv/oauth2', got '%s'", client.baseURL)
+	if client.BaseURL != "https://id.twitch.tv/oauth2" {
+		t.Errorf("expected baseURL to be 'https://id.twitch.tv/oauth2', got '%s'", client.BaseURL)
 	}
 
 	if client.config != config {
@@ -81,7 +81,7 @@ func TestClient_Post_Success(t *testing.T) {
 	// Create client with mock server URL
 	client := &Client{
 		client:  http.DefaultClient,
-		baseURL: server.URL,
+		BaseURL: server.URL,
 		config:  &config.TwitchConfig{},
 	}
 
@@ -111,7 +111,7 @@ func TestClient_Post_HTTPError(t *testing.T) {
 	// Create client with invalid URL to simulate network error
 	client := &Client{
 		client:  http.DefaultClient,
-		baseURL: "http://invalid-url-that-does-not-exist",
+		BaseURL: "http://invalid-url-that-does-not-exist",
 		config:  &config.TwitchConfig{},
 	}
 
@@ -152,7 +152,7 @@ func TestClient_Post_NonOKStatus(t *testing.T) {
 
 			client := &Client{
 				client:  http.DefaultClient,
-				baseURL: server.URL,
+				BaseURL: server.URL,
 				config:  &config.TwitchConfig{},
 			}
 
@@ -182,7 +182,7 @@ func TestClient_Post_InvalidJSON(t *testing.T) {
 
 	client := &Client{
 		client:  http.DefaultClient,
-		baseURL: server.URL,
+		BaseURL: server.URL,
 		config:  &config.TwitchConfig{},
 	}
 
@@ -219,7 +219,7 @@ func TestClient_Post_EmptyData(t *testing.T) {
 
 	client := &Client{
 		client:  http.DefaultClient,
-		baseURL: server.URL,
+		BaseURL: server.URL,
 		config:  &config.TwitchConfig{},
 	}
 
@@ -240,7 +240,7 @@ func TestClient_Post_EmptyData(t *testing.T) {
 func TestClient_Post_RequestCreationError(t *testing.T) {
 	client := &Client{
 		client:  http.DefaultClient,
-		baseURL: ":", // Invalid URL that will cause NewRequest to fail
+		BaseURL: ":", // Invalid URL that will cause NewRequest to fail
 		config:  &config.TwitchConfig{},
 	}
 

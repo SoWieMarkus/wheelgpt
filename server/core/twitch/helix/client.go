@@ -4,17 +4,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/SoWieMarkus/wheelgpt/core/config"
 	"github.com/SoWieMarkus/wheelgpt/core/twitch/identity"
 )
 
 type Client struct {
-	client      *http.Client
-	baseURL     string
-	config      *config.TwitchConfig
-	identity    *identity.Client
-	bearerToken *string
+	client           *http.Client
+	baseURL          string
+	config           *config.TwitchConfig
+	identity         *identity.Client
+	appToken         *identity.AppAccessToken
+	appTokenIssuedAt *time.Time
 }
 
 func NewClient(config *config.TwitchConfig) *Client {
@@ -26,8 +28,19 @@ func NewClient(config *config.TwitchConfig) *Client {
 	}
 }
 
-func (c *Client) getBearerToken() string {
-	return ""
+func (c *Client) getAppToken() (string, error) {
+	now := time.Now()
+
+	if c.appToken == nil || c.appTokenIssuedAt == nil || c.appToken.IsExpired(c.appTokenIssuedAt) {
+		token, err := c.identity.RequestAppAccessToken()
+		if err != nil {
+			return "", fmt.Errorf("failed to get app access token: %w", err)
+		}
+		c.appToken = token
+		c.appTokenIssuedAt = &now
+	}
+
+	return c.appToken.AccessToken, nil
 }
 
 func (c *Client) get(endpoint string, result any, params map[string]string) (*http.Response, error) {
@@ -38,7 +51,10 @@ func (c *Client) get(endpoint string, result any, params map[string]string) (*ht
 		return nil, err
 	}
 
-	bearerToken := c.getBearerToken()
+	bearerToken, err := c.getAppToken()
+	if err != nil {
+		return nil, err
+	}
 	request.Header.Set("Authorization", "Bearer "+bearerToken)
 	request.Header.Set("Content-Type", "application/json")
 

@@ -56,7 +56,7 @@ func TestClient_RequestAppAccessToken(t *testing.T) {
 	// Create client with mock server
 	client := &Client{
 		client:  http.DefaultClient,
-		baseURL: server.URL,
+		BaseURL: server.URL,
 		config: &config.TwitchConfig{
 			ClientID:     "test-client-id",
 			ClientSecret: "test-client-secret",
@@ -128,7 +128,7 @@ func TestClient_RequestUserAccessToken(t *testing.T) {
 	// Create client with mock server
 	client := &Client{
 		client:  http.DefaultClient,
-		baseURL: server.URL,
+		BaseURL: server.URL,
 		config: &config.TwitchConfig{
 			ClientID:     "test-client-id",
 			ClientSecret: "test-client-secret",
