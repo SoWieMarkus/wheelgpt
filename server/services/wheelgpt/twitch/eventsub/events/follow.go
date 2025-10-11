@@ -1,5 +1,6 @@
 package events
 
+// See: https://dev.twitch.tv/docs/eventsub/eventsub-reference/#channel-follow-event
 type ChannelFollowEvent struct {
 	UserID               string `json:"user_id"`
 	UserLogin            string `json:"user_login"`

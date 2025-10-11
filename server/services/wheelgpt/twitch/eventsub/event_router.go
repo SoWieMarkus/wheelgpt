@@ -15,14 +15,14 @@ type EventSubMessage struct {
 }
 
 type SubscriptionInfo struct {
-	ID        string                 `json:"id"`
-	Status    string                 `json:"status"`
-	Type      string                 `json:"type"`
-	Version   string                 `json:"version"`
-	Condition map[string]interface{} `json:"condition"`
-	Transport TransportInfo          `json:"transport"`
-	CreatedAt time.Time              `json:"created_at"`
-	Cost      int                    `json:"cost"`
+	ID        string         `json:"id"`
+	Status    string         `json:"status"`
+	Type      string         `json:"type"`
+	Version   string         `json:"version"`
+	Condition map[string]any `json:"condition"`
+	Transport TransportInfo  `json:"transport"`
+	CreatedAt time.Time      `json:"created_at"`
+	Cost      int            `json:"cost"`
 }
 
 type TransportInfo struct {
