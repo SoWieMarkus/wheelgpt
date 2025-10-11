@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/SoWieMarkus/wheelgpt/core/config"
 )
@@ -149,5 +150,56 @@ func TestClient_RequestUserAccessToken(t *testing.T) {
 
 	if !reflect.DeepEqual(token, expectedToken) {
 		t.Errorf("expected token %+v, got %+v", expectedToken, token)
+	}
+}
+
+func TestAppAccessToken_IsExpired(t *testing.T) {
+	test := []struct {
+		Name     string
+		Token    *AppAccessToken
+		IssuedAt time.Time
+		Expected bool
+	}{
+		{
+			Name: "Not expired",
+			Token: &AppAccessToken{
+				ExpiresIn: 3600,
+			},
+			IssuedAt: time.Now().Add(-time.Minute * 30), // 30 minutes ago
+			Expected: false,
+		},
+		{
+			Name: "Expired",
+			Token: &AppAccessToken{
+				ExpiresIn: 3600,
+			},
+			IssuedAt: time.Now().Add(-2 * time.Hour), // 2 hours ago
+			Expected: true,
+		},
+		{
+			Name: "About to expire (within margin)",
+			Token: &AppAccessToken{
+				ExpiresIn: 3600,
+			},
+			IssuedAt: time.Now().Add(-time.Hour).Add(4 * time.Minute), // 56 minutes ago
+			Expected: true,
+		},
+		{
+			Name: "About to expire (outside margin)",
+			Token: &AppAccessToken{
+				ExpiresIn: 3600,
+			},
+			IssuedAt: time.Now().Add(-time.Hour).Add(6 * time.Minute), // 54 minutes ago
+			Expected: false,
+		},
+	}
+
+	for _, tc := range test {
+		t.Run(tc.Name, func(t *testing.T) {
+			expired := tc.Token.IsExpired(&tc.IssuedAt)
+			if expired != tc.Expected {
+				t.Errorf("expected expired to be %v, got %v", tc.Expected, expired)
+			}
+		})
 	}
 }

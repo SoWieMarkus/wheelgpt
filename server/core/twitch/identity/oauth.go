@@ -3,6 +3,7 @@ package identity
 import (
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // Access token from the Twitch OAuth authorization code flow.
@@ -35,6 +36,12 @@ type AppAccessToken struct {
 	AccessToken string `json:"access_token"`
 	ExpiresIn   int    `json:"expires_in"`
 	TokenType   string `json:"token_type"`
+}
+
+func (a *AppAccessToken) IsExpired(tokenIssuedAt *time.Time) bool {
+	margin := 300 // 5 minutes margin
+	duration := time.Duration(a.ExpiresIn-margin) * time.Second
+	return tokenIssuedAt.Add(duration).Before(time.Now())
 }
 
 // Request an app access token using client credentials flow.

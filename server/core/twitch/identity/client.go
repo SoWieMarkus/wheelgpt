@@ -25,7 +25,7 @@ func NewClient(config *config.TwitchConfig) *Client {
 	}
 }
 
-func (c *Client) post(endpoint string, data url.Values, result interface{}) error {
+func (c *Client) post(endpoint string, data url.Values, result any) error {
 	url := c.baseURL + endpoint
 
 	// Create POST request
