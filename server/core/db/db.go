@@ -42,7 +42,7 @@ func getDatabaseURL(conf *config.DatabaseConfig) string {
 }
 
 // Create a new Postgres database connection.
-func NewPostgresDB(ctx context.Context, conf *config.DatabaseConfig) Database {
+func NewPostgresDB(ctx context.Context, conf *config.DatabaseConfig) *Database {
 	databaseURL := getDatabaseURL(conf)
 	slog.Info("connecting to database", "url", strings.ReplaceAll(databaseURL, conf.Password, "****"))
 	db, err := sql.Open("postgres", databaseURL)
@@ -67,7 +67,7 @@ func NewPostgresDB(ctx context.Context, conf *config.DatabaseConfig) Database {
 	db.SetMaxOpenConns(16)
 	dbMap := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
 	slog.Info("database is ready")
-	return Database{DbMap: dbMap, Config: conf}
+	return &Database{DbMap: dbMap, Config: conf}
 }
 
 // Adds a Model table to the database.

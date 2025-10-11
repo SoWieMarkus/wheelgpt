@@ -31,14 +31,21 @@ type TransportInfo struct {
 }
 
 type EventHandler interface {
+	// Callback for chat message event
 	OnChatMessage(event events.ChatMessageEvent) error
+	// Callback for follow event
 	OnFollow(event events.ChannelFollowEvent) error
+	// Callback for subscription event
 	OnSubscription(event events.ChannelSubscribeEvent) error
+	// Callback for stream online event
 	OnStreamOnline(event events.StreamOnlineEvent) error
+	// Callback for stream offline event
 	OnStreamOffline(event events.StreamOfflineEvent) error
+	// Handle unknown event types
 	OnUnknownEvent(eventType string, rawData json.RawMessage) error
 }
 
+// EventRouter routes incoming EventSub events to the appropriate handler methods
 type EventRouter struct {
 	handler EventHandler
 }

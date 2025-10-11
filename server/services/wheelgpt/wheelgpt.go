@@ -12,10 +12,10 @@ import (
 
 type WheelGPT struct {
 	bot *twitch.Bot
-	db  db.Database
+	db  *db.Database
 }
 
-func NewInstance(db db.Database, config *config.TwitchConfig) *WheelGPT {
+func NewInstance(db *db.Database, config *config.TwitchConfig) *WheelGPT {
 	wheelgpt := &WheelGPT{
 		db: db,
 	}

@@ -37,7 +37,7 @@ func TestMigrater_NewMigrater(t *testing.T) {
 	defer db.Close()
 	defer dbEnv.Close()
 
-	migrater := NewMigrater(db)
+	migrater := NewMigrater(&db)
 
 	// Add all new migration files here to ensure they are loaded
 	expectedMigrations := map[string]bool{
@@ -114,7 +114,7 @@ func TestMigrater_CreateTableIfNotExists(t *testing.T) {
 				t.Fatalf("failed to insert mock data: %v", err)
 			}
 
-			migrater := NewMigrater(db)
+			migrater := NewMigrater(&db)
 
 			if err := migrater.CreateTableIfNotExists(tt.TablesToCreate...); err != nil {
 				t.Fatalf("expected no error during table creation, got %v", err)
@@ -163,7 +163,7 @@ func TestMigrater_Migrate(t *testing.T) {
 	}
 
 	migrater := &Migrater{
-		DB: db,
+		DB: &db,
 		Migrations: map[string]string{
 			"test.sql": `
                 ALTER TABLE migration_mock_table ADD COLUMN name TEXT DEFAULT 'default_name';

@@ -26,10 +26,10 @@ func (Migration) Indexes() []Index {
 type Migrater struct {
 	// Map of all available migrations. Key: Filename, Value: SQL content
 	Migrations map[string]string
-	DB         Database
+	DB         *Database
 }
 
-func NewMigrater(db Database) *Migrater {
+func NewMigrater(db *Database) *Migrater {
 	migrations := make(map[string]string)
 
 	files, err := migrationFiles.ReadDir("migrations")
