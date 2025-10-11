@@ -12,19 +12,21 @@ import (
 func main() {
 	slog.Info("WheelGPT started")
 
-	config, err := config.LoadDatabaseConfig()
+	databaseConfig, err := config.LoadDatabaseConfig()
 	if err != nil {
 		panic("Failed to load database config: " + err.Error())
 	}
 
 	ctx := context.Background()
 
-	postgres := db.NewPostgresDB(ctx, config)
+	postgres := db.NewPostgresDB(ctx, databaseConfig)
 	defer postgres.Close()
 
-	bot := wheelgpt.NewInstance(postgres)
-	bot.Initialize()
+	twitchConfig, err := config.LoadTwitchConfig()
+	if err != nil {
+		panic("Failed to load Twitch config: " + err.Error())
+	}
 
-	// TODO start the bot
-
+	bot := wheelgpt.NewInstance(postgres, twitchConfig)
+	bot.Start()
 }

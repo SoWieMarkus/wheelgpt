@@ -11,10 +11,10 @@ type DatabaseConfig struct {
 	SSLMode      string `envconfig:"DB_SSLMODE" default:"disable"`
 }
 
-func LoadDatabaseConfig() (DatabaseConfig, error) {
+func LoadDatabaseConfig() (*DatabaseConfig, error) {
 	var config DatabaseConfig
 	err := envconfig.Process("", &config)
-	return config, err
+	return &config, err
 }
 
 type TwitchConfig struct {
@@ -24,8 +24,8 @@ type TwitchConfig struct {
 	OAuthToken   string `envconfig:"TWITCH_OAUTH_TOKEN" required:"true"`
 }
 
-func LoadTwitchConfig() (TwitchConfig, error) {
+func LoadTwitchConfig() (*TwitchConfig, error) {
 	var config TwitchConfig
 	err := envconfig.Process("", &config)
-	return config, err
+	return &config, err
 }

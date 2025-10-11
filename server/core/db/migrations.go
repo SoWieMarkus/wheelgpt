@@ -29,7 +29,7 @@ type Migrater struct {
 	DB         Database
 }
 
-func NewMigrater(db Database) Migrater {
+func NewMigrater(db Database) *Migrater {
 	migrations := make(map[string]string)
 
 	files, err := migrationFiles.ReadDir("migrations")
@@ -54,7 +54,7 @@ func NewMigrater(db Database) Migrater {
 		migrations[file.Name()] = string(content)
 	}
 
-	return Migrater{
+	return &Migrater{
 		DB:         db,
 		Migrations: migrations,
 	}

@@ -29,7 +29,7 @@ func TestHelper_getDatabaseUrl(t *testing.T) {
 		DatabaseName: "testdb",
 	}
 	expected := "postgres://testuser:testpass@localhost:5432/testdb?sslmode=disable"
-	actual := getDatabaseURL(conf)
+	actual := getDatabaseURL(&conf)
 	if actual != expected {
 		t.Errorf("expected %q, got %q", expected, actual)
 	}

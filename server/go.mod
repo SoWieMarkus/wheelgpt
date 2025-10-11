@@ -10,5 +10,6 @@ require github.com/stretchr/testify v1.11.1 // indirect
 
 require (
 	github.com/go-gorp/gorp/v3 v3.1.0
+	github.com/gorilla/websocket v1.5.3
 	github.com/kelseyhightower/envconfig v1.4.0
 )

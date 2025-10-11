@@ -32,19 +32,19 @@ type Index struct {
 
 type Database struct {
 	*gorp.DbMap
-	Config config.DatabaseConfig
+	Config *config.DatabaseConfig
 }
 
 // Constructs the database URL from the given configuration.
-func getDatabaseURL(conf config.DatabaseConfig) string {
+func getDatabaseURL(conf *config.DatabaseConfig) string {
 	return fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		conf.User, conf.Password, conf.HostName, conf.Port, conf.DatabaseName)
 }
 
 // Create a new Postgres database connection.
-func NewPostgresDB(ctx context.Context, conf config.DatabaseConfig) Database {
+func NewPostgresDB(ctx context.Context, conf *config.DatabaseConfig) Database {
 	databaseURL := getDatabaseURL(conf)
-	slog.Info("connecting to database", "url", strings.Replace(databaseURL, conf.Password, "****", -1))
+	slog.Info("connecting to database", "url", strings.ReplaceAll(databaseURL, conf.Password, "****"))
 	db, err := sql.Open("postgres", databaseURL)
 	if err != nil {
 		panic(err)

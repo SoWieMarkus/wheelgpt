@@ -4,20 +4,30 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/SoWieMarkus/wheelgpt/core/config"
+	"github.com/SoWieMarkus/wheelgpt/core/twitch/identity"
 )
 
 type Client struct {
-	client    *http.Client
-	baseURL   string
-	authToken string
+	client      *http.Client
+	baseURL     string
+	config      *config.TwitchConfig
+	identity    *identity.Client
+	bearerToken *string
 }
 
-func NewClient(authToken string) *Client {
+func NewClient(config *config.TwitchConfig) *Client {
 	return &Client{
-		client:    &http.Client{},
-		baseURL:   "https://api.twitch.tv/helix",
-		authToken: authToken,
+		client:   &http.Client{},
+		baseURL:  "https://api.twitch.tv/helix",
+		config:   config,
+		identity: identity.NewClient(config),
 	}
+}
+
+func (c *Client) getBearerToken() string {
+	return ""
 }
 
 func (c *Client) get(endpoint string, result any, params map[string]string) (*http.Response, error) {
@@ -28,7 +38,8 @@ func (c *Client) get(endpoint string, result any, params map[string]string) (*ht
 		return nil, err
 	}
 
-	request.Header.Set("Authorization", "Bearer "+c.authToken)
+	bearerToken := c.getBearerToken()
+	request.Header.Set("Authorization", "Bearer "+bearerToken)
 	request.Header.Set("Content-Type", "application/json")
 
 	q := request.URL.Query()

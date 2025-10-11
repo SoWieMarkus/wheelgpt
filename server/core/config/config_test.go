@@ -1,12 +1,15 @@
 package config
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func Test_LoadDatabaseConfig(t *testing.T) {
 	tests := []struct {
 		Name        string
 		EnvVars     map[string]string
-		Expected    DatabaseConfig
+		Expected    *DatabaseConfig
 		ExpectError bool
 	}{
 		{
@@ -19,7 +22,7 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 				"DB_NAME":     "envdb",
 				"DB_SSLMODE":  "require",
 			},
-			Expected: DatabaseConfig{
+			Expected: &DatabaseConfig{
 				HostName:     "db.example.com",
 				Port:         6543,
 				User:         "envuser",
@@ -38,7 +41,7 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 				"DB_NAME":     "envdb",
 				"DB_SSLMODE":  "require",
 			},
-			Expected:    DatabaseConfig{},
+			Expected:    &DatabaseConfig{},
 			ExpectError: true,
 		},
 		{
@@ -50,7 +53,7 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 				"DB_NAME":     "envdb",
 				"DB_SSLMODE":  "require",
 			},
-			Expected:    DatabaseConfig{},
+			Expected:    &DatabaseConfig{},
 			ExpectError: true,
 		},
 		{
@@ -62,7 +65,7 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 				"DB_NAME":     "envdb",
 				"DB_SSLMODE":  "require",
 			},
-			Expected:    DatabaseConfig{},
+			Expected:    &DatabaseConfig{},
 			ExpectError: true,
 		},
 		{
@@ -74,7 +77,7 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 				"DB_NAME":    "envdb",
 				"DB_SSLMODE": "require",
 			},
-			Expected:    DatabaseConfig{},
+			Expected:    &DatabaseConfig{},
 			ExpectError: true,
 		},
 		{
@@ -86,7 +89,7 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 				"DB_PASSWORD": "secret",
 				"DB_SSLMODE":  "require",
 			},
-			Expected:    DatabaseConfig{},
+			Expected:    &DatabaseConfig{},
 			ExpectError: true,
 		},
 		{
@@ -98,7 +101,7 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 				"DB_PASSWORD": "secret",
 				"DB_NAME":     "envdb",
 			},
-			Expected: DatabaseConfig{
+			Expected: &DatabaseConfig{
 				HostName:     "db.example.com",
 				Port:         6543,
 				User:         "envuser",
@@ -127,7 +130,7 @@ func Test_LoadDatabaseConfig(t *testing.T) {
 				return
 			}
 
-			if config != tt.Expected {
+			if !reflect.DeepEqual(config, tt.Expected) {
 				t.Errorf("Expected config %+v but got %+v", tt.Expected, config)
 			}
 		})
@@ -138,7 +141,7 @@ func Test_LoadTwitchConfig(t *testing.T) {
 	tests := []struct {
 		Name        string
 		EnvVars     map[string]string
-		Expected    TwitchConfig
+		Expected    *TwitchConfig
 		ExpectError bool
 	}{
 		{
@@ -149,7 +152,7 @@ func Test_LoadTwitchConfig(t *testing.T) {
 				"TWITCH_BOT_USERNAME":  "mybot",
 				"TWITCH_OAUTH_TOKEN":   "oauth:token",
 			},
-			Expected: TwitchConfig{
+			Expected: &TwitchConfig{
 				ClientID:     "myclientid",
 				ClientSecret: "secret",
 				BotUsername:  "mybot",
@@ -164,7 +167,7 @@ func Test_LoadTwitchConfig(t *testing.T) {
 				"TWITCH_BOT_USERNAME":  "mybot",
 				"TWITCH_OAUTH_TOKEN":   "oauth:token",
 			},
-			Expected:    TwitchConfig{},
+			Expected:    &TwitchConfig{},
 			ExpectError: true,
 		},
 		{
@@ -174,7 +177,7 @@ func Test_LoadTwitchConfig(t *testing.T) {
 				"TWITCH_BOT_USERNAME": "mybot",
 				"TWITCH_OAUTH_TOKEN":  "oauth:token",
 			},
-			Expected:    TwitchConfig{},
+			Expected:    &TwitchConfig{},
 			ExpectError: true,
 		},
 		{
@@ -184,7 +187,7 @@ func Test_LoadTwitchConfig(t *testing.T) {
 				"TWITCH_CLIENT_SECRET": "secret",
 				"TWITCH_OAUTH_TOKEN":   "oauth:token",
 			},
-			Expected:    TwitchConfig{},
+			Expected:    &TwitchConfig{},
 			ExpectError: true,
 		},
 		{
@@ -194,7 +197,7 @@ func Test_LoadTwitchConfig(t *testing.T) {
 				"TWITCH_CLIENT_SECRET": "secret",
 				"TWITCH_BOT_USERNAME":  "mybot",
 			},
-			Expected:    TwitchConfig{},
+			Expected:    &TwitchConfig{},
 			ExpectError: true,
 		},
 	}
@@ -215,7 +218,7 @@ func Test_LoadTwitchConfig(t *testing.T) {
 				return
 			}
 
-			if config != tt.Expected {
+			if !reflect.DeepEqual(config, tt.Expected) {
 				t.Errorf("Expected config %+v but got %+v", tt.Expected, config)
 			}
 		})
