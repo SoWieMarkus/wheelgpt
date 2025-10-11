@@ -38,6 +38,7 @@ type AppAccessToken struct {
 	TokenType   string `json:"token_type"`
 }
 
+// Check if the app access token is expired based on the provided timestamp, considering a margin for safety.
 func (a *AppAccessToken) IsExpired(tokenIssuedAt *time.Time) bool {
 	margin := 300 // 5 minutes margin
 	duration := time.Duration(a.ExpiresIn-margin) * time.Second
@@ -55,6 +56,5 @@ func (c *Client) RequestAppAccessToken() (*AppAccessToken, error) {
 	if err := c.post("/token", data, &token); err != nil {
 		return nil, fmt.Errorf("failed to request app access token: %w", err)
 	}
-
 	return &token, nil
 }
