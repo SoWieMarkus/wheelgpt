@@ -11,7 +11,6 @@ import (
 	"github.com/SoWieMarkus/wheelgpt/core/twitch/identity"
 )
 
-// Helper für erfolgreichen Token-Response
 func createMockIdentityServer() *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		response := &identity.AppAccessToken{
@@ -24,7 +23,7 @@ func createMockIdentityServer() *httptest.Server {
 	}))
 }
 
-// Helper für Error-Response
+// Creste mock identity server that returns an error
 func createMockIdentityServerWithError() *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -32,7 +31,6 @@ func createMockIdentityServerWithError() *httptest.Server {
 	}))
 }
 
-// Helper für Client mit Mock-Server
 func createMockHelixClient(server *httptest.Server) *Client {
 	client := &Client{
 		client:  &http.Client{},
