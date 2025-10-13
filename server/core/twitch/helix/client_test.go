@@ -37,7 +37,7 @@ func (m *mockIdentityAPI) RequestUserAccessToken(code, redirectURI string) (*ide
 	}, nil
 }
 
-func createMockHelixClient(identityAPI identity.IdentityAPI) *Client {
+func createMockHelixClient(identityAPI identity.TwitchIdentityAPI) *Client {
 	client := &Client{
 		config:   &config.TwitchConfig{ClientID: "test-id", ClientSecret: "test-secret"},
 		identity: identityAPI,
@@ -48,7 +48,7 @@ func createMockHelixClient(identityAPI identity.IdentityAPI) *Client {
 func TestClient_getAppAccessToken(t *testing.T) {
 	tests := []struct {
 		Name                string
-		IdentityAPI         identity.IdentityAPI
+		IdentityAPI         identity.TwitchIdentityAPI
 		CachedToken         *identity.AppAccessToken
 		CachedTokenIssuedAt *time.Time
 		ExpectError         bool

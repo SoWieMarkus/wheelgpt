@@ -12,7 +12,7 @@ import (
 type Client struct {
 	client           *http.Client
 	config           *config.TwitchConfig
-	identity         identity.IdentityAPI
+	identity         identity.TwitchIdentityAPI
 	appToken         *identity.AppAccessToken
 	appTokenIssuedAt *time.Time
 }
