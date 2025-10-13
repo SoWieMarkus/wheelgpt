@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 
 	"github.com/SoWieMarkus/wheelgpt/core/config"
@@ -58,7 +59,8 @@ func TestClient_GetUsers(t *testing.T) {
 			})
 		}
 
-		response, _ := json.Marshal(users)
+		userResponse := UserResponse{Data: users}
+		response, _ := json.Marshal(userResponse)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(response)
 	}))
@@ -83,8 +85,8 @@ func TestClient_GetUsers(t *testing.T) {
 			if !tt.ExpectError && err != nil {
 				t.Errorf("did not expect error but got: %v", err)
 			}
-			if len(users) != tt.ExpectedLen {
-				t.Errorf("expected %d users, got %d", tt.ExpectedLen, len(users))
+			if len(users.Data) != tt.ExpectedLen {
+				t.Errorf("expected %d users, got %d", tt.ExpectedLen, len(users.Data))
 			}
 		})
 	}
@@ -92,14 +94,22 @@ func TestClient_GetUsers(t *testing.T) {
 
 func TestClient_GetUserByAccessToken(t *testing.T) {
 	tests := []struct {
-		Name            string
-		UserAccessToken *identity.UserAccessToken
-		ExpectError     bool
+		Name             string
+		UserAccessToken  *identity.UserAccessToken
+		ExpectedResponse *UserResponse
+		ExpectError      bool
 	}{
 		{
 			Name: "Valid Access Token",
 			UserAccessToken: &identity.UserAccessToken{
 				AccessToken: "valid-access-token",
+			},
+			ExpectedResponse: &UserResponse{
+				Data: []User{{
+					ID:          "12345",
+					Login:       "testuser",
+					DisplayName: "Test User",
+				}},
 			},
 			ExpectError: false,
 		},
@@ -108,7 +118,16 @@ func TestClient_GetUserByAccessToken(t *testing.T) {
 			UserAccessToken: &identity.UserAccessToken{
 				AccessToken: "I don't exist",
 			},
-			ExpectError: true,
+			ExpectedResponse: &UserResponse{
+				Data: []User{},
+			},
+			ExpectError: false,
+		},
+		{
+			Name:             "Nil Access Token",
+			UserAccessToken:  nil,
+			ExpectedResponse: nil,
+			ExpectError:      true,
 		},
 	}
 
@@ -120,18 +139,18 @@ func TestClient_GetUserByAccessToken(t *testing.T) {
 		if r.Header.Get("Client-ID") != "test-id" {
 			t.Errorf("expected Client-ID 'test-id', got '%s'", r.Header.Get("Client-ID"))
 		}
-		if r.Header.Get("Authorization") != "Bearer valid-access-token" {
-			w.WriteHeader(http.StatusUnauthorized)
-			return
-		}
 
 		// Return mock user response
-		user := User{
-			ID:          "12345",
-			Login:       "testuser",
-			DisplayName: "Test User",
+		users := []User{}
+		if r.Header.Get("Authorization") == "Bearer valid-access-token" {
+			users = append(users, User{
+				ID:          "12345",
+				Login:       "testuser",
+				DisplayName: "Test User",
+			})
 		}
-		response, _ := json.Marshal([]User{user})
+
+		response, _ := json.Marshal(&UserResponse{Data: users})
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(response)
 	}))
@@ -148,15 +167,13 @@ func TestClient_GetUserByAccessToken(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
-			user, err := client.GetUserByAccessToken(tt.UserAccessToken)
+			users, err := client.GetUserByAccessToken(tt.UserAccessToken)
 			if tt.ExpectError != (err != nil) {
 				t.Errorf("expected error: %v, got error: %v", tt.ExpectError, err)
 			}
-			if !tt.ExpectError && user == nil {
-				t.Errorf("expected user but got nil")
-			}
-			if !tt.ExpectError && user != nil && user.ID != "12345" {
-				t.Errorf("expected user ID '12345', got '%s'", user.ID)
+
+			if !reflect.DeepEqual(users, tt.ExpectedResponse) {
+				t.Errorf("expected response: %+v, got: %+v", tt.ExpectedResponse, users)
 			}
 		})
 	}

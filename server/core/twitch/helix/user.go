@@ -20,9 +20,13 @@ type User struct {
 	CreatedAt       string `json:"created_at"`
 }
 
+type UserResponse struct {
+	Data []User `json:"data"`
+}
+
 // See: https://dev.twitch.tv/docs/api/reference#get-users
-func (c *Client) GetUsers(userIds []string) ([]User, error) {
-	var users []User
+func (c *Client) GetUsers(userIds []string) (*UserResponse, error) {
+	var users UserResponse
 
 	token, err := c.getAppToken()
 	if err != nil {
@@ -48,16 +52,16 @@ func (c *Client) GetUsers(userIds []string) ([]User, error) {
 	if err != nil {
 		return nil, err
 	}
-	return users, nil
+	return &users, nil
 }
 
 // See: https://dev.twitch.tv/docs/api/reference#get-users
-func (c *Client) GetUserByAccessToken(token *identity.UserAccessToken) (*User, error) {
+func (c *Client) GetUserByAccessToken(token *identity.UserAccessToken) (*UserResponse, error) {
 	if token == nil {
 		return nil, fmt.Errorf("UserAccessToken is nil")
 	}
 
-	var users []User
+	var users UserResponse
 
 	headers := map[string]string{
 		"Client-ID":     c.config.ClientID,
@@ -73,9 +77,5 @@ func (c *Client) GetUserByAccessToken(token *identity.UserAccessToken) (*User, e
 	if err != nil {
 		return nil, err
 	}
-	if len(users) == 0 {
-		return nil, fmt.Errorf("no user found for the provided access token")
-	}
-	user := &users[0]
-	return user, nil
+	return &users, nil
 }
