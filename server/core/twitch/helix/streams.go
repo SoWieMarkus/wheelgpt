@@ -1,6 +1,10 @@
 package helix
 
-import "time"
+import (
+	"time"
+
+	"github.com/SoWieMarkus/wheelgpt/core/http"
+)
 
 type Pagination struct {
 	Cursor string `json:"cursor"`
@@ -27,7 +31,18 @@ type Stream struct {
 // See: https://dev.twitch.tv/docs/api/reference#get-streams
 func (c *Client) GetStreams() ([]Stream, error) {
 	var streams []Stream
-	_, err := c.get("/streams", &streams, nil)
+
+	headers := map[string]string{
+		"Client-ID":     c.config.ClientID,
+		"Authorization": "Bearer " + func() string { token, _ := c.getAppToken(); return token }(),
+	}
+
+	request := http.HttpRequest{
+		Endpoint: "/streams",
+		Headers:  &headers,
+	}
+
+	_, err := c.client.Get(&request, &streams)
 	if err != nil {
 		return nil, err
 	}

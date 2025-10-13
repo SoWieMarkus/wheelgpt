@@ -3,7 +3,10 @@ package identity
 import (
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
+
+	"github.com/SoWieMarkus/wheelgpt/core/http"
 )
 
 // Access token from the Twitch OAuth authorization code flow.
@@ -17,15 +20,26 @@ type UserAccessToken struct {
 
 // Request a user access token using the authorization code flow.
 func (c *Client) RequestUserAccessToken(code, redirectURI string) (*UserAccessToken, error) {
-	data := url.Values{}
-	data.Set("client_id", c.config.ClientID)
-	data.Set("client_secret", c.config.ClientSecret)
-	data.Set("code", code)
-	data.Set("grant_type", "authorization_code")
-	data.Set("redirect_uri", redirectURI)
+	body := url.Values{}
+	body.Set("client_id", c.config.ClientID)
+	body.Set("client_secret", c.config.ClientSecret)
+	body.Set("code", code)
+	body.Set("grant_type", "authorization_code")
+	body.Set("redirect_uri", redirectURI)
+	bodyReader := strings.NewReader(body.Encode())
+
+	headers := map[string]string{
+		"Content-Type": "application/x-www-form-urlencoded",
+	}
+
+	request := http.HttpRequest{
+		Endpoint: "/token",
+		Headers:  &headers,
+	}
 
 	var token UserAccessToken
-	if err := c.post("/token", data, &token); err != nil {
+	_, err := c.client.Post(&request, bodyReader, &token)
+	if err != nil {
 		return nil, fmt.Errorf("failed to request user access token: %w", err)
 	}
 	return &token, nil
@@ -47,13 +61,24 @@ func (a *AppAccessToken) IsExpired(tokenIssuedAt *time.Time) bool {
 
 // Request an app access token using client credentials flow.
 func (c *Client) RequestAppAccessToken() (*AppAccessToken, error) {
-	data := url.Values{}
-	data.Set("client_id", c.config.ClientID)
-	data.Set("client_secret", c.config.ClientSecret)
-	data.Set("grant_type", "client_credentials")
+	body := url.Values{}
+	body.Set("client_id", c.config.ClientID)
+	body.Set("client_secret", c.config.ClientSecret)
+	body.Set("grant_type", "client_credentials")
+	bodyReader := strings.NewReader(body.Encode())
+
+	headers := map[string]string{
+		"Content-Type": "application/x-www-form-urlencoded",
+	}
+
+	request := http.HttpRequest{
+		Endpoint: "/token",
+		Headers:  &headers,
+	}
 
 	var token AppAccessToken
-	if err := c.post("/token", data, &token); err != nil {
+	_, err := c.client.Post(&request, bodyReader, &token)
+	if err != nil {
 		return nil, fmt.Errorf("failed to request app access token: %w", err)
 	}
 	return &token, nil

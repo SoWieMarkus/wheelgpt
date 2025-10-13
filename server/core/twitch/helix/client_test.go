@@ -1,9 +1,7 @@
 package helix
 
 import (
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
+	"fmt"
 	"testing"
 	"time"
 
@@ -11,44 +9,46 @@ import (
 	"github.com/SoWieMarkus/wheelgpt/core/twitch/identity"
 )
 
-func createMockIdentityServer() *httptest.Server {
-	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		response := &identity.AppAccessToken{
-			AccessToken: "mock-access-token",
-			ExpiresIn:   3600,
-			TokenType:   "bearer",
-		}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(response)
-	}))
+type mockIdentityAPI struct {
+	returnError bool
 }
 
-// Creste mock identity server that returns an error
-func createMockIdentityServerWithError() *httptest.Server {
-	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"error":"server_error"}`))
-	}))
-}
-
-func createMockHelixClient(server *httptest.Server) *Client {
-	client := &Client{
-		client:  &http.Client{},
-		baseURL: "https://api.twitch.tv/helix",
-		config:  &config.TwitchConfig{ClientID: "test-id", ClientSecret: "test-secret"},
-		identity: identity.NewClient(&config.TwitchConfig{
-			ClientID:     "test-id",
-			ClientSecret: "test-secret",
-		}),
+func (m *mockIdentityAPI) RequestAppAccessToken() (*identity.AppAccessToken, error) {
+	if m.returnError {
+		return nil, fmt.Errorf("mock error")
 	}
-	client.identity.BaseURL = server.URL
+	return &identity.AppAccessToken{
+		AccessToken: "mock-access-token",
+		ExpiresIn:   3600,
+		TokenType:   "bearer",
+	}, nil
+}
+
+func (m *mockIdentityAPI) RequestUserAccessToken(code, redirectURI string) (*identity.UserAccessToken, error) {
+	if m.returnError {
+		return nil, fmt.Errorf("mock error")
+	}
+	return &identity.UserAccessToken{
+		AccessToken:  "mock-user-token",
+		ExpiresIn:    14400,
+		RefreshToken: "mock-refresh-token",
+		TokenType:    "bearer",
+		Scope:        []string{"user:read:email"},
+	}, nil
+}
+
+func createMockHelixClient(identityAPI identity.IdentityAPI) *Client {
+	client := &Client{
+		config:   &config.TwitchConfig{ClientID: "test-id", ClientSecret: "test-secret"},
+		identity: identityAPI,
+	}
 	return client
 }
 
 func TestClient_getAppAccessToken(t *testing.T) {
 	tests := []struct {
 		Name                string
-		SetupServer         func() *httptest.Server
+		IdentityAPI         identity.IdentityAPI
 		CachedToken         *identity.AppAccessToken
 		CachedTokenIssuedAt *time.Time
 		ExpectError         bool
@@ -57,8 +57,8 @@ func TestClient_getAppAccessToken(t *testing.T) {
 		{
 			Name:        "No Cached Token - Fetch New",
 			CachedToken: nil,
-			SetupServer: func() *httptest.Server {
-				return createMockIdentityServer()
+			IdentityAPI: &mockIdentityAPI{
+				returnError: false,
 			},
 			ExpectError:   false,
 			ExpectedToken: "mock-access-token",
@@ -74,8 +74,8 @@ func TestClient_getAppAccessToken(t *testing.T) {
 				t := time.Now().Add(-10 * time.Minute)
 				return &t
 			}(),
-			SetupServer: func() *httptest.Server {
-				return createMockIdentityServer()
+			IdentityAPI: &mockIdentityAPI{
+				returnError: false,
 			},
 			ExpectError:   false,
 			ExpectedToken: "cached-access-token",
@@ -88,8 +88,8 @@ func TestClient_getAppAccessToken(t *testing.T) {
 				TokenType:   "bearer",
 			},
 			CachedTokenIssuedAt: nil,
-			SetupServer: func() *httptest.Server {
-				return createMockIdentityServer()
+			IdentityAPI: &mockIdentityAPI{
+				returnError: false,
 			},
 			ExpectError:   false,
 			ExpectedToken: "mock-access-token",
@@ -105,16 +105,16 @@ func TestClient_getAppAccessToken(t *testing.T) {
 				t := time.Now().Add(-2 * time.Hour) // Issued 2 hours ago, so it's expired
 				return &t
 			}(),
-			SetupServer: func() *httptest.Server {
-				return createMockIdentityServer()
+			IdentityAPI: &mockIdentityAPI{
+				returnError: false,
 			},
 			ExpectError:   false,
 			ExpectedToken: "mock-access-token",
 		},
 		{
 			Name: "Error Response",
-			SetupServer: func() *httptest.Server {
-				return createMockIdentityServerWithError()
+			IdentityAPI: &mockIdentityAPI{
+				returnError: true,
 			},
 			ExpectError:   true,
 			ExpectedToken: "",
@@ -122,10 +122,7 @@ func TestClient_getAppAccessToken(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
-			server := tt.SetupServer()
-			defer server.Close()
-
-			client := createMockHelixClient(server)
+			client := createMockHelixClient(tt.IdentityAPI)
 			client.appToken = tt.CachedToken
 			client.appTokenIssuedAt = tt.CachedTokenIssuedAt
 			token, err := client.getAppToken()

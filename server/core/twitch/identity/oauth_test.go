@@ -8,6 +8,8 @@ import (
 	"testing"
 	"time"
 
+	httpClient "github.com/SoWieMarkus/wheelgpt/core/http"
+
 	"github.com/SoWieMarkus/wheelgpt/core/config"
 )
 
@@ -19,7 +21,7 @@ func TestClient_RequestAppAccessToken(t *testing.T) {
 			t.Errorf("expected POST request, got %s", r.Method)
 		}
 		if r.Header.Get("Content-Type") != "application/x-www-form-urlencoded" {
-			t.Errorf("expected application/x-www-form-urlencoded content type")
+			t.Errorf("expected application/x-www-form-urlencoded content type, got %s", r.Header.Get("Content-Type"))
 		}
 
 		// Parse and verify form data
@@ -53,17 +55,15 @@ func TestClient_RequestAppAccessToken(t *testing.T) {
 	}))
 	defer server.Close()
 
-	// Create client with mock server
-	client := &Client{
-		client:  http.DefaultClient,
-		BaseURL: server.URL,
+	api := &Client{
+		client: httpClient.NewClient(server.URL, nil),
 		config: &config.TwitchConfig{
 			ClientID:     "test-client-id",
 			ClientSecret: "test-client-secret",
 		},
 	}
 
-	token, err := client.RequestAppAccessToken()
+	token, err := api.RequestAppAccessToken()
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -125,17 +125,15 @@ func TestClient_RequestUserAccessToken(t *testing.T) {
 	}))
 	defer server.Close()
 
-	// Create client with mock server
-	client := &Client{
-		client:  http.DefaultClient,
-		BaseURL: server.URL,
+	api := &Client{
+		client: httpClient.NewClient(server.URL, nil),
 		config: &config.TwitchConfig{
 			ClientID:     "test-client-id",
 			ClientSecret: "test-client-secret",
 		},
 	}
 
-	token, err := client.RequestUserAccessToken("test-auth-code", "http://localhost:3000/callback")
+	token, err := api.RequestUserAccessToken("test-auth-code", "http://localhost:3000/callback")
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}

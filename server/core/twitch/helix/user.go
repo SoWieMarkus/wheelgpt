@@ -1,5 +1,11 @@
 package helix
 
+import (
+	"net/url"
+
+	"github.com/SoWieMarkus/wheelgpt/core/http"
+)
+
 type User struct {
 	ID              string `json:"id"`
 	Login           string `json:"login"`
@@ -13,9 +19,25 @@ type User struct {
 }
 
 // See: https://dev.twitch.tv/docs/api/reference#get-users
-func (c *Client) GetUsers() ([]User, error) {
+func (c *Client) GetUsers(userIds []string) ([]User, error) {
 	var users []User
-	_, err := c.get("/users", &users, nil)
+
+	headers := map[string]string{
+		"Client-ID":     c.config.ClientID,
+		"Authorization": "Bearer " + func() string { token, _ := c.getAppToken(); return token }(),
+	}
+
+	params := url.Values{
+		"id": userIds,
+	}
+
+	request := http.HttpRequest{
+		Endpoint: "/users",
+		Headers:  &headers,
+		Params:   &params,
+	}
+
+	_, err := c.client.Get(&request, &users)
 	if err != nil {
 		return nil, err
 	}
