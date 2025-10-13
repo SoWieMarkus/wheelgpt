@@ -1,9 +1,11 @@
 package helix
 
 import (
+	"fmt"
 	"net/url"
 
 	"github.com/SoWieMarkus/wheelgpt/core/http"
+	"github.com/SoWieMarkus/wheelgpt/core/twitch/identity"
 )
 
 type User struct {
@@ -22,9 +24,14 @@ type User struct {
 func (c *Client) GetUsers(userIds []string) ([]User, error) {
 	var users []User
 
+	token, err := c.getAppToken()
+	if err != nil {
+		return nil, err
+	}
+
 	headers := map[string]string{
 		"Client-ID":     c.config.ClientID,
-		"Authorization": "Bearer " + func() string { token, _ := c.getAppToken(); return token }(),
+		"Authorization": "Bearer " + token,
 	}
 
 	params := url.Values{
@@ -37,9 +44,38 @@ func (c *Client) GetUsers(userIds []string) ([]User, error) {
 		Params:   &params,
 	}
 
-	_, err := c.client.Get(&request, &users)
+	_, err = c.client.Get(&request, &users)
 	if err != nil {
 		return nil, err
 	}
 	return users, nil
+}
+
+// See: https://dev.twitch.tv/docs/api/reference#get-users
+func (c *Client) GetUserByAccessToken(token *identity.UserAccessToken) (*User, error) {
+	if token == nil {
+		return nil, fmt.Errorf("UserAccessToken is nil")
+	}
+
+	var users []User
+
+	headers := map[string]string{
+		"Client-ID":     c.config.ClientID,
+		"Authorization": "Bearer " + token.AccessToken,
+	}
+
+	request := http.HttpRequest{
+		Endpoint: "/users",
+		Headers:  &headers,
+	}
+
+	_, err := c.client.Get(&request, &users)
+	if err != nil {
+		return nil, err
+	}
+	if len(users) == 0 {
+		return nil, fmt.Errorf("no user found for the provided access token")
+	}
+	user := &users[0]
+	return user, nil
 }
