@@ -45,6 +45,31 @@ func createMockHelixClient(identityAPI identity.TwitchIdentityAPI) *Client {
 	return client
 }
 
+func TestClient_NewClient(t *testing.T) {
+	config := &config.TwitchConfig{
+		ClientID:     "test-client-id",
+		ClientSecret: "test-client-secret",
+	}
+
+	client := NewClient(config)
+
+	if client.config.ClientID != "test-client-id" {
+		t.Errorf("expected ClientID 'test-client-id', got '%s'", client.config.ClientID)
+	}
+	if client.config.ClientSecret != "test-client-secret" {
+		t.Errorf("expected ClientSecret 'test-client-secret', got '%s'", client.config.ClientSecret)
+	}
+	if client.client == nil {
+		t.Error("expected http.Client to be initialized, got nil")
+	}
+	if client.client.GetBaseUrl() != "https://api.twitch.tv/helix" {
+		t.Errorf("expected base URL 'https://api.twitch.tv/helix', got '%s'", client.client.GetBaseUrl())
+	}
+	if client.identity == nil {
+		t.Error("expected identity.TwitchIdentityAPI to be initialized, got nil")
+	}
+}
+
 func TestClient_getAppAccessToken(t *testing.T) {
 	tests := []struct {
 		Name                string
