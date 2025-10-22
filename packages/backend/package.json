@@ -20,7 +20,7 @@
     "nodemon": "^3.1.10"
   },
   "dependencies": {
-    "@prisma/client": "^6.17.1",
+    "@prisma/client": "^6.18.0",
     "@wheelgpt/shared": "1.0.0",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
