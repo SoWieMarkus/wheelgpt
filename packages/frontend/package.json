@@ -32,7 +32,7 @@
     "@angular/build": "^20.3.10",
     "@angular/cli": "^20.3.10",
     "@angular/compiler-cli": "^20.3.11",
-    "@types/jasmine": "~5.1.12",
+    "@types/jasmine": "~5.1.13",
     "jasmine-core": "~5.12.1",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
