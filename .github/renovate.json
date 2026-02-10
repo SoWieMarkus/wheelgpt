@@ -8,5 +8,9 @@
   "assignees": [
     "SoWieMarkus"
   ],
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "automerge": true,
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+  "platformAutomerge": true
 }
