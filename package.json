@@ -1,7 +1,7 @@
 {
   "name": "wheelgpt",
   "private": true,
-  "packageManager": "npm@11.9.0",
+  "packageManager": "npm@11.10.0",
   "workspaces": [
     "packages/*"
   ],
