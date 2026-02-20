@@ -17,7 +17,7 @@
     "typescript": "^5.9.3"
   },
   "overrides": {
-    "glob": "13.0.5"
+    "glob": "13.0.6"
   },
   "jest": {
     "preset": "ts-jest",
