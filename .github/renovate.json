@@ -2,12 +2,16 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "customManagers:biomeVersions"
+    "customManagers:biomeVersions",
+    "group:allNonMajor"
   ],
-  "commitMessageAction": "Renovate: Update",
   "assignees": [
     "SoWieMarkus"
   ],
+  "schedule": [
+    "before 8am on friday"
+  ],
+  "commitMessageAction": "Renovate: Update",
   "rangeStrategy": "bump",
   "automerge": true,
   "automergeType": "pr",
