@@ -11,7 +11,7 @@
   "schedule": [
     "before 8am on friday"
   ],
-  "commitMessagePrefix": "",
+  "semanticCommits": "disabled",
   "commitMessageAction": "Renovate: Update",
   "rangeStrategy": "bump",
   "automerge": true,
