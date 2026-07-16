@@ -120,6 +120,11 @@
             "title": "Guess-Delay",
             "description": "Die Zeitverzögerung in Sekunden, mit der eine vom Plugin gemeldete neue Bestzeit im Chat angezeigt wird, um Spoiler zu verhindern."
           },
+          "guess-min-required-age": {
+            "title": "Minimales Tipp-Alter",
+            "description": "Die Mindestzeit in Sekunden, die ein Tipp abgegeben worden sein muss, damit er beim Ergebnis zählt. Das verhindert Last-Second-Tipps, die genau in dem Moment abgegeben wurden, als die PB gefahren wurde – zum Beispiel wenn ein Zuschauer die Zielzeit im Stream sieht und sie sofort in den Chat tippt. Tipps, die innerhalb dieses Zeitfensters vor dem Ergebnis-Befehl abgegeben wurden, werden von der Wertung ausgeschlossen. Hinweis: Der Guess-Delay kommt zusätzlich obendrauf und verzögert die Veröffentlichung im Chat.",
+            "timeline": " Cutoff  PB/!result  im Chat\n    │        │          │\n    ▼        ▼          ▼\n────┼────────┼──────────┼──►\n    └─min.Alt┘          │\n             └──Delay───┘"
+          },
           "bot-active-offline": {
             "title": "Bot aktiv, wenn der Stream offline ist",
             "description": "Wenn diese Option aktiviert ist, wird WheelGPT auch dann aktiv sein, wenn dein Stream offline ist und du Trackmania spielst. Zuschauer können weiterhin ihre Tipps abgeben und die aktuelle Karte abfragen. Achtung: WheelGPT ist durchgehend mit deinem Kanal verbunden. Das wird durch diese Option nicht geändert. Anfragen von dem Plugin würden allerdings in dieser Zeit nicht beantwortet werden."

@@ -9,16 +9,17 @@ datasource db {
 }
 
 model Channel {
-  id                   String   @id
-  login                String   @unique
-  token                String
-  displayName          String
-  profileImage         String
-  isLive               Boolean  @default(false)
-  createdAt            DateTime @default(now())
-  guessDelayTime       Float    @default(2)
-  botActiveWhenOffline Boolean  @default(false)
-  usagePublic          Boolean  @default(true)
+  id                      String   @id
+  login                   String   @unique
+  token                   String
+  displayName             String
+  profileImage            String
+  isLive                  Boolean  @default(false)
+  createdAt               DateTime @default(now())
+  guessDelayTime          Float    @default(2)
+  guessMinRequiredAgeTime Float    @default(0)
+  botActiveWhenOffline    Boolean  @default(false)
+  usagePublic             Boolean  @default(true)
 }
 
 model TrackmaniaMap {
@@ -40,6 +41,7 @@ model Guess {
   time        Int
   userId      String
   displayName String
+  createdAt   DateTime @default(now())
 
   @@id([channelId, userId])
 }

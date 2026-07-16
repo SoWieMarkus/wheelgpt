@@ -12,9 +12,14 @@ import {
 } from "../core";
 
 export const guessResultHandler = async (channelId: string, time: TrackmaniaTime) => {
+	const channel = await database.channel.findUnique({ where: { id: channelId } });
+	const minAgeMs = (channel?.guessMinRequiredAgeTime ?? 0) * 1000;
+	const cutoff = new Date(Date.now() - minAgeMs);
+
 	const guesses = await database.guess.findMany({
 		where: {
 			channelId,
+			createdAt: { lte: cutoff },
 		},
 	});
 	const map = await database.trackmaniaMap.findUnique({

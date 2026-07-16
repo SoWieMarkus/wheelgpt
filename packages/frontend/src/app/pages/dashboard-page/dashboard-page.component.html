@@ -93,6 +93,18 @@
         </div>
 
       </div>
+
+      <div>
+        <p class="setting-header">{{"pages.dashboard.settings.setting.guess-min-required-age.title" | translate }}</p>
+        <p>{{"pages.dashboard.settings.setting.guess-min-required-age.description" | translate }}</p>
+        <pre class="timeline">{{"pages.dashboard.settings.setting.guess-min-required-age.timeline" | translate}}</pre>
+        <div class="slider-container">
+          <mat-slider class="slider" min="0" max="60" step="0.5">
+            <input matSliderThumb [(ngModel)]="settingGuessMinRequiredAge">
+          </mat-slider>
+          <span class="slider-value">{{settingGuessMinRequiredAge() | number:'1.1-1'}}s</span>
+        </div>
+      </div>
     </div>
     <button mat-flat-button (click)="saveSettings()">{{"pages.dashboard.settings.save.title" | translate }}</button>
   </div>

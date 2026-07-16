@@ -46,6 +46,7 @@ export class DashboardPage implements OnInit {
 	protected readonly settingBotActiveWhenOffline = model(false);
 	protected readonly settingPublicChannel = model(true);
 	protected readonly settingGuessDelay = model(2);
+	protected readonly settingGuessMinRequiredAge = model(0);
 
 	public ngOnInit(): void {
 		this.backendService.authentication
@@ -69,6 +70,7 @@ export class DashboardPage implements OnInit {
 				this.settingBotActiveWhenOffline.set(data.botActiveWhenOffline);
 				this.settingPublicChannel.set(data.usagePublic);
 				this.settingGuessDelay.set(data.guessDelayTime);
+				this.settingGuessMinRequiredAge.set(data.guessMinRequiredAgeTime);
 			})
 			.catch((error) => {
 				const message = this.translate.instant("pages.dashboard.init.error");
@@ -152,6 +154,7 @@ export class DashboardPage implements OnInit {
 				botActiveWhenOffline: this.settingBotActiveWhenOffline(),
 				usagePublic: this.settingPublicChannel(),
 				guessDelayTime: this.settingGuessDelay(),
+				guessMinRequiredAgeTime: this.settingGuessMinRequiredAge(),
 			})
 			.then(() => {
 				const message = this.translate.instant("pages.dashboard.settings.save.success");

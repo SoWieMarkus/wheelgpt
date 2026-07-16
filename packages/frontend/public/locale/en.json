@@ -102,6 +102,11 @@
             "title": "Guess Delay",
             "description": "The delay in seconds before a new best time reported by the plugin is displayed in chat to prevent spoilers."
           },
+          "guess-min-required-age": {
+            "title": "Minimum Guess Age",
+            "description": "The minimum time in seconds a guess must have been submitted before it counts towards the result. This is useful to prevent last-second guesses that were submitted at the exact moment the PB was driven — for example, when a viewer sees the finish time on stream and immediately types it in chat. Guesses submitted within this time window before the result command is run will be excluded from evaluation. Note: the Guess Delay adds an additional delay on top of this before the result is published in chat.",
+            "timeline": " Cutoff  PB/!result  in chat\n    │        │          │\n    ▼        ▼          ▼\n────┼────────┼──────────┼──►\n    └─min.age┘          │\n             └──delay───┘"
+          },
           "bot-active-offline": {
             "title": "Bot active when stream is offline",
             "description": "If this option is enabled, WheelGPT will also be active when your stream is offline and you are playing Trackmania. Viewers can still submit their guesses and query the current map. Note: WheelGPT remains continuously connected to your channel. This option does not change that. However, requests from the plugin will not be answered during this time."
