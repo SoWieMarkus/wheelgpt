@@ -12,6 +12,7 @@ const query = {
 	profileImage: true,
 	botActiveWhenOffline: true,
 	guessDelayTime: true,
+	minRequiredAgeTime: true,
 	usagePublic: true,
 };
 
