@@ -11,7 +11,7 @@ jest.mock("../../database", () => ({
 }));
 
 // Type the mock properly
-const mockQueryRawTyped = database.$queryRawTyped as jest.MockedFunction<typeof database.$queryRawTyped>;
+const mockQueryRawTyped = database.$queryRawTyped as jest.Mock;
 
 describe("LeaderboardCommand", () => {
 	let leaderboardCommand: LeaderboardCommand;

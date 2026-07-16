@@ -1,6 +1,16 @@
+import { database } from "../../database";
 import type { User } from "../core";
 import { EXAMPLE_FORMAT } from "../core";
+import { TrackmaniaTime } from "../core/time";
 import { GuessResultCommand, guessResultHandler } from "./result";
+
+jest.mock("../../database", () => ({
+	database: {
+		channel: { findUnique: jest.fn() },
+		guess: { findMany: jest.fn(), deleteMany: jest.fn() },
+		trackmaniaMap: { findUnique: jest.fn() },
+	},
+}));
 
 // Mock the guessResultHandler function
 jest.mock("./result", () => ({
@@ -10,6 +20,10 @@ jest.mock("./result", () => ({
 
 // Type the mocks properly
 const mockGuessResultHandler = guessResultHandler as jest.MockedFunction<typeof guessResultHandler>;
+const mockChannel = database.channel.findUnique as jest.Mock;
+const mockGuessFind = database.guess.findMany as jest.Mock;
+const mockGuessDelete = database.guess.deleteMany as jest.Mock;
+const mockMapFind = database.trackmaniaMap.findUnique as jest.Mock;
 
 describe("GuessResultCommand", () => {
 	let guessResultCommand: GuessResultCommand;
@@ -51,5 +65,60 @@ describe("GuessResultCommand", () => {
 		expect(result).toBe(
 			"YEK I got a new PB but I didn't know you are on a map? But no chatter participated ReallyFuckingMad",
 		);
+	});
+});
+
+describe("guessResultHandler - min age filtering", () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockMapFind.mockResolvedValue(null);
+		mockGuessDelete.mockResolvedValue({ count: 0 });
+	});
+
+	test("excludes guesses newer than guessMinRequiredAgeTime", async () => {
+		const now = Date.now();
+		const old = new Date(now - 10000); // 10s ago — passes a 5s min age
+		const recent = new Date(now - 1000); // 1s ago — excluded by a 5s min age
+
+		mockChannel.mockResolvedValue({ guessMinRequiredAgeTime: 5 });
+		mockGuessFind.mockResolvedValue([]);
+
+		await guessResultHandler("test-channel", new TrackmaniaTime(30000));
+
+		const cutoff: Date = mockGuessFind.mock.calls[0][0].where.createdAt.lte;
+
+		expect(old.getTime()).toBeLessThanOrEqual(cutoff.getTime());
+		expect(recent.getTime()).toBeGreaterThan(cutoff.getTime());
+	});
+
+	test("passes all guesses when guessMinRequiredAgeTime is 0", async () => {
+		mockChannel.mockResolvedValue({ guessMinRequiredAgeTime: 0 });
+		mockGuessFind.mockResolvedValue([]);
+
+		await guessResultHandler("test-channel", new TrackmaniaTime(30000));
+
+		const cutoff: Date = mockGuessFind.mock.calls[0][0].where.createdAt.lte;
+
+		expect(cutoff.getTime()).toBeGreaterThanOrEqual(0);
+	});
+
+	test("falls back to 0 min age when channel is not found", async () => {
+		mockChannel.mockResolvedValue(null);
+		mockGuessFind.mockResolvedValue([]);
+
+		await guessResultHandler("test-channel", new TrackmaniaTime(30000));
+
+		expect(mockGuessFind.mock.calls[0][0].where.createdAt).toBeDefined();
+	});
+
+	test("deleteMany removes all guesses for the channel regardless of age", async () => {
+		mockChannel.mockResolvedValue({ guessMinRequiredAgeTime: 30 });
+		mockGuessFind.mockResolvedValue([]);
+
+		await guessResultHandler("test-channel", new TrackmaniaTime(30000));
+
+		expect(mockGuessDelete).toHaveBeenCalledWith({
+			where: { channelId: "test-channel" },
+		});
 	});
 });

@@ -28,6 +28,7 @@ describe("buildBestGuesserMessage", () => {
 				userId: "1",
 				displayName: "Alice",
 				time: 30000,
+				createdAt: new Date(),
 			},
 		];
 		const newBestTime = new TrackmaniaTime(30000);
@@ -41,8 +42,8 @@ describe("buildBestGuesserMessage", () => {
 
 	test("should return perfect guess message for multiple winners", () => {
 		const winners: Guess[] = [
-			{ channelId: "test", userId: "1", displayName: "Alice", time: 30000 },
-			{ channelId: "test", userId: "2", displayName: "Bob", time: 30000 },
+			{ channelId: "test", userId: "1", displayName: "Alice", time: 30000, createdAt: new Date() },
+			{ channelId: "test", userId: "2", displayName: "Bob", time: 30000, createdAt: new Date() },
 		];
 		const newBestTime = new TrackmaniaTime(30000);
 
@@ -60,6 +61,7 @@ describe("buildBestGuesserMessage", () => {
 				userId: "1",
 				displayName: "Alice",
 				time: 29500, // 0.5 seconds off
+				createdAt: new Date(),
 			},
 		];
 		const newBestTime = new TrackmaniaTime(30000);
@@ -73,8 +75,8 @@ describe("buildBestGuesserMessage", () => {
 
 	test("should return closest guess message for multiple winners", () => {
 		const winners: Guess[] = [
-			{ channelId: "test", userId: "1", displayName: "Alice", time: 29500 },
-			{ channelId: "test", userId: "2", displayName: "Bob", time: 29500 },
+			{ channelId: "test", userId: "1", displayName: "Alice", time: 29500, createdAt: new Date() },
+			{ channelId: "test", userId: "2", displayName: "Bob", time: 29500, createdAt: new Date() },
 		];
 		const newBestTime = new TrackmaniaTime(30000);
 
@@ -92,6 +94,7 @@ describe("buildBestGuesserMessage", () => {
 				userId: "1",
 				displayName: "Alice",
 				time: 31000, // 1 second over
+				createdAt: new Date(),
 			},
 		];
 		const newBestTime = new TrackmaniaTime(30000);
@@ -247,6 +250,7 @@ describe("buildGuessResultMessage", () => {
 				userId: "1",
 				displayName: "Alice",
 				time: 30000,
+				createdAt: new Date(),
 			},
 		];
 		const newBestTime = new TrackmaniaTime(30000);
@@ -265,6 +269,7 @@ describe("buildGuessResultMessage", () => {
 				userId: "1",
 				displayName: "Alice",
 				time: 30000,
+				createdAt: new Date(),
 			},
 		];
 		const newBestTime = new TrackmaniaTime(30000);
@@ -300,18 +305,21 @@ describe("evaluateGuesses", () => {
 			displayName: "Alice",
 			userId: "1",
 			time: 1000,
+			createdAt: new Date(),
 		};
 		const bob = {
 			channelId: "testChannel",
 			displayName: "Bob",
 			userId: "2",
 			time: 2000,
+			createdAt: new Date(),
 		};
 		const charlie = {
 			channelId: "testChannel",
 			displayName: "Charlie",
 			userId: "3",
 			time: 3000,
+			createdAt: new Date(),
 		};
 
 		const guesses = [alice, bob, charlie];
@@ -329,18 +337,21 @@ describe("evaluateGuesses", () => {
 			displayName: "Alice",
 			userId: "1",
 			time: 1000,
+			createdAt: new Date(),
 		};
 		const bob = {
 			channelId: "testChannel",
 			displayName: "Bob",
 			userId: "2",
 			time: 2000,
+			createdAt: new Date(),
 		};
 		const charlie = {
 			channelId: "testChannel",
 			displayName: "Charlie",
 			userId: "3",
 			time: 3000,
+			createdAt: new Date(),
 		};
 
 		const guesses = [alice, bob, charlie];
@@ -358,18 +369,21 @@ describe("evaluateGuesses", () => {
 			displayName: "Alice",
 			userId: "1",
 			time: 2000,
+			createdAt: new Date(),
 		};
 		const bob = {
 			channelId: "testChannel",
 			displayName: "Bob",
 			userId: "2",
 			time: 2000,
+			createdAt: new Date(),
 		};
 		const charlie = {
 			channelId: "testChannel",
 			displayName: "Charlie",
 			userId: "3",
 			time: 3000,
+			createdAt: new Date(),
 		};
 
 		const guesses = [alice, bob, charlie];
@@ -394,12 +408,14 @@ describe("evaluateGuesses", () => {
 			displayName: "Alice",
 			userId: "1",
 			time: 3600000, // 1 hour
+			createdAt: new Date(),
 		};
 		const bob = {
 			channelId: "testChannel",
 			displayName: "Bob",
 			userId: "2",
 			time: 7200000, // 2 hours
+			createdAt: new Date(),
 		};
 
 		const result = new TrackmaniaTime(1.5 * 60 * 60 * 1000); // 1.5 hours
@@ -417,12 +433,14 @@ describe("evaluateGuesses", () => {
 			displayName: "Alice",
 			userId: "1",
 			time: 3600000, // 1 hour
+			createdAt: new Date(),
 		};
 		const bob = {
 			channelId: "testChannel",
 			displayName: "Bob",
 			userId: "2",
 			time: 7200000, // 2 hours
+			createdAt: new Date(),
 		};
 
 		const result = new TrackmaniaTime(1.5 * 60 * 60 * 1000 + 1); // 1.5 hours and 1 ms
@@ -439,24 +457,28 @@ describe("evaluateGuesses", () => {
 			displayName: "Alice",
 			userId: "1",
 			time: 100000, // 100 seconds
+			createdAt: new Date(),
 		};
 		const bob = {
 			channelId: "testChannel",
 			displayName: "Bob",
 			userId: "2",
 			time: 200000, // 200 seconds
+			createdAt: new Date(),
 		};
 		const charlie = {
 			channelId: "testChannel",
 			displayName: "Charlie",
 			userId: "3",
 			time: 150000, // 150 seconds
+			createdAt: new Date(),
 		};
 		const dave = {
 			channelId: "testChannel",
 			displayName: "Dave",
 			userId: "4",
 			time: 150000, // 150 seconds
+			createdAt: new Date(),
 		};
 
 		const guesses = [alice, bob, charlie, dave];
