@@ -2,24 +2,27 @@ import { database } from "../../database";
 import type { User } from "../core";
 import { EXAMPLE_FORMAT } from "../core";
 import { TrackmaniaTime } from "../core/time";
-import { GuessResultCommand, guessResultHandler } from "./result";
+import { GuessResultCommand } from "./result";
 
 jest.mock("../../database", () => ({
 	database: {
 		channel: { findUnique: jest.fn() },
 		guess: { findMany: jest.fn(), deleteMany: jest.fn() },
 		trackmaniaMap: { findUnique: jest.fn() },
+		guesserLeaderboard: { upsert: jest.fn() },
 	},
 }));
 
-// Mock the guessResultHandler function
 jest.mock("./result", () => ({
 	...jest.requireActual("./result"),
 	guessResultHandler: jest.fn(),
 }));
 
-// Type the mocks properly
-const mockGuessResultHandler = guessResultHandler as jest.MockedFunction<typeof guessResultHandler>;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { guessResultHandler: mockGuessResultHandler } = require("./result");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { guessResultHandler: realGuessResultHandler } = jest.requireActual("./result");
+
 const mockChannel = database.channel.findUnique as jest.Mock;
 const mockGuessFind = database.guess.findMany as jest.Mock;
 const mockGuessDelete = database.guess.deleteMany as jest.Mock;
@@ -57,13 +60,15 @@ describe("GuessResultCommand", () => {
 		expect(mockGuessResultHandler).not.toHaveBeenCalled();
 	});
 
-	test("should return result message when valid time provided", async () => {
+	test("should call guessResultHandler with channelId and parsed time when valid time provided", async () => {
 		mockGuessResultHandler.mockResolvedValue("Some result message");
 
 		const result = await guessResultCommand.execute(mockUser, ["30.000"]);
 
-		expect(result).toBe(
-			"YEK I got a new PB but I didn't know you are on a map? But no chatter participated ReallyFuckingMad",
+		expect(result).toBe("Some result message");
+		expect(mockGuessResultHandler).toHaveBeenCalledWith(
+			"test-channel",
+			new TrackmaniaTime(30000),
 		);
 	});
 });
@@ -83,7 +88,7 @@ describe("guessResultHandler - min age filtering", () => {
 		mockChannel.mockResolvedValue({ guessMinRequiredAgeTime: 5 });
 		mockGuessFind.mockResolvedValue([]);
 
-		await guessResultHandler("test-channel", new TrackmaniaTime(30000));
+		await realGuessResultHandler("test-channel", new TrackmaniaTime(30000));
 
 		const cutoff: Date = mockGuessFind.mock.calls[0][0].where.createdAt.lte;
 
@@ -95,10 +100,11 @@ describe("guessResultHandler - min age filtering", () => {
 		mockChannel.mockResolvedValue({ guessMinRequiredAgeTime: 0 });
 		mockGuessFind.mockResolvedValue([]);
 
-		await guessResultHandler("test-channel", new TrackmaniaTime(30000));
+		await realGuessResultHandler("test-channel", new TrackmaniaTime(30000));
 
 		const cutoff: Date = mockGuessFind.mock.calls[0][0].where.createdAt.lte;
 
+		// cutoff ≈ now, so every stored guess (createdAt in the past) passes
 		expect(cutoff.getTime()).toBeGreaterThanOrEqual(0);
 	});
 
@@ -106,7 +112,7 @@ describe("guessResultHandler - min age filtering", () => {
 		mockChannel.mockResolvedValue(null);
 		mockGuessFind.mockResolvedValue([]);
 
-		await guessResultHandler("test-channel", new TrackmaniaTime(30000));
+		await realGuessResultHandler("test-channel", new TrackmaniaTime(30000));
 
 		expect(mockGuessFind.mock.calls[0][0].where.createdAt).toBeDefined();
 	});
@@ -115,7 +121,7 @@ describe("guessResultHandler - min age filtering", () => {
 		mockChannel.mockResolvedValue({ guessMinRequiredAgeTime: 30 });
 		mockGuessFind.mockResolvedValue([]);
 
-		await guessResultHandler("test-channel", new TrackmaniaTime(30000));
+		await realGuessResultHandler("test-channel", new TrackmaniaTime(30000));
 
 		expect(mockGuessDelete).toHaveBeenCalledWith({
 			where: { channelId: "test-channel" },
