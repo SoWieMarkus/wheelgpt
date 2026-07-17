@@ -103,6 +103,11 @@
             "title": "Délai de pronostic",
             "description": "Le délai en secondes avant qu'un nouveau meilleur temps signalé par le plugin ne soit affiché dans le chat pour éviter les spoilers."
           },
+          "guess-min-required-age": {
+            "title": "Âge minimum du pronostic",
+            "description": "Le temps minimum en secondes pendant lequel un pronostic doit avoir été soumis pour être pris en compte dans le résultat. Cela permet d'éviter les pronostics de dernière seconde soumis au moment précis où le PB a été réalisé — par exemple lorsqu'un spectateur voit le temps d'arrivée en stream et le tape immédiatement dans le chat. Les pronostics soumis dans cette fenêtre de temps avant la commande de résultat seront exclus de l'évaluation. Remarque : le délai de pronostic s'ajoute en supplément et retarde la publication du résultat dans le chat.",
+            "timeline": " Cutoff  PB/!result  dans chat\n    │        │          │\n    ▼        ▼          ▼\n────┼────────┼──────────┼──►\n    └─âge min┘          │\n             └──délai───┘"
+          },
           "bot-active-offline": {
             "title": "Bot actif lorsque le stream est hors ligne",
             "description": "Si cette option est activée, WheelGPT sera également actif lorsque votre stream est hors ligne et que vous jouez à Trackmania. Les spectateurs peuvent toujours soumettre leurs pronostics et consulter la carte actuelle. Remarque : WheelGPT reste continuellement connecté à votre chaîne. Cette option ne change pas cela. Cependant, les requêtes du plugin ne seront pas traitées pendant cette période."

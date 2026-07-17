@@ -188,6 +188,7 @@ describe("MyGuessCommand", () => {
 			userId: "123",
 			displayName: "TestUser",
 			time: 7200000, // 2 hours
+			createdAt: new Date(),
 		};
 
 		mockFindUnique.mockResolvedValue(mockGuess);
@@ -203,6 +204,7 @@ describe("MyGuessCommand", () => {
 			userId: "123",
 			displayName: "TestUser",
 			time: 30000,
+			createdAt: new Date(),
 		};
 
 		mockFindUnique.mockResolvedValue(mockGuess);

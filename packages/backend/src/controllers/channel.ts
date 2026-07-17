@@ -12,6 +12,7 @@ const query = {
 	profileImage: true,
 	botActiveWhenOffline: true,
 	guessDelayTime: true,
+	guessMinRequiredAgeTime: true,
 	usagePublic: true,
 };
 
@@ -50,6 +51,7 @@ export const updateSettings: RequestHandler = async (request, response) => {
 			botActiveWhenOffline: data.botActiveWhenOffline,
 			guessDelayTime: data.guessDelayTime,
 			usagePublic: data.usagePublic,
+			guessMinRequiredAgeTime: data.guessMinRequiredAgeTime,
 		},
 		select: query,
 	});

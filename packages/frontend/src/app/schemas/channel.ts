@@ -5,6 +5,7 @@ export const ChannelSchema = z.object({
 	displayName: z.string(),
 	profileImage: z.url(),
 	guessDelayTime: z.number().int(),
+	guessMinRequiredAgeTime: z.number().int(),
 	botActiveWhenOffline: z.boolean(),
 	usagePublic: z.boolean(),
 });
