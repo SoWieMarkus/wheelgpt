@@ -4,8 +4,8 @@ export const ChannelSchema = z.object({
 	id: z.string(),
 	displayName: z.string(),
 	profileImage: z.url(),
-	guessDelayTime: z.number().int(),
-	guessMinRequiredAgeTime: z.number().int(),
+	guessDelayTime: z.number(),
+	guessMinRequiredAgeTime: z.number(),
 	botActiveWhenOffline: z.boolean(),
 	usagePublic: z.boolean(),
 });
