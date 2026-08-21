@@ -28,8 +28,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@angular/build": "^21.2.21",
-    "@angular/cli": "^21.2.21",
+    "@angular/build": "^22.1.5",
+    "@angular/cli": "^22.1.5",
     "@angular/compiler-cli": "^21.2.21",
     "@types/jasmine": "~6.0.0",
     "jasmine-core": "~7.0.2",
