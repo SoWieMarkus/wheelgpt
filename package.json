@@ -14,7 +14,7 @@
     "ts-jest": "^29.4.12",
     "ts-node": "^10.9.2",
     "turbo": "^2.10.11",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   },
   "overrides": {
     "glob": "13.0.6"
