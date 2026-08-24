@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@biomejs/biome": "2.5.9",
+    "@biomejs/biome": "2.5.10",
     "@types/jest": "^30.0.0",
     "concurrently": "^10.0.5",
     "jest": "^30.4.2",
