@@ -27,7 +27,7 @@ jobs:
         run: mv wheelgpt.zip wheelgpt.op
 
       - name: Create Release and Upload .op
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: wheelgpt.op
         env:
