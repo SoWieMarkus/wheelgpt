@@ -69,6 +69,9 @@ export const getChannelById: RequestHandler = async (request, response) => {
 	if (!channelId) {
 		throw createHttpError(400, "Channel ID is required.");
 	}
+	if (typeof channelId !== "string") {
+		throw new Error("Invalid channel id");
+	}
 	const channel = await database.channel.findUnique({
 		where: { id: channelId },
 		select: { id: true, login: true, displayName: true, profileImage: true, isLive: true },
