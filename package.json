@@ -6,10 +6,10 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@biomejs/biome": "2.5.11",
+    "@biomejs/biome": "2.5.12",
     "@types/jest": "^30.0.0",
     "concurrently": "^10.0.5",
-    "jest": "^30.4.2",
+    "jest": "^30.5.1",
     "prisma": "^6.19.3",
     "ts-jest": "^29.4.12",
     "ts-node": "^10.9.2",
