@@ -1,19 +1,19 @@
 {
   "name": "wheelgpt",
   "private": true,
-  "packageManager": "npm@12.1.0",
+  "packageManager": "npm@12.2.0",
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
+    "@biomejs/biome": "2.5.15",
     "@types/jest": "^30.0.0",
     "concurrently": "^10.0.5",
     "jest": "^30.5.2",
     "prisma": "^6.19.3",
     "ts-jest": "^29.4.14",
     "ts-node": "^10.9.2",
-    "turbo": "^2.11.4",
+    "turbo": "^2.11.6",
     "typescript": "^6.0.3"
   },
   "overrides": {
