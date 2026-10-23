@@ -11,12 +11,12 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^22.2.3",
-    "@angular/cdk": "^22.2.3",
+    "@angular/cdk": "^22.2.4",
     "@angular/common": "^22.2.3",
     "@angular/compiler": "^22.2.3",
     "@angular/core": "^22.2.3",
     "@angular/forms": "^22.2.3",
-    "@angular/material": "^22.2.3",
+    "@angular/material": "^22.2.4",
     "@angular/platform-browser": "^22.2.3",
     "@angular/platform-browser-dynamic": "^22.2.2",
     "@angular/router": "^22.2.3",
@@ -28,8 +28,8 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@angular/build": "^22.2.3",
-    "@angular/cli": "^22.2.3",
+    "@angular/build": "^22.2.4",
+    "@angular/cli": "^22.2.4",
     "@angular/compiler-cli": "^22.2.3",
     "@types/jasmine": "~7.0.0",
     "jasmine-core": "~7.0.2",
