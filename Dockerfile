@@ -1,5 +1,5 @@
 # --- Builder stage ---
-FROM node:24.22.1-alpine AS builder
+FROM node:24.22.2-alpine AS builder
 
 WORKDIR /usr/src/app
 
@@ -13,7 +13,7 @@ RUN npx prisma migrate deploy
 RUN npx prisma generate --sql
 RUN npm run build
 
-FROM node:24.22.1-alpine
+FROM node:24.22.2-alpine
 
 WORKDIR /usr/src/app
 
