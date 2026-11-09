@@ -309,7 +309,14 @@ export const syncWebhooks = async (channelIds: string[], callbackUrl: string) =>
 			const key = `${type}:${id}`;
 			if (!registeredMap.has(key)) {
 				logger.info(`Registering webhook: ${type} for channel ${id}`);
-				await registerWebhook(type, id, callbackUrl);
+				try {
+					await registerWebhook(type, id, callbackUrl);
+				} catch (error) {
+					// One failing channel (e.g. a deleted or banned Twitch account, HTTP 400) must not abort the whole sync
+					const reason = axios.isAxiosError(error) ? (error.response?.data ?? error.message) : error;
+					logger.error(`Failed to register webhook ${type} for channel ${id}`, { reason });
+					failedTwitchAPIMetric.inc({ endpoint: "register_webhook" });
+				}
 			}
 		}
 	}
