@@ -7,6 +7,13 @@ import { wheelgpt } from "./wheelgpt";
 // Update channel information on boot up
 const updateChannelDetails = async (channelIds: string[]) => {
 	const users = await Twitch.getUsers(channelIds);
+
+	const knownIds = new Set(users.map((user) => user.id));
+	const missingIds = channelIds.filter((id) => !knownIds.has(id));
+	if (missingIds.length > 0) {
+		logger.warn(`Twitch returned no user for ${missingIds.length} channel(s): ${missingIds.join(", ")}`);
+	}
+
 	for (const user of users) {
 		await database.channel.update({
 			where: { id: user.id },
