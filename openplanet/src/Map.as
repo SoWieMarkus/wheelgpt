@@ -64,12 +64,12 @@ void SendUpdateMap(Map@ map)
     if (map is null) 
     {
         DebugPrint("No map to send.");
-        DeleteWithRetries("trackmania/map", Setting_RetriesMap);
+        DeleteWithRetries("v1/plugin/map", Setting_RetriesMap);
         return;
     }
 
     Json::Value body = map.ToJson();
-    PostWithRetries("trackmania/map", body, Setting_RetriesMap);
+    PutWithRetries("v1/plugin/map", body, Setting_RetriesMap);
 }
 
 Map@ GetCurrentMap() 
