@@ -1,0 +1,41 @@
+{
+  "name": "wheelgpt-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "oxlint --max-warnings=0 src",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "typecheck": "tsc -b --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "generate:api": "node -e \"fs.mkdirSync('node_modules/.cache', { recursive: true })\" && swagger2openapi --yaml=false --outfile node_modules/.cache/openapi3.json ../api/openapi/swagger.json && openapi-typescript node_modules/.cache/openapi3.json -o src/api/schema.gen.ts && oxfmt src/api/schema.gen.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@tanstack/react-query": "^5.108.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router": "^8.5.3"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^26.6.10",
+    "@types/react": "^19.3.3",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "jsdom": "^31.0.1",
+    "openapi-typescript": "^7.13.0",
+    "oxfmt": "^0.80.0",
+    "oxlint": "^1.95.0",
+    "swagger2openapi": "^7.0.8",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}
