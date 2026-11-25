@@ -1,0 +1,1181 @@
+basePath: /api/v1
+definitions:
+  bot.CommandResponse:
+    properties:
+      access:
+        description: everyone, subscriber, vip, moderator or broadcaster
+        enum:
+        - everyone
+        - subscriber
+        - vip
+        - moderator
+        - broadcaster
+        example: everyone
+        type: string
+      aliases:
+        example:
+        - g
+        items:
+          type: string
+        type: array
+      cooldownSeconds:
+        example: 0
+        type: integer
+      description:
+        example: Guess the streamer's next personal best on the current map.
+        type: string
+      name:
+        example: guess
+        type: string
+      usage:
+        example: '!guess 1:23.456'
+        type: string
+    required:
+    - access
+    - aliases
+    - cooldownSeconds
+    - description
+    - name
+    - usage
+    type: object
+  channel.BotResponse:
+    properties:
+      authorized:
+        description: The streamer granted channel:bot through the new login.
+        type: boolean
+      authorizedAt:
+        type: string
+      chatSubscription:
+        description: |-
+          unknown, enabled, needs_authorization, disabled, or off when the
+          server doesn't subscribe to chats (local development)
+        enum:
+        - unknown
+        - enabled
+        - needs_authorization
+        - disabled
+        - "off"
+        example: enabled
+        type: string
+      enabled:
+        type: boolean
+      scopes:
+        example:
+        - channel:bot
+        items:
+          type: string
+        type: array
+    required:
+    - authorized
+    - chatSubscription
+    - enabled
+    - scopes
+    type: object
+  channel.MeResponse:
+    properties:
+      bot:
+        $ref: '#/definitions/channel.BotResponse'
+      channel:
+        $ref: '#/definitions/channel.SummaryResponse'
+      devMode:
+        description: 'The server runs in dev mode: the live status can be faked.'
+        type: boolean
+      settings:
+        $ref: '#/definitions/channel.SettingsResponse'
+    required:
+    - bot
+    - channel
+    - devMode
+    - settings
+    type: object
+  channel.SettingsBody:
+    properties:
+      guessDelaySeconds:
+        example: 2.5
+        maximum: 60
+        minimum: 0
+        type: number
+      guessMinAgeSeconds:
+        example: 5
+        maximum: 60
+        minimum: 0
+        type: number
+      public:
+        type: boolean
+    type: object
+  channel.SettingsResponse:
+    properties:
+      guessDelaySeconds:
+        description: Seconds between the PB and the chat announcement (stream delay).
+        example: 2
+        type: number
+      guessMinAgeSeconds:
+        description: Guesses younger than this are ignored when a PB comes in.
+        example: 0
+        type: number
+      public:
+        description: List the channel on the website.
+        example: true
+        type: boolean
+    required:
+    - guessDelaySeconds
+    - guessMinAgeSeconds
+    - public
+    type: object
+  channel.StatsResponse:
+    properties:
+      channels:
+        example: 80
+        type: integer
+    required:
+    - channels
+    type: object
+  channel.SummaryResponse:
+    properties:
+      displayName:
+        example: GranaDyy
+        type: string
+      id:
+        example: "12345678"
+        type: string
+      isLive:
+        type: boolean
+      login:
+        example: granadyy
+        type: string
+      profileImage:
+        example: https://static-cdn.jtvnw.net/user.png
+        type: string
+    required:
+    - displayName
+    - id
+    - isLive
+    - login
+    - profileImage
+    type: object
+  httpx.FieldError:
+    properties:
+      field:
+        example: guessDelaySeconds
+        type: string
+      message:
+        example: is required
+        type: string
+    required:
+    - field
+    - message
+    type: object
+  httpx.ListDoc:
+    properties:
+      items:
+        items: {}
+        type: array
+    required:
+    - items
+    type: object
+  httpx.PageDoc:
+    properties:
+      items:
+        items: {}
+        type: array
+      limit:
+        example: 25
+        type: integer
+      offset:
+        example: 0
+        type: integer
+      total:
+        example: 120
+        type: integer
+    required:
+    - items
+    - limit
+    - offset
+    - total
+    type: object
+  httpx.Problem:
+    properties:
+      code:
+        example: channel_not_found
+        type: string
+      detail:
+        example: this channel does not use WheelGPT
+        type: string
+      errors:
+        items:
+          $ref: '#/definitions/httpx.FieldError'
+        type: array
+      instance:
+        example: /api/v1/channels/someone
+        type: string
+      requestId:
+        description: RequestID correlates the response with server logs.
+        type: string
+      status:
+        example: 404
+        type: integer
+      title:
+        example: Not Found
+        type: string
+      type:
+        example: about:blank
+        type: string
+    required:
+    - code
+    - detail
+    - instance
+    - status
+    - title
+    - type
+    type: object
+  ingame.MapBody:
+    properties:
+      author:
+        example: Nadeo
+        maxLength: 1000
+        type: string
+      authorTime:
+        example: 47904
+        minimum: 0
+        type: integer
+      bronzeTime:
+        example: 72000
+        minimum: 0
+        type: integer
+      championTime:
+        example: 0
+        minimum: 0
+        type: integer
+      goldTime:
+        example: 51000
+        minimum: 0
+        type: integer
+      name:
+        example: $o$fffSpring 2026 - 07
+        maxLength: 1000
+        type: string
+      silverTime:
+        example: 58000
+        minimum: 0
+        type: integer
+      uid:
+        example: Rq3h3pT5ZyvA0lqk1eYyQ2xYb1c
+        maxLength: 1000
+        type: string
+    required:
+    - author
+    - authorTime
+    - bronzeTime
+    - championTime
+    - goldTime
+    - name
+    - silverTime
+    - uid
+    type: object
+  ingame.MapResponse:
+    properties:
+      author:
+        example: Nadeo
+        type: string
+      medals:
+        $ref: '#/definitions/ingame.Medals'
+      name:
+        description: Name without Trackmania formatting codes.
+        example: Spring 2026 - 07
+        type: string
+      tmxId:
+        example: 123456
+        type: integer
+      tmxUrl:
+        type: string
+      trackmaniaIoUrl:
+        type: string
+      uid:
+        example: Rq3h3pT5ZyvA0lqk1eYyQ2xYb1c
+        type: string
+    required:
+    - author
+    - medals
+    - name
+    - trackmaniaIoUrl
+    - uid
+    type: object
+  ingame.Medals:
+    properties:
+      author:
+        example: 47904
+        type: integer
+      bronze:
+        example: 72000
+        type: integer
+      champion:
+        description: Only if the Champion Medals plugin knows it.
+        example: 46850
+        type: integer
+      gold:
+        example: 51000
+        type: integer
+      silver:
+        example: 58000
+        type: integer
+    required:
+    - author
+    - bronze
+    - gold
+    - silver
+    type: object
+  ingame.RoomBody:
+    properties:
+      login:
+        example: cotd-practice-1
+        maxLength: 1000
+        type: string
+      maxPlayers:
+        example: 64
+        maximum: 2000
+        minimum: 0
+        type: integer
+      name:
+        example: Cup of the Day Practice
+        maxLength: 1000
+        type: string
+      numberOfPlayers:
+        example: 42
+        maximum: 2000
+        minimum: 0
+        type: integer
+    required:
+    - login
+    - maxPlayers
+    - name
+    - numberOfPlayers
+    type: object
+  leaderboard.EntryResponse:
+    properties:
+      displayName:
+        example: tinytires
+        type: string
+      perfectGuesses:
+        example: 2
+        type: integer
+      points:
+        example: 26
+        type: integer
+      position:
+        example: 1
+        type: integer
+      userId:
+        example: "98765"
+        type: string
+    required:
+    - displayName
+    - perfectGuesses
+    - points
+    - position
+    - userId
+    type: object
+  leaderboard.PeriodsResponse:
+    properties:
+      current:
+        description: The month that is running now.
+        example: 2026-11
+        type: string
+      periods:
+        description: This month, every month with points (newest first) and all-time.
+        example:
+        - 2026-11
+        - 2026-10
+        - all-time
+        items:
+          type: string
+        type: array
+    required:
+    - current
+    - periods
+    type: object
+  plugin.PersonalBestBody:
+    properties:
+      time:
+        description: Race time in milliseconds.
+        example: 47881
+        minimum: 0
+        type: integer
+    required:
+    - time
+    type: object
+  plugin.PersonalBestResponse:
+    properties:
+      announceAt:
+        type: string
+      reason:
+        description: Why the result is not announced, if it is not.
+        type: string
+      round:
+        $ref: '#/definitions/plugin.RoundResponse'
+    required:
+    - round
+    type: object
+  plugin.RoundResponse:
+    properties:
+      id:
+        example: 42
+        type: integer
+      mapName:
+        example: Spring 2026 - 07
+        type: string
+      participants:
+        example: 4
+        type: integer
+      perfect:
+        type: boolean
+      points:
+        example: 1
+        type: integer
+      resultTime:
+        example: 47881
+        type: integer
+      winners:
+        items:
+          $ref: '#/definitions/plugin.WinnerResponse'
+        type: array
+    required:
+    - id
+    - participants
+    - perfect
+    - points
+    - resultTime
+    - winners
+    type: object
+  plugin.StatusResponse:
+    properties:
+      accepting:
+        description: Whether map, room and PB data is accepted right now (stream is
+          live).
+        type: boolean
+      botEnabled:
+        type: boolean
+      channelId:
+        example: "12345678"
+        type: string
+      legacyToken:
+        description: The request used a token of the old backend.
+        type: boolean
+      login:
+        example: granadyy
+        type: string
+    required:
+    - accepting
+    - botEnabled
+    - channelId
+    - legacyToken
+    - login
+    type: object
+  plugin.TokenCreatedResponse:
+    properties:
+      createdAt:
+        type: string
+      token:
+        description: Shown only once.
+        example: wgpt_6Q1q...
+        type: string
+    required:
+    - createdAt
+    - token
+    type: object
+  plugin.TokenInfoResponse:
+    properties:
+      createdAt:
+        type: string
+      exists:
+        type: boolean
+      lastUsedAt:
+        type: string
+      legacyTokenActive:
+        description: A token of the old backend still works. Creating a new token
+          revokes it.
+        type: boolean
+    required:
+    - exists
+    - legacyTokenActive
+    type: object
+  plugin.WinnerResponse:
+    properties:
+      displayName:
+        example: tinytires
+        type: string
+      guessTime:
+        example: 47850
+        type: integer
+      userId:
+        example: "98765"
+        type: string
+    required:
+    - displayName
+    - guessTime
+    - userId
+    type: object
+info:
+  contact: {}
+  description: |-
+    API of WheelGPT, the Trackmania Twitch bot.
+    Plugin endpoints need the plugin token as "Authorization: Bearer <token>". The me endpoints need the HttpOnly session cookie set by the Twitch login; state changing requests from other origins are rejected.
+    Errors are returned as RFC 9457 problem details.
+  title: WheelGPT API
+  version: "1.0"
+paths:
+  /auth/bot:
+    get:
+      description: 'One-time step for the operator: log in as the bot account to grant
+        user:read:chat, user:write:chat and user:bot.'
+      responses:
+        "302":
+          description: Found
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Authorize the bot account
+      tags:
+      - auth
+  /auth/bot/callback:
+    get:
+      responses:
+        "303":
+          description: See Other
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Bot authorization callback
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      responses:
+        "204":
+          description: No Content
+      summary: Log out
+      tags:
+      - auth
+  /auth/twitch:
+    get:
+      description: Browser redirect to Twitch. The only scope requested is channel:bot,
+        which lets the WheelGPT bot account read and write chat in your channel.
+      parameters:
+      - default: /dashboard
+        description: site path to return to
+        in: query
+        name: returnTo
+        type: string
+      responses:
+        "302":
+          description: Found
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Log in with Twitch
+      tags:
+      - auth
+  /auth/twitch/callback:
+    get:
+      parameters:
+      - description: authorization code
+        in: query
+        name: code
+        type: string
+      - description: state
+        in: query
+        name: state
+        type: string
+      responses:
+        "303":
+          description: See Other
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "502":
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Twitch login callback
+      tags:
+      - auth
+  /channels:
+    get:
+      parameters:
+      - description: only live channels
+        in: query
+        name: live
+        type: boolean
+      - description: filter by login or display name
+        in: query
+        name: q
+        type: string
+      - default: 25
+        description: page size (1-100)
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: items to skip
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/httpx.PageDoc'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/channel.SummaryResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: List channels using WheelGPT
+      tags:
+      - channels
+  /channels/{channel}:
+    get:
+      parameters:
+      - description: Twitch user id or login
+        in: path
+        name: channel
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.SummaryResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Get a channel
+      tags:
+      - channels
+  /channels/{channel}/leaderboards:
+    get:
+      parameters:
+      - description: Twitch user id or login
+        in: path
+        name: channel
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/leaderboard.PeriodsResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Leaderboard periods
+      tags:
+      - leaderboards
+  /channels/{channel}/leaderboards/{period}:
+    get:
+      description: all-time includes points from before monthly leaderboards existed.
+        A month (YYYY-MM, UTC) sums the rounds of that month. Ties go to more perfect
+        guesses, then to who got there first.
+      parameters:
+      - description: Twitch user id or login
+        in: path
+        name: channel
+        required: true
+        type: string
+      - description: all-time or YYYY-MM
+        in: path
+        name: period
+        required: true
+        type: string
+      - description: filter by display name, positions stay those of the full board
+        in: query
+        name: q
+        type: string
+      - default: 50
+        description: page size (1-100)
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: items to skip
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/httpx.PageDoc'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/leaderboard.EntryResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Leaderboard
+      tags:
+      - leaderboards
+  /channels/{channel}/map:
+    get:
+      parameters:
+      - description: Twitch user id or login
+        in: path
+        name: channel
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ingame.MapResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Current map
+      tags:
+      - channels
+  /channels/{channel}/room:
+    get:
+      parameters:
+      - description: Twitch user id or login
+        in: path
+        name: channel
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ingame.RoomBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Current room
+      tags:
+      - channels
+  /commands:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/httpx.ListDoc'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/bot.CommandResponse'
+                  type: array
+              type: object
+      summary: Chat commands
+      tags:
+      - bot
+  /me:
+    delete:
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Delete my channel and all its data
+      tags:
+      - me
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.MeResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: My channel
+      tags:
+      - me
+  /me/bot-connection:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.BotResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Disconnect the bot from my chat
+      tags:
+      - me
+    put:
+      description: 'If Twitch refuses, chatSubscription is needs_authorization: log
+        in again to grant channel:bot or make the bot a moderator.'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.BotResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "502":
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Connect the bot to my chat
+      tags:
+      - me
+  /me/live:
+    delete:
+      description: 'Only with DEV_MODE on a local server. Works like a stream.offline
+        event from Twitch: map, room and open guesses are cleared.'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.SummaryResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Pretend the stream ended (dev mode)
+      tags:
+      - me
+    put:
+      description: Only with DEV_MODE on a local server. Marks the channel live like
+        a stream.online event from Twitch.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.SummaryResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Pretend to be live (dev mode)
+      tags:
+      - me
+  /me/plugin-token:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/plugin.TokenInfoResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Plugin token metadata
+      tags:
+      - me
+    post:
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/plugin.TokenCreatedResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Create a plugin token
+      tags:
+      - me
+  /me/settings:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.SettingsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: My settings
+      tags:
+      - me
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: settings to change
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/channel.SettingsBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.SettingsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Update my settings
+      tags:
+      - me
+  /plugin/map:
+    delete:
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "409":
+          description: the stream is not live
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      security:
+      - PluginToken: []
+      summary: Clear the current map
+      tags:
+      - plugin
+    put:
+      consumes:
+      - application/json
+      description: Open guesses are cleared, they belonged to the previous map. The
+        Trackmania Exchange id is looked up in the background. Plugin data is only
+        accepted while the stream is live, otherwise 409 channel_offline.
+      parameters:
+      - description: map
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ingame.MapBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ingame.MapResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "409":
+          description: the stream is not live
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      security:
+      - PluginToken: []
+      summary: Set the current map
+      tags:
+      - plugin
+  /plugin/personal-bests:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: personal best
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/plugin.PersonalBestBody'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/plugin.PersonalBestResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "409":
+          description: the stream is not live
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      security:
+      - PluginToken: []
+      summary: Report a personal best
+      tags:
+      - plugin
+  /plugin/room:
+    delete:
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "409":
+          description: the stream is not live
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      security:
+      - PluginToken: []
+      summary: Clear the current room
+      tags:
+      - plugin
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: room
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ingame.RoomBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ingame.RoomBody'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+        "409":
+          description: the stream is not live
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      security:
+      - PluginToken: []
+      summary: Set the current room
+      tags:
+      - plugin
+  /plugin/status:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/plugin.StatusResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      security:
+      - PluginToken: []
+      summary: Check the plugin token
+      tags:
+      - plugin
+  /stats:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.StatsResponse'
+      summary: Usage totals
+      tags:
+      - channels
+  /twitch/eventsub:
+    post:
+      consumes:
+      - application/json
+      description: Receives stream.online, stream.offline and channel.chat.message.
+        Requests are verified with the Twitch-Eventsub-Message-Signature HMAC, must
+        be younger than 10 minutes and are deduplicated by message id.
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpx.Problem'
+      summary: Twitch EventSub webhook
+      tags:
+      - twitch
+securityDefinitions:
+  PluginToken:
+    description: '"Bearer <plugin token>" from the dashboard. Tokens of the old backend
+      are accepted too.'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,23 @@
+version: "2"
+sql:
+  - engine: sqlite
+    schema: internal/platform/store/migrations
+    queries: internal/platform/store/queries
+    gen:
+      go:
+        package: store
+        out: internal/platform/store
+        output_files_suffix: .gen
+        output_db_file_name: db.gen.go
+        output_models_file_name: models.gen.go
+        output_querier_file_name: querier.gen.go
+        emit_interface: true
+        emit_empty_slices: true
+        emit_pointers_for_null_types: true
+        overrides:
+          # Prisma wrote DateTime as unix milliseconds, SQLite's DEFAULT
+          # CURRENT_TIMESTAMP writes text. dbtime.Time reads both.
+          - db_type: DATETIME
+            go_type:
+              import: github.com/SoWieMarkus/wheelgpt/internal/platform/store/dbtime
+              type: Time
