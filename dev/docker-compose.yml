@@ -1,0 +1,84 @@
+# Local development stack.
+#
+#   make up   (or: docker compose -f dev/docker-compose.yml up --build)
+#
+#   Website     http://localhost:3000
+#   API docs    http://localhost:3000/api/docs/index.html
+#   Grafana     http://localhost:3001   (admin / admin)
+#   Prometheus  http://localhost:9090
+#
+# Copy .env.example to .env to change the defaults. Without Twitch credentials
+# the bot runs offline, log in at http://localhost:3000/api/v1/auth/dev?login=you.
+
+name: wheelgpt
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: deploy/backend.Dockerfile
+      args:
+        VERSION: dev
+    # The repository's .env goes straight into the container, so the Twitch
+    # credentials arrive however compose is started (with or without
+    # --env-file). Values under environment: win over it.
+    env_file:
+      - path: ../.env
+        required: false
+    environment:
+      PUBLIC_URL: ${PUBLIC_URL:-http://localhost:3000}
+      # Never sync EventSub from a development machine.
+      EVENTSUB_SYNC: "false"
+      DEV_MODE: ${DEV_MODE:-true}
+      # The nginx of the website sets X-Real-IP.
+      TRUST_PROXY_HEADERS: "true"
+      LOG_FORMAT: text
+      LOG_LEVEL: debug
+    volumes:
+      - app-data:/data
+    ports:
+      - "8080:8080"
+
+  website:
+    build:
+      context: ../website
+      dockerfile: ../deploy/website.Dockerfile
+    environment:
+      BACKEND_URL: http://backend:8080
+    ports:
+      - "3000:8080"
+    depends_on:
+      - backend
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=15d
+    volumes:
+      - ../monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  app-data:
+  prometheus-data:
+  grafana-data:

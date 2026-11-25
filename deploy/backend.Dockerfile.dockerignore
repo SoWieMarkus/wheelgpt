@@ -1,0 +1,8 @@
+*
+!go.mod
+!go.sum
+!cmd/
+!api/
+!internal/
+**/*_test.go
+**/testdata/
