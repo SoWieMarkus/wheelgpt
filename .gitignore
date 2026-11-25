@@ -1,9 +1,27 @@
-node_modules
-dist
-.turbo
+# env
 .env
+*.local
 
-/generated/prisma
+# backend
+/bin/
+/.data/
+/data/
+coverage.out
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.test
 
-prisma/dev.db
-prisma/dev.db-journal
+# website
+node_modules/
+website/dist/
+website/coverage/
+*.tsbuildinfo
+
+# editors / os
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
