@@ -1,0 +1,108 @@
+name: Backend
+
+on:
+  pull_request:
+    paths:
+      - 'api/**'
+      - 'cmd/**'
+      - 'internal/**'
+      - 'go.mod'
+      - 'go.sum'
+      - 'sqlc.yaml'
+      - '.golangci.yml'
+      - 'Makefile'
+      - 'deploy/backend.Dockerfile*'
+      # The generated website API types are checked here too.
+      - 'website/src/api/schema.gen.ts'
+      - 'website/package.json'
+      - '.github/workflows/backend.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'api/**'
+      - 'cmd/**'
+      - 'internal/**'
+      - 'go.mod'
+      - 'go.sum'
+      - 'sqlc.yaml'
+      - '.golangci.yml'
+      - 'Makefile'
+      - 'deploy/backend.Dockerfile*'
+      - 'website/src/api/schema.gen.ts'
+      - 'website/package.json'
+      - '.github/workflows/backend.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # renovate: datasource=github-releases depName=golangci/golangci-lint
+  GOLANGCI_LINT_VERSION: v2.15.0
+  # renovate: datasource=github-releases depName=sqlc-dev/sqlc
+  SQLC_VERSION: 1.31.1
+  # renovate: datasource=go depName=github.com/swaggo/swag
+  SWAG_VERSION: v1.16.6
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: ${{ env.GOLANGCI_LINT_VERSION }}
+
+  generated:
+    name: Generated code is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: website/.nvmrc
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - uses: sqlc-dev/setup-sqlc@v4
+        with:
+          sqlc-version: ${{ env.SQLC_VERSION }}
+      - name: sqlc
+        run: sqlc diff
+      - name: OpenAPI spec and website API types
+        run: |
+          go run github.com/swaggo/swag/cmd/swag@${SWAG_VERSION} fmt
+          go run github.com/swaggo/swag/cmd/swag@${SWAG_VERSION} init -g cmd/wheelgpt/main.go -o api/openapi --parseInternal --requiredByDefault --outputTypes go,json,yaml
+          npm ci --prefix website --ignore-scripts --no-audit --no-fund
+          npm run --prefix website generate:api
+          git diff --exit-code || (echo "::error::Run 'make generate' and commit the result" && exit 1)
+      - name: go mod tidy
+        run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - run: go build ./...
+      # Tests create their own SQLite files, no services needed.
+      - run: go test -race -covermode=atomic -coverprofile=coverage.out ./...
+      - run: go tool cover -func=coverage.out | tail -1 >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: backend-coverage
+          path: coverage.out

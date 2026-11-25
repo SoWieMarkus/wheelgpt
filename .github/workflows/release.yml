@@ -1,0 +1,99 @@
+name: Release
+
+# Builds and pushes the Docker images for every push to main. Only images
+# whose sources changed are rebuilt; a manual run rebuilds both.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.backend == 'true' }}
+      website: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.website == 'true' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # paths-filter compares against the commit before the push.
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v3
+        id: filter
+        if: github.event_name == 'push'
+        with:
+          filters: |
+            backend:
+              - 'api/**'
+              - 'cmd/**'
+              - 'internal/**'
+              - 'go.mod'
+              - 'go.sum'
+              - 'deploy/backend.Dockerfile*'
+              - '.github/workflows/release.yml'
+            website:
+              - 'website/**'
+              - 'deploy/website.Dockerfile*'
+              - '.github/workflows/release.yml'
+
+  image:
+    name: Image ${{ matrix.component }}
+    needs: changes
+    if: needs.changes.outputs.backend == 'true' || needs.changes.outputs.website == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: backend
+            context: .
+            file: deploy/backend.Dockerfile
+          - component: website
+            context: website
+            file: deploy/website.Dockerfile
+    steps:
+      - name: Skip unchanged component
+        id: gate
+        run: echo "build=${{ needs.changes.outputs[matrix.component] }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v7
+        if: steps.gate.outputs.build == 'true'
+      - uses: docker/setup-buildx-action@v4
+        if: steps.gate.outputs.build == 'true'
+      - uses: docker/login-action@v4
+        if: steps.gate.outputs.build == 'true'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/metadata-action@v6
+        if: steps.gate.outputs.build == 'true'
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ matrix.component }}
+          tags: |
+            type=raw,value=latest
+            type=ref,event=branch
+            type=sha,format=short
+      - uses: docker/build-push-action@v7
+        if: steps.gate.outputs.build == 'true'
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: VERSION=${{ github.sha }}
+          cache-from: type=gha,scope=${{ matrix.component }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.component }}
