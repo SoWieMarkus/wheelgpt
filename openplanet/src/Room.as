@@ -54,9 +54,9 @@ void SendUpdateRoom(Room@ room)
     if (room is null) 
     {
         DebugPrint("No room to send.");
-        DeleteWithRetries("trackmania/room", Setting_RetriesRoom);
+        DeleteWithRetries("v1/plugin/room", Setting_RetriesRoom);
         return;
     }
     Json::Value body = room.ToJson();
-    PostWithRetries("trackmania/room", body, Setting_RetriesRoom);
+    PutWithRetries("v1/plugin/room", body, Setting_RetriesRoom);
 }
