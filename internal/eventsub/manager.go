@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/SoWieMarkus/wheelgpt/internal/channel"
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/twitch"
 )
 
@@ -170,7 +169,7 @@ func (m *Manager) Connect(ctx context.Context, channelID string) (string, error)
 	}
 	status := m.subscribeChat(ctx, channelID)
 	if status == channel.ChatUnknown {
-		return status, domain.ErrTwitchFailed
+		return status, twitch.ErrTwitchFailed
 	}
 	return status, nil
 }
@@ -195,7 +194,7 @@ func (m *Manager) Remove(ctx context.Context, channelID string) error {
 func (m *Manager) removeTypes(ctx context.Context, channelID string, types ...string) error {
 	subs, err := m.twitch.Subscriptions(ctx, channelID)
 	if err != nil {
-		return fmt.Errorf("%w: %w", domain.ErrTwitchFailed, err)
+		return fmt.Errorf("%w: %w", twitch.ErrTwitchFailed, err)
 	}
 	for _, s := range subs {
 		if s.Condition["broadcaster_user_id"] != channelID {
@@ -204,7 +203,7 @@ func (m *Manager) removeTypes(ctx context.Context, channelID string, types ...st
 		for _, t := range types {
 			if s.Type == t {
 				if err := m.twitch.Unsubscribe(ctx, s.ID); err != nil {
-					return fmt.Errorf("%w: %w", domain.ErrTwitchFailed, err)
+					return fmt.Errorf("%w: %w", twitch.ErrTwitchFailed, err)
 				}
 			}
 		}

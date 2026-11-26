@@ -25,3 +25,7 @@ website/coverage/
 !.vscode/extensions.json
 .DS_Store
 Thumbs.db
+
+# Local Go workspace with ../gokit
+go.work
+go.work.sum

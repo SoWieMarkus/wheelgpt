@@ -7,7 +7,6 @@ import (
 
 	"github.com/SoWieMarkus/wheelgpt/internal/bot"
 	"github.com/SoWieMarkus/wheelgpt/internal/channel"
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/ingame"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/twitch"
 )
@@ -47,7 +46,7 @@ func (e *Events) ChatMessage(ctx context.Context, msg bot.Message) error {
 		return nil
 	}
 	c, err := e.channels.Get(ctx, msg.BroadcasterID)
-	if errors.Is(err, domain.ErrChannelNotFound) {
+	if errors.Is(err, channel.ErrChannelNotFound) {
 		return nil
 	}
 	if err != nil {

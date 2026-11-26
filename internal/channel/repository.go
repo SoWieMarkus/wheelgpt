@@ -8,7 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/store"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/store/dbtime"
 )
@@ -161,7 +160,7 @@ func fromRow(r store.GetChannelRow) Channel {
 func (r *SQLRepository) Get(ctx context.Context, id string) (Channel, error) {
 	row, err := r.st.GetChannel(ctx, id)
 	if store.IsNotFound(err) {
-		return Channel{}, domain.ErrChannelNotFound
+		return Channel{}, ErrChannelNotFound
 	}
 	if err != nil {
 		return Channel{}, fmt.Errorf("get channel: %w", err)
@@ -172,7 +171,7 @@ func (r *SQLRepository) Get(ctx context.Context, id string) (Channel, error) {
 func (r *SQLRepository) GetByLogin(ctx context.Context, login string) (Channel, error) {
 	row, err := r.st.GetChannelByLogin(ctx, login)
 	if store.IsNotFound(err) {
-		return Channel{}, domain.ErrChannelNotFound
+		return Channel{}, ErrChannelNotFound
 	}
 	if err != nil {
 		return Channel{}, fmt.Errorf("get channel by login: %w", err)

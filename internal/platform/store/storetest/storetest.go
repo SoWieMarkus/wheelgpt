@@ -5,8 +5,9 @@ package storetest
 
 import (
 	"context"
-	"path/filepath"
 	"testing"
+
+	"github.com/SoWieMarkus/gokit/sqlite/sqlitetest"
 
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/store"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/store/dbtime"
@@ -15,16 +16,7 @@ import (
 // New opens a fresh, fully migrated database.
 func New(t *testing.T) *store.Store {
 	t.Helper()
-	ctx := context.Background()
-	db, err := store.Open(ctx, filepath.Join(t.TempDir(), "test.db"))
-	if err != nil {
-		t.Fatalf("open database: %v", err)
-	}
-	t.Cleanup(func() { _ = db.Close() })
-	if err := store.Migrate(ctx, db); err != nil {
-		t.Fatalf("migrate: %v", err)
-	}
-	return store.NewStore(db)
+	return store.NewStore(sqlitetest.Open(t, store.Migrations()))
 }
 
 // Channel creates a channel like the old backend did: with a legacy plugin

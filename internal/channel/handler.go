@@ -7,8 +7,11 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
+	"github.com/SoWieMarkus/gokit/httpx"
+
 	"github.com/SoWieMarkus/wheelgpt/internal/auth"
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
+	"github.com/SoWieMarkus/wheelgpt/internal/platform/paging"
+	"github.com/SoWieMarkus/wheelgpt/internal/platform/slug"
 )
 
 // Stream switches a channel live or offline the way the Twitch events do:
@@ -71,11 +74,11 @@ func (h *Handler) MountProtected(r chi.Router) {
 //	@Param		q		query		string	false	"filter by login or display name"
 //	@Param		limit	query		int		false	"page size (1-100)"	default(25)
 //	@Param		offset	query		int		false	"items to skip"		default(0)
-//	@Success	200		{object}	httpx.PageDoc{items=[]SummaryResponse}
+//	@Success	200		{object}	paging.PageDoc{items=[]SummaryResponse}
 //	@Failure	400		{object}	httpx.Problem
 //	@Router		/channels [get]
 func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
-	limit, offset, err := httpx.Pagination(r, 25)
+	limit, offset, err := paging.Parse(r, 25)
 	if err != nil {
 		httpx.Error(w, r, err)
 		return
@@ -99,7 +102,7 @@ func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
 	for i, c := range list {
 		items[i] = SummaryResponse(c)
 	}
-	httpx.JSON(w, http.StatusOK, httpx.Page[SummaryResponse]{Items: items, Total: total, Limit: limit, Offset: offset})
+	httpx.JSON(w, http.StatusOK, paging.Page[SummaryResponse]{Items: items, Total: total, Limit: limit, Offset: offset})
 }
 
 // get returns one channel, also channels that are not listed.
@@ -112,7 +115,7 @@ func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
 //	@Failure	404		{object}	httpx.Problem
 //	@Router		/channels/{channel} [get]
 func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
-	ref, err := httpx.PathSlug(r, "channel")
+	ref, err := slug.FromPath(r, "channel")
 	if err != nil {
 		httpx.Error(w, r, err)
 		return

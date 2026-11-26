@@ -18,6 +18,11 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
+	"github.com/SoWieMarkus/gokit/jobs"
+	"github.com/SoWieMarkus/gokit/logging"
+	"github.com/SoWieMarkus/gokit/server"
+	"github.com/SoWieMarkus/gokit/sqlite"
+
 	"github.com/SoWieMarkus/wheelgpt/internal/auth"
 	"github.com/SoWieMarkus/wheelgpt/internal/bot"
 	"github.com/SoWieMarkus/wheelgpt/internal/channel"
@@ -40,7 +45,9 @@ func Run(version string) error {
 	if err != nil {
 		return err
 	}
-	setupLogger(cfg)
+	if err := logging.Setup(cfg.LogLevel, cfg.LogFormat); err != nil {
+		return err
+	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
@@ -48,11 +55,15 @@ func Run(version string) error {
 	if err := os.MkdirAll(filepath.Dir(cfg.DatabasePath()), 0o750); err != nil {
 		return fmt.Errorf("create data directory: %w", err)
 	}
-	db, err := store.Open(ctx, cfg.DatabasePath())
+	db, err := sqlite.Open(ctx, cfg.DatabasePath())
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			slog.Error("close database", "error", err)
+		}
+	}()
 	if err := store.Migrate(ctx, db); err != nil {
 		return err
 	}
@@ -77,13 +88,7 @@ func Run(version string) error {
 		WriteTimeout:      35 * time.Second,
 		IdleTimeout:       120 * time.Second,
 	}
-	metricsMux := http.NewServeMux()
-	metricsMux.Handle("GET /metrics", m.Handler())
-	metricsServer := &http.Server{
-		Addr:              cfg.MetricsAddr,
-		Handler:           metricsMux,
-		ReadHeaderTimeout: 5 * time.Second,
-	}
+	metricsServer := server.MetricsServer(cfg.MetricsAddr, m.Handler())
 
 	if !cfg.SecureCookies() {
 		slog.Warn("PUBLIC_URL is not https - session cookies are sent without the Secure flag. Only use this for local development.")
@@ -96,62 +101,23 @@ func Run(version string) error {
 	}
 
 	g, ctx := errgroup.WithContext(ctx)
-	g.Go(func() error { return serve(apiServer, "api", version) })
-	g.Go(func() error { return serve(metricsServer, "metrics", version) })
+	g.Go(func() error { return server.Serve(apiServer, "api", version) })
+	g.Go(func() error { return server.Serve(metricsServer, "metrics", version) })
 	g.Go(func() error {
 		c.startup(ctx)
 		return nil
 	})
 	g.Go(func() error {
-		return every(ctx, time.Hour, "purge sessions", c.auth.PurgeExpiredSessions)
+		return jobs.Every(ctx, time.Hour, "purge sessions", c.auth.PurgeExpiredSessions)
 	})
 	g.Go(func() error {
-		<-ctx.Done()
-		slog.Info("shutting down")
-		shutdownCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), shutdownTimeout)
-		defer cancel()
-		err := errors.Join(apiServer.Shutdown(shutdownCtx), metricsServer.Shutdown(shutdownCtx))
+		err := server.Shutdown(ctx, shutdownTimeout, apiServer, metricsServer)
 		// Pending PB announcements are sent right away.
 		c.bot.Stop()
 		c.ingame.Wait()
 		return err
 	})
 	return g.Wait()
-}
-
-func serve(srv *http.Server, name, version string) error {
-	slog.Info("listening", "server", name, "addr", srv.Addr, "version", version)
-	err := srv.ListenAndServe()
-	if errors.Is(err, http.ErrServerClosed) {
-		return nil
-	}
-	return fmt.Errorf("%s server: %w", name, err)
-}
-
-// every runs job once right away and then at every interval until ctx ends.
-// Job errors are logged, they never stop the server.
-func every(ctx context.Context, interval time.Duration, name string, job func(context.Context) error) error {
-	ticker := time.NewTicker(interval)
-	defer ticker.Stop()
-	for {
-		if err := job(ctx); err != nil && ctx.Err() == nil {
-			slog.ErrorContext(ctx, "background job failed", "job", name, "error", err)
-		}
-		select {
-		case <-ctx.Done():
-			return nil
-		case <-ticker.C:
-		}
-	}
-}
-
-func setupLogger(cfg Config) {
-	opts := &slog.HandlerOptions{Level: cfg.LogLevel}
-	var handler slog.Handler = slog.NewJSONHandler(os.Stdout, opts)
-	if cfg.LogFormat == "text" {
-		handler = slog.NewTextHandler(os.Stdout, opts)
-	}
-	slog.SetDefault(slog.New(handler))
 }
 
 // externals are the clients of outside services. Tests pass fakes.
@@ -236,7 +202,7 @@ func build(cfg Config, version string, st *store.Store, m *metrics.Metrics, ext 
 		version:           version,
 		publicOrigin:      cfg.PublicOrigin(),
 		trustProxyHeaders: cfg.TrustProxyHeaders,
-	}, st, m, handlers{
+	}, st.DB(), m, handlers{
 		auth: auth.NewHandler(authService, auth.HandlerConfig{
 			PublicOrigin:   cfg.PublicOrigin(),
 			SecureCookies:  cfg.SecureCookies(),

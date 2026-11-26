@@ -6,8 +6,10 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
+	"github.com/SoWieMarkus/gokit/httpx"
+
 	"github.com/SoWieMarkus/wheelgpt/internal/channel"
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
+	"github.com/SoWieMarkus/wheelgpt/internal/platform/slug"
 	"github.com/SoWieMarkus/wheelgpt/internal/trackmania"
 )
 
@@ -75,7 +77,7 @@ func (h *Handler) getRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) channel(w http.ResponseWriter, r *http.Request) (channel.Channel, bool) {
-	ref, err := httpx.PathSlug(r, "channel")
+	ref, err := slug.FromPath(r, "channel")
 	if err != nil {
 		httpx.Error(w, r, err)
 		return channel.Channel{}, false

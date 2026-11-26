@@ -81,7 +81,7 @@ jobs:
       - name: OpenAPI spec and website API types
         run: |
           go run github.com/swaggo/swag/cmd/swag@${SWAG_VERSION} fmt
-          go run github.com/swaggo/swag/cmd/swag@${SWAG_VERSION} init -g cmd/wheelgpt/main.go -o api/openapi --parseInternal --requiredByDefault --outputTypes go,json,yaml
+          go run github.com/swaggo/swag/cmd/swag@${SWAG_VERSION} init -d cmd/wheelgpt,internal -g main.go -o api/openapi --parseInternal --parseDependencyLevel 1 --requiredByDefault --outputTypes go,json,yaml
           npm ci --prefix website --ignore-scripts --no-audit --no-fund
           npm run --prefix website generate:api
           git diff --exit-code || (echo "::error::Run 'make generate' and commit the result" && exit 1)

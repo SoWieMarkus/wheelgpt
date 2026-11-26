@@ -265,7 +265,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["httpx.PageDoc"] & {
+            "application/json": components["schemas"]["paging.PageDoc"] & {
               items?: components["schemas"]["channel.SummaryResponse"][];
             };
           };
@@ -423,7 +423,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["httpx.PageDoc"] & {
+            "application/json": components["schemas"]["paging.PageDoc"] & {
               items?: components["schemas"]["leaderboard.EntryResponse"][];
             };
           };
@@ -1495,7 +1495,7 @@ export interface components {
       profileImage: string;
     };
     "httpx.FieldError": {
-      /** @example guessDelaySeconds */
+      /** @example title */
       field: string;
       /** @example is required */
       message: string;
@@ -1503,28 +1503,19 @@ export interface components {
     "httpx.ListDoc": {
       items: unknown[];
     };
-    "httpx.PageDoc": {
-      items: unknown[];
-      /** @example 25 */
-      limit: number;
-      /** @example 0 */
-      offset: number;
-      /** @example 120 */
-      total: number;
-    };
     "httpx.Problem": {
-      /** @example channel_not_found */
+      /** @example name_taken */
       code: string;
-      /** @example this channel does not use WheelGPT */
+      /** @example this name is already taken */
       detail: string;
       errors?: components["schemas"]["httpx.FieldError"][];
-      /** @example /api/v1/channels/someone */
+      /** @example /api/v1/items */
       instance: string;
       /** @description RequestID correlates the response with server logs. */
       requestId?: string;
-      /** @example 404 */
+      /** @example 409 */
       status: number;
-      /** @example Not Found */
+      /** @example Conflict */
       title: string;
       /** @example about:blank */
       type: string;
@@ -1615,6 +1606,15 @@ export interface components {
        *     ]
        */
       periods: string[];
+    };
+    "paging.PageDoc": {
+      items: unknown[];
+      /** @example 25 */
+      limit: number;
+      /** @example 0 */
+      offset: number;
+      /** @example 120 */
+      total: number;
     };
     "plugin.PersonalBestBody": {
       /**

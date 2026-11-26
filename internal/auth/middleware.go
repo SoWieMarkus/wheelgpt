@@ -5,8 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
+	"github.com/SoWieMarkus/gokit/httpx"
 )
 
 type contextKey struct{}
@@ -30,11 +29,11 @@ func (h *Handler) RequireChannel(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie(h.cookieName())
 		if err != nil {
-			httpx.Error(w, r, domain.ErrUnauthenticated)
+			httpx.Error(w, r, ErrUnauthenticated)
 			return
 		}
 		identity, err := h.service.Authenticate(r.Context(), cookie.Value)
-		if errors.Is(err, domain.ErrUnauthenticated) {
+		if errors.Is(err, ErrUnauthenticated) {
 			h.clearSessionCookie(w)
 		}
 		if err != nil {

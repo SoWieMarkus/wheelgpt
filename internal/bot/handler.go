@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
+	"github.com/SoWieMarkus/gokit/httpx"
 )
 
 type Handler struct {

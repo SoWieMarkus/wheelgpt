@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/store"
 	"github.com/SoWieMarkus/wheelgpt/internal/trackmania"
 )
@@ -45,7 +44,7 @@ func NewRepository(st *store.Store) *SQLRepository {
 func (r *SQLRepository) Map(ctx context.Context, channelID string) (trackmania.Map, error) {
 	row, err := r.st.GetMap(ctx, channelID)
 	if store.IsNotFound(err) {
-		return trackmania.Map{}, domain.ErrMapNotFound
+		return trackmania.Map{}, ErrMapNotFound
 	}
 	if err != nil {
 		return trackmania.Map{}, fmt.Errorf("get map: %w", err)
@@ -103,7 +102,7 @@ func (r *SQLRepository) ClearMap(ctx context.Context, channelID string) error {
 func (r *SQLRepository) Room(ctx context.Context, channelID string) (Room, error) {
 	row, err := r.st.GetRoom(ctx, channelID)
 	if store.IsNotFound(err) {
-		return Room{}, domain.ErrRoomNotFound
+		return Room{}, ErrRoomNotFound
 	}
 	if err != nil {
 		return Room{}, fmt.Errorf("get room: %w", err)

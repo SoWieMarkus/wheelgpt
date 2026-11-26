@@ -3,8 +3,6 @@ package leaderboard
 import (
 	"context"
 	"time"
-
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 )
 
 // AllTime is the key of the all-time leaderboard.
@@ -37,7 +35,7 @@ func ParsePeriod(key string) (Period, error) {
 	}
 	t, err := time.Parse("2006-01", key)
 	if err != nil {
-		return Period{}, domain.ErrInvalidPeriod
+		return Period{}, ErrInvalidPeriod
 	}
 	return MonthOf(t), nil
 }

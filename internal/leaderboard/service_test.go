@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/SoWieMarkus/wheelgpt/internal/channel"
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/guess"
 	"github.com/SoWieMarkus/wheelgpt/internal/ingame"
 	"github.com/SoWieMarkus/wheelgpt/internal/leaderboard"
@@ -28,7 +27,7 @@ func TestParsePeriod(t *testing.T) {
 		t.Fatalf("all-time: %+v, %v", p, err)
 	}
 	for _, bad := range []string{"2026-13", "2026", "everything", ""} {
-		if _, err := leaderboard.ParsePeriod(bad); !errors.Is(err, domain.ErrInvalidPeriod) {
+		if _, err := leaderboard.ParsePeriod(bad); !errors.Is(err, leaderboard.ErrInvalidPeriod) {
 			t.Errorf("%q: %v", bad, err)
 		}
 	}

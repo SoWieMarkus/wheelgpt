@@ -21,9 +21,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
+	"github.com/SoWieMarkus/gokit/httpx"
+
 	"github.com/SoWieMarkus/wheelgpt/internal/bot"
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/twitch"
 )
 
@@ -130,12 +130,12 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if id == "" || timestamp == "" || signature == "" ||
 		!hmac.Equal([]byte(signature), []byte(Sign(h.Secret, id, timestamp, body))) {
 		slog.WarnContext(r.Context(), "eventsub: invalid signature", "message_id", id)
-		httpx.Error(w, r, domain.ErrInvalidSignature)
+		httpx.Error(w, r, ErrInvalidSignature)
 		return
 	}
 	sent, err := time.Parse(time.RFC3339Nano, timestamp)
 	if err != nil || h.Now().Sub(sent).Abs() > MaxAge {
-		httpx.Error(w, r, domain.ErrInvalidSignature)
+		httpx.Error(w, r, ErrInvalidSignature)
 		return
 	}
 	if h.duplicate(id) {

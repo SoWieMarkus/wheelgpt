@@ -9,6 +9,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/SoWieMarkus/gokit/sqlite"
+
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/store"
 )
 
@@ -61,7 +63,7 @@ func legacyDB(t *testing.T) string {
 func open(t *testing.T, path string) *store.Store {
 	t.Helper()
 	ctx := context.Background()
-	db, err := store.Open(ctx, path)
+	db, err := sqlite.Open(ctx, path)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -11,11 +11,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httprate"
 
+	"github.com/SoWieMarkus/gokit/httpx"
+
 	"github.com/SoWieMarkus/wheelgpt/internal/auth"
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/guess"
 	"github.com/SoWieMarkus/wheelgpt/internal/ingame"
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
 	"github.com/SoWieMarkus/wheelgpt/internal/trackmania"
 )
 
@@ -60,7 +60,7 @@ func (h *Handler) rateLimit(r chi.Router) {
 		r.Use(httprate.LimitBy(h.cfg.RateLimit, time.Minute,
 			func(r *http.Request) (string, error) { return currentCaller(r).ChannelID, nil },
 			httprate.WithLimitHandler(func(w http.ResponseWriter, r *http.Request) {
-				httpx.Error(w, r, domain.ErrTooManyRequests)
+				httpx.Error(w, r, auth.ErrTooManyRequests)
 			}),
 		))
 	}
@@ -339,7 +339,7 @@ func legacy[T any](fn func(r *http.Request, channelID string, body T) error, suc
 		}
 		err := fn(r, currentCaller(r).ChannelID, body)
 		switch {
-		case errors.Is(err, domain.ErrChannelOffline):
+		case errors.Is(err, ErrChannelOffline):
 			httpx.JSON(w, http.StatusOK, legacyMessage{Message: "Channel is offline."})
 		case err != nil:
 			httpx.Error(w, r, err)
