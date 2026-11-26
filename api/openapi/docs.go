@@ -178,7 +178,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httpx.PageDoc"
+                                    "$ref": "#/definitions/paging.PageDoc"
                                 },
                                 {
                                     "type": "object",
@@ -323,7 +323,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httpx.PageDoc"
+                                    "$ref": "#/definitions/paging.PageDoc"
                                 },
                                 {
                                     "type": "object",
@@ -1234,7 +1234,7 @@ const docTemplate = `{
             "properties": {
                 "field": {
                     "type": "string",
-                    "example": "guessDelaySeconds"
+                    "example": "title"
                 },
                 "message": {
                     "type": "string",
@@ -1254,33 +1254,6 @@ const docTemplate = `{
                 }
             }
         },
-        "httpx.PageDoc": {
-            "type": "object",
-            "required": [
-                "items",
-                "limit",
-                "offset",
-                "total"
-            ],
-            "properties": {
-                "items": {
-                    "type": "array",
-                    "items": {}
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 25
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "total": {
-                    "type": "integer",
-                    "example": 120
-                }
-            }
-        },
         "httpx.Problem": {
             "type": "object",
             "required": [
@@ -1294,11 +1267,11 @@ const docTemplate = `{
             "properties": {
                 "code": {
                     "type": "string",
-                    "example": "channel_not_found"
+                    "example": "name_taken"
                 },
                 "detail": {
                     "type": "string",
-                    "example": "this channel does not use WheelGPT"
+                    "example": "this name is already taken"
                 },
                 "errors": {
                     "type": "array",
@@ -1308,7 +1281,7 @@ const docTemplate = `{
                 },
                 "instance": {
                     "type": "string",
-                    "example": "/api/v1/channels/someone"
+                    "example": "/api/v1/items"
                 },
                 "requestId": {
                     "description": "RequestID correlates the response with server logs.",
@@ -1316,11 +1289,11 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "integer",
-                    "example": 404
+                    "example": 409
                 },
                 "title": {
                     "type": "string",
-                    "example": "Not Found"
+                    "example": "Conflict"
                 },
                 "type": {
                     "type": "string",
@@ -1541,6 +1514,33 @@ const docTemplate = `{
                         "2026-10",
                         "all-time"
                     ]
+                }
+            }
+        },
+        "paging.PageDoc": {
+            "type": "object",
+            "required": [
+                "items",
+                "limit",
+                "offset",
+                "total"
+            ],
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {}
+                },
+                "limit": {
+                    "type": "integer",
+                    "example": 25
+                },
+                "offset": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 120
                 }
             }
         },

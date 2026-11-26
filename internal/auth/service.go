@@ -12,7 +12,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/twitch"
 )
 
@@ -79,7 +78,7 @@ func NewService(repo Repository, oauth OAuth, registrar Registrar, rec Recorder,
 // AuthorizeURL returns the Twitch URL a browser is sent to.
 func (s *Service) AuthorizeURL(redirectURI, state string, bot bool) (string, error) {
 	if s.oauth == nil {
-		return "", domain.ErrTwitchNotConfigured
+		return "", ErrTwitchNotConfigured
 	}
 	if bot {
 		return s.oauth.AuthorizeURL(redirectURI, BotScopes, state, true), nil
@@ -91,17 +90,17 @@ func (s *Service) AuthorizeURL(redirectURI, state string, bot bool) (string, err
 // identifies the streamer and is dropped afterwards.
 func (s *Service) Login(ctx context.Context, code, redirectURI string) (Issued, error) {
 	if s.oauth == nil {
-		return Issued{}, domain.ErrTwitchNotConfigured
+		return Issued{}, ErrTwitchNotConfigured
 	}
 	token, err := s.oauth.ExchangeCode(ctx, code, redirectURI)
 	if err != nil {
 		s.rec.Login("failure")
-		return Issued{}, fmt.Errorf("%w: %w", domain.ErrTwitchFailed, err)
+		return Issued{}, fmt.Errorf("%w: %w", twitch.ErrTwitchFailed, err)
 	}
 	user, err := s.oauth.Me(ctx, token.AccessToken)
 	if err != nil {
 		s.rec.Login("failure")
-		return Issued{}, fmt.Errorf("%w: %w", domain.ErrTwitchFailed, err)
+		return Issued{}, fmt.Errorf("%w: %w", twitch.ErrTwitchFailed, err)
 	}
 	isNew, err := s.registrar.Register(ctx, user.ID, user.Login, user.DisplayName, user.ProfileImageURL, token.Scopes)
 	if err != nil {
@@ -119,18 +118,18 @@ func (s *Service) Login(ctx context.Context, code, redirectURI string) (Issued, 
 // AuthorizeBot finishes the one-time authorization of the bot account.
 func (s *Service) AuthorizeBot(ctx context.Context, code, redirectURI string) error {
 	if s.oauth == nil {
-		return domain.ErrTwitchNotConfigured
+		return ErrTwitchNotConfigured
 	}
 	token, err := s.oauth.ExchangeCode(ctx, code, redirectURI)
 	if err != nil {
-		return fmt.Errorf("%w: %w", domain.ErrTwitchFailed, err)
+		return fmt.Errorf("%w: %w", twitch.ErrTwitchFailed, err)
 	}
 	user, err := s.oauth.Me(ctx, token.AccessToken)
 	if err != nil {
-		return fmt.Errorf("%w: %w", domain.ErrTwitchFailed, err)
+		return fmt.Errorf("%w: %w", twitch.ErrTwitchFailed, err)
 	}
 	if !strings.EqualFold(user.Login, s.cfg.BotUsername) {
-		return domain.ErrWrongBotAccount
+		return ErrWrongBotAccount
 	}
 	slog.InfoContext(ctx, "bot account authorized", "bot", user.Login, "scopes", token.Scopes)
 	if s.cfg.OnBotAuthorized != nil {
@@ -163,7 +162,7 @@ func (s *Service) issue(ctx context.Context, channelID string) (Issued, error) {
 // Authenticate resolves a session cookie.
 func (s *Service) Authenticate(ctx context.Context, token string) (Identity, error) {
 	if token == "" || len(token) > 200 {
-		return Identity{}, domain.ErrUnauthenticated
+		return Identity{}, ErrUnauthenticated
 	}
 	sess, err := s.repo.GetSession(ctx, Hash(token), s.now())
 	if err != nil {

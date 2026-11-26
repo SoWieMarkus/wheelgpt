@@ -12,8 +12,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httprate"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
+	"github.com/SoWieMarkus/gokit/apperr"
+	"github.com/SoWieMarkus/gokit/httpx"
 )
 
 const (
@@ -59,7 +59,7 @@ func (h *Handler) Mount(r chi.Router) {
 				// X-Real-IP behind the website's proxy (TRUST_PROXY_HEADERS).
 				r.Use(httprate.LimitBy(h.cfg.LoginRateLimit, time.Minute, clientIPKey,
 					httprate.WithLimitHandler(func(w http.ResponseWriter, r *http.Request) {
-						httpx.Error(w, r, domain.ErrTooManyRequests)
+						httpx.Error(w, r, ErrTooManyRequests)
 					}),
 				))
 			}
@@ -148,7 +148,7 @@ var devLoginPattern = regexp.MustCompile(`^[a-z0-9_]{3,25}$`)
 func (h *Handler) devLogin(w http.ResponseWriter, r *http.Request) {
 	login := strings.ToLower(r.URL.Query().Get("login"))
 	if !devLoginPattern.MatchString(login) {
-		httpx.Error(w, r, domain.Invalid("invalid_login", "login must be 3 to 25 characters a-z, 0-9 or _"))
+		httpx.Error(w, r, apperr.Invalid("invalid_login", "login must be 3 to 25 characters a-z, 0-9 or _"))
 		return
 	}
 	issued, err := h.service.DevLogin(r.Context(), login)
@@ -217,14 +217,14 @@ func (h *Handler) checkState(w http.ResponseWriter, r *http.Request, purpose str
 	}
 	c, err := r.Cookie(stateCookie)
 	if err != nil {
-		httpx.Error(w, r, domain.ErrLoginState)
+		httpx.Error(w, r, ErrLoginState)
 		return "", false
 	}
 	raw, err := base64.RawURLEncoding.DecodeString(c.Value)
 	parts := strings.SplitN(string(raw), "\n", 3)
 	if err != nil || len(parts) != 3 || parts[1] != purpose ||
 		subtle.ConstantTimeCompare([]byte(parts[0]), []byte(r.URL.Query().Get("state"))) != 1 {
-		httpx.Error(w, r, domain.ErrLoginState)
+		httpx.Error(w, r, ErrLoginState)
 		return "", false
 	}
 	return parts[2], true

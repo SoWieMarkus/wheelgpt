@@ -6,8 +6,11 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
+	"github.com/SoWieMarkus/gokit/httpx"
+
 	"github.com/SoWieMarkus/wheelgpt/internal/channel"
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
+	"github.com/SoWieMarkus/wheelgpt/internal/platform/paging"
+	"github.com/SoWieMarkus/wheelgpt/internal/platform/slug"
 )
 
 // Channels resolves the channel of a path.
@@ -64,7 +67,7 @@ func (h *Handler) periods(w http.ResponseWriter, r *http.Request) {
 //	@Param			q		query		string	false	"filter by display name, positions stay those of the full board"
 //	@Param			limit	query		int		false	"page size (1-100)"	default(50)
 //	@Param			offset	query		int		false	"items to skip"		default(0)
-//	@Success		200		{object}	httpx.PageDoc{items=[]EntryResponse}
+//	@Success		200		{object}	paging.PageDoc{items=[]EntryResponse}
 //	@Failure		400		{object}	httpx.Problem
 //	@Failure		404		{object}	httpx.Problem
 //	@Router			/channels/{channel}/leaderboards/{period} [get]
@@ -73,7 +76,7 @@ func (h *Handler) board(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	key, err := httpx.PathSlug(r, "period")
+	key, err := slug.FromPath(r, "period")
 	if err != nil {
 		httpx.Error(w, r, err)
 		return
@@ -83,7 +86,7 @@ func (h *Handler) board(w http.ResponseWriter, r *http.Request) {
 		httpx.Error(w, r, err)
 		return
 	}
-	limit, offset, err := httpx.Pagination(r, 50)
+	limit, offset, err := paging.Parse(r, 50)
 	if err != nil {
 		httpx.Error(w, r, err)
 		return
@@ -102,11 +105,11 @@ func (h *Handler) board(w http.ResponseWriter, r *http.Request) {
 	for i, e := range entries {
 		items[i] = EntryResponse(e)
 	}
-	httpx.JSON(w, http.StatusOK, httpx.Page[EntryResponse]{Items: items, Total: total, Limit: limit, Offset: offset})
+	httpx.JSON(w, http.StatusOK, paging.Page[EntryResponse]{Items: items, Total: total, Limit: limit, Offset: offset})
 }
 
 func (h *Handler) channel(w http.ResponseWriter, r *http.Request) (channel.Channel, bool) {
-	ref, err := httpx.PathSlug(r, "channel")
+	ref, err := slug.FromPath(r, "channel")
 	if err != nil {
 		httpx.Error(w, r, err)
 		return channel.Channel{}, false

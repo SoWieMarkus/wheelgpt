@@ -9,9 +9,8 @@ package store
 import (
 	"context"
 	"database/sql"
-	"errors"
-	"fmt"
-	"strings"
+
+	"github.com/SoWieMarkus/gokit/sqlite"
 )
 
 // Store bundles the generated queries with the database handle so
@@ -28,17 +27,9 @@ func NewStore(db *sql.DB) *Store {
 // InTx runs fn inside a transaction. The transaction is committed when fn
 // returns nil and rolled back otherwise.
 func (s *Store) InTx(ctx context.Context, fn func(q *Queries) error) error {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return fmt.Errorf("begin transaction: %w", err)
-	}
-	// Rollback after a successful commit is a no-op.
-	defer tx.Rollback() //nolint:errcheck
-
-	if err := fn(s.WithTx(tx)); err != nil {
-		return err
-	}
-	return tx.Commit()
+	return sqlite.InTx(ctx, s.db, func(tx *sql.Tx) error {
+		return fn(s.WithTx(tx))
+	})
 }
 
 // Ping verifies the database is reachable.
@@ -51,13 +42,9 @@ func (s *Store) DB() *sql.DB {
 	return s.db
 }
 
-// IsNotFound reports whether err means "no row matched".
-func IsNotFound(err error) bool {
-	return errors.Is(err, sql.ErrNoRows)
-}
-
-// IsUniqueViolation reports whether err is a UNIQUE constraint failure.
-// modernc.org/sqlite reports constraint errors only through their message.
-func IsUniqueViolation(err error) bool {
-	return err != nil && strings.Contains(err.Error(), "UNIQUE constraint failed")
-}
+// Error helpers from gokit/sqlite, re-exported so repositories only depend
+// on this package.
+var (
+	IsNotFound        = sqlite.IsNotFound
+	IsUniqueViolation = sqlite.IsUniqueViolation
+)

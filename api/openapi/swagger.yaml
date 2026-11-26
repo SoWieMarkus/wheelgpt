@@ -156,7 +156,7 @@ definitions:
   httpx.FieldError:
     properties:
       field:
-        example: guessDelaySeconds
+        example: title
         type: string
       message:
         example: is required
@@ -173,49 +173,29 @@ definitions:
     required:
     - items
     type: object
-  httpx.PageDoc:
-    properties:
-      items:
-        items: {}
-        type: array
-      limit:
-        example: 25
-        type: integer
-      offset:
-        example: 0
-        type: integer
-      total:
-        example: 120
-        type: integer
-    required:
-    - items
-    - limit
-    - offset
-    - total
-    type: object
   httpx.Problem:
     properties:
       code:
-        example: channel_not_found
+        example: name_taken
         type: string
       detail:
-        example: this channel does not use WheelGPT
+        example: this name is already taken
         type: string
       errors:
         items:
           $ref: '#/definitions/httpx.FieldError'
         type: array
       instance:
-        example: /api/v1/channels/someone
+        example: /api/v1/items
         type: string
       requestId:
         description: RequestID correlates the response with server logs.
         type: string
       status:
-        example: 404
+        example: 409
         type: integer
       title:
-        example: Not Found
+        example: Conflict
         type: string
       type:
         example: about:blank
@@ -392,6 +372,26 @@ definitions:
     required:
     - current
     - periods
+    type: object
+  paging.PageDoc:
+    properties:
+      items:
+        items: {}
+        type: array
+      limit:
+        example: 25
+        type: integer
+      offset:
+        example: 0
+        type: integer
+      total:
+        example: 120
+        type: integer
+    required:
+    - items
+    - limit
+    - offset
+    - total
     type: object
   plugin.PersonalBestBody:
     properties:
@@ -630,7 +630,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httpx.PageDoc'
+            - $ref: '#/definitions/paging.PageDoc'
             - properties:
                 items:
                   items:
@@ -725,7 +725,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httpx.PageDoc'
+            - $ref: '#/definitions/paging.PageDoc'
             - properties:
                 items:
                   items:

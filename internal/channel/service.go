@@ -6,8 +6,6 @@ import (
 	"log/slog"
 	"regexp"
 	"time"
-
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 )
 
 // ChatSubscriber connects the bot to a channel's chat (EventSub).
@@ -39,7 +37,7 @@ var numeric = regexp.MustCompile(`^\d+$`)
 func (s *Service) Resolve(ctx context.Context, ref string) (Channel, error) {
 	if numeric.MatchString(ref) {
 		c, err := s.repo.Get(ctx, ref)
-		if !errors.Is(err, domain.ErrChannelNotFound) {
+		if !errors.Is(err, ErrChannelNotFound) {
 			return c, err
 		}
 	}

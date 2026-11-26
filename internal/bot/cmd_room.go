@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
+	"github.com/SoWieMarkus/wheelgpt/internal/ingame"
 )
 
 func roomCommand() *Command {
@@ -20,7 +20,7 @@ func roomCommand() *Command {
 
 func runRoom(ctx context.Context, b *Bot, inv Invocation) (string, error) {
 	room, err := b.Ingame.Room(ctx, inv.Channel.ID)
-	if errors.Is(err, domain.ErrRoomNotFound) {
+	if errors.Is(err, ingame.ErrRoomNotFound) {
 		return inv.mention() + " I am currently not in a room.", nil
 	}
 	if err != nil {

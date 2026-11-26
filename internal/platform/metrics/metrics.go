@@ -1,28 +1,20 @@
-// Package metrics exposes Prometheus metrics for HTTP traffic, the database
-// pool and bot events like commands, personal bests and EventSub messages.
+// Package metrics exposes the business metrics of wheelgpt like logins, bot
+// commands, personal bests and EventSub messages. HTTP, database pool and
+// runtime metrics come from the embedded gokit registry.
 package metrics
 
 import (
 	"database/sql"
-	"net/http"
-	"strconv"
-	"time"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/collectors"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+
+	kitmetrics "github.com/SoWieMarkus/gokit/metrics"
 )
 
 const namespace = "wheelgpt"
 
 type Metrics struct {
-	registry *prometheus.Registry
-
-	httpRequests *prometheus.CounterVec
-	httpDuration *prometheus.HistogramVec
-	httpInFlight prometheus.Gauge
+	*kitmetrics.Registry
 
 	logins         *prometheus.CounterVec
 	commands       *prometheus.CounterVec
@@ -35,22 +27,8 @@ type Metrics struct {
 
 // New registers all collectors on a fresh registry. db may be nil (tests).
 func New(version string, db *sql.DB) *Metrics {
-	reg := prometheus.NewRegistry()
 	m := &Metrics{
-		registry: reg,
-		httpRequests: prometheus.NewCounterVec(prometheus.CounterOpts{
-			Namespace: namespace, Subsystem: "http", Name: "requests_total",
-			Help: "HTTP requests by route, method and status code.",
-		}, []string{"route", "method", "status"}),
-		httpDuration: prometheus.NewHistogramVec(prometheus.HistogramOpts{
-			Namespace: namespace, Subsystem: "http", Name: "request_duration_seconds",
-			Help:    "HTTP request latency by route and method.",
-			Buckets: prometheus.DefBuckets,
-		}, []string{"route", "method"}),
-		httpInFlight: prometheus.NewGauge(prometheus.GaugeOpts{
-			Namespace: namespace, Subsystem: "http", Name: "requests_in_flight",
-			Help: "HTTP requests currently being served.",
-		}),
+		Registry: kitmetrics.New(namespace, version, db),
 		logins: prometheus.NewCounterVec(prometheus.CounterOpts{
 			Namespace: namespace, Name: "logins_total",
 			Help: "Twitch logins by outcome (new, returning, failure).",
@@ -81,47 +59,11 @@ func New(version string, db *sql.DB) *Metrics {
 		}, []string{"endpoint"}),
 	}
 
-	reg.MustRegister(
-		collectors.NewGoCollector(),
-		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
-		prometheus.NewGaugeFunc(prometheus.GaugeOpts{
-			Namespace: namespace, Name: "build_info",
-			Help:        "Build information, always 1.",
-			ConstLabels: prometheus.Labels{"version": version},
-		}, func() float64 { return 1 }),
-		m.httpRequests, m.httpDuration, m.httpInFlight,
+	m.MustRegister(
 		m.logins, m.commands, m.personalBests, m.guesses,
 		m.eventsub, m.chatSent, m.twitchFailures,
 	)
-	if db != nil {
-		reg.MustRegister(collectors.NewDBStatsCollector(db, namespace))
-	}
 	return m
-}
-
-// Handler serves the metrics in the Prometheus exposition format.
-func (m *Metrics) Handler() http.Handler {
-	return promhttp.HandlerFor(m.registry, promhttp.HandlerOpts{Registry: m.registry})
-}
-
-// Middleware records request metrics. It labels by chi route pattern instead
-// of raw path to keep cardinality bounded.
-func (m *Metrics) Middleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-		m.httpInFlight.Inc()
-		defer m.httpInFlight.Dec()
-
-		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
-		next.ServeHTTP(ww, r)
-
-		route := "unmatched"
-		if rc := chi.RouteContext(r.Context()); rc != nil && rc.RoutePattern() != "" {
-			route = rc.RoutePattern()
-		}
-		m.httpRequests.WithLabelValues(route, r.Method, strconv.Itoa(ww.Status())).Inc()
-		m.httpDuration.WithLabelValues(route, r.Method).Observe(time.Since(start).Seconds())
-	})
 }
 
 func (m *Metrics) Login(outcome string)          { m.logins.WithLabelValues(outcome).Inc() }

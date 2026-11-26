@@ -4,13 +4,15 @@ package app
 // OpenAPI docs and the routes of every feature package.
 
 import (
-	"context"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
+
+	"github.com/SoWieMarkus/gokit/httpx"
+	"github.com/SoWieMarkus/gokit/server"
 
 	// Registers the generated OpenAPI spec with swag.
 	_ "github.com/SoWieMarkus/wheelgpt/api/openapi"
@@ -20,14 +22,9 @@ import (
 	"github.com/SoWieMarkus/wheelgpt/internal/eventsub"
 	"github.com/SoWieMarkus/wheelgpt/internal/ingame"
 	"github.com/SoWieMarkus/wheelgpt/internal/leaderboard"
-	"github.com/SoWieMarkus/wheelgpt/internal/platform/httpx"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/metrics"
 	"github.com/SoWieMarkus/wheelgpt/internal/plugin"
 )
-
-type pinger interface {
-	Ping(ctx context.Context) error
-}
 
 // handlers are the HTTP handlers of all feature packages.
 type handlers struct {
@@ -47,8 +44,8 @@ type routerConfig struct {
 }
 
 // newRouter builds the router for the whole API.
-func newRouter(cfg routerConfig, db pinger, m *metrics.Metrics, h handlers) (http.Handler, error) {
-	csrf, err := crossOriginProtection(cfg.publicOrigin)
+func newRouter(cfg routerConfig, db server.Pinger, m *metrics.Metrics, h handlers) (http.Handler, error) {
+	csrf, err := server.CrossOriginProtection(cfg.publicOrigin)
 	if err != nil {
 		return nil, err
 	}
@@ -56,32 +53,23 @@ func newRouter(cfg routerConfig, db pinger, m *metrics.Metrics, h handlers) (htt
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	if cfg.trustProxyHeaders {
-		r.Use(realIPFromProxy)
+		r.Use(server.RealIPFromProxy)
 	}
 	r.Use(
-		requestLogger,
+		server.RequestLogger,
 		middleware.Recoverer,
 		m.Middleware,
-		securityHeaders,
+		server.SecurityHeaders,
 		middleware.Timeout(30*time.Second),
 	)
-	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
-		httpx.WriteProblem(w, r, http.StatusNotFound, "route_not_found", "this route does not exist", nil)
-	})
-	r.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
-		httpx.WriteProblem(w, r, http.StatusMethodNotAllowed, "method_not_allowed", "method not allowed on this route", nil)
-	})
+	r.NotFound(httpx.NotFound)
+	r.MethodNotAllowed(httpx.MethodNotAllowed)
 
-	r.Get("/healthz", health(cfg.version))
-	r.Get("/readyz", ready(cfg.version, db))
+	r.Get(server.HealthPath, server.Health(cfg.version))
+	r.Get(server.ReadyPath, server.Ready(cfg.version, db))
 	r.Group(func(r chi.Router) {
 		// The swagger UI needs scripts and styles, relax the API policy.
-		r.Use(func(next http.Handler) http.Handler {
-			return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-				w.Header().Del("Content-Security-Policy")
-				next.ServeHTTP(w, req)
-			})
-		})
+		r.Use(server.AllowScripts)
 		r.Get("/api/docs/*", httpSwagger.Handler(httpSwagger.URL("/api/docs/doc.json")))
 	})
 

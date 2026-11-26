@@ -7,7 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/trackmania"
 )
 
@@ -33,7 +32,7 @@ func (s *Service) Map(ctx context.Context, channelID string) (trackmania.Map, er
 // CurrentMap returns the map or nil when the streamer is not on one.
 func (s *Service) CurrentMap(ctx context.Context, channelID string) (*trackmania.Map, error) {
 	m, err := s.repo.Map(ctx, channelID)
-	if errors.Is(err, domain.ErrMapNotFound) {
+	if errors.Is(err, ErrMapNotFound) {
 		return nil, nil
 	}
 	if err != nil {

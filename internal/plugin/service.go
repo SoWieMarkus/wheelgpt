@@ -12,7 +12,6 @@ import (
 
 	"github.com/SoWieMarkus/wheelgpt/internal/auth"
 	"github.com/SoWieMarkus/wheelgpt/internal/channel"
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/guess"
 	"github.com/SoWieMarkus/wheelgpt/internal/ingame"
 	"github.com/SoWieMarkus/wheelgpt/internal/trackmania"
@@ -63,7 +62,7 @@ type Caller struct {
 // JWT of the old one.
 func (s *Service) Authenticate(ctx context.Context, token string) (Caller, error) {
 	if token == "" || len(token) > 4096 {
-		return Caller{}, domain.ErrInvalidPluginToken
+		return Caller{}, ErrInvalidPluginToken
 	}
 	if strings.HasPrefix(token, TokenPrefix) {
 		t, ok, err := s.repo.TokenByHash(ctx, auth.Hash(token))
@@ -71,7 +70,7 @@ func (s *Service) Authenticate(ctx context.Context, token string) (Caller, error
 			return Caller{}, err
 		}
 		if !ok {
-			return Caller{}, domain.ErrInvalidPluginToken
+			return Caller{}, ErrInvalidPluginToken
 		}
 		if err := s.repo.TouchToken(ctx, t.ChannelID, s.now()); err != nil {
 			slog.WarnContext(ctx, "touch plugin token failed", "error", err)
@@ -92,28 +91,28 @@ type legacyClaims struct {
 // with the channel id (or, older, the login) and the channel's secret.
 func (s *Service) authenticateLegacy(ctx context.Context, token string) (Caller, error) {
 	if s.cfg.LegacySecret == "" {
-		return Caller{}, domain.ErrInvalidPluginToken
+		return Caller{}, ErrInvalidPluginToken
 	}
 	var claims legacyClaims
 	_, err := jwt.ParseWithClaims(token, &claims, func(*jwt.Token) (any, error) {
 		return []byte(s.cfg.LegacySecret), nil
 	}, jwt.WithValidMethods([]string{"HS256"}))
 	if err != nil || (claims.ID == "") == (claims.ChannelID == "") || claims.Token == "" {
-		return Caller{}, domain.ErrInvalidPluginToken
+		return Caller{}, ErrInvalidPluginToken
 	}
 	ref := claims.ID
 	if ref == "" {
 		ref = claims.ChannelID
 	}
 	c, err := s.channels.Resolve(ctx, ref)
-	if errors.Is(err, domain.ErrChannelNotFound) {
-		return Caller{}, domain.ErrInvalidPluginToken
+	if errors.Is(err, channel.ErrChannelNotFound) {
+		return Caller{}, ErrInvalidPluginToken
 	}
 	if err != nil {
 		return Caller{}, err
 	}
 	if c.LegacySecret == "" || subtle.ConstantTimeCompare([]byte(c.LegacySecret), []byte(claims.Token)) != 1 {
-		return Caller{}, domain.ErrInvalidPluginToken
+		return Caller{}, ErrInvalidPluginToken
 	}
 	return Caller{ChannelID: c.ID, Legacy: true}, nil
 }
@@ -165,7 +164,7 @@ func (s *Service) live(ctx context.Context, channelID string) (channel.Channel, 
 		return c, err
 	}
 	if !c.Accepting() {
-		return c, domain.ErrChannelOffline
+		return c, ErrChannelOffline
 	}
 	return c, nil
 }
@@ -211,7 +210,7 @@ type PersonalBestResult struct {
 // after the channel's delay.
 func (s *Service) PersonalBest(ctx context.Context, channelID string, pb trackmania.Time) (PersonalBestResult, error) {
 	c, err := s.live(ctx, channelID)
-	if errors.Is(err, domain.ErrChannelOffline) {
+	if errors.Is(err, ErrChannelOffline) {
 		s.rec.PersonalBest("offline")
 	}
 	if err != nil {

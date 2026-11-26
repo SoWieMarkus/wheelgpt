@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/SoWieMarkus/wheelgpt/internal/domain"
 	"github.com/SoWieMarkus/wheelgpt/internal/platform/store"
 )
 
@@ -47,7 +46,7 @@ func (r *SQLRepository) CreateSession(ctx context.Context, s Session, now time.T
 func (r *SQLRepository) GetSession(ctx context.Context, id string, now time.Time) (Session, error) {
 	row, err := r.st.GetSession(ctx, store.GetSessionParams{ID: id, Now: now.UnixMilli()})
 	if store.IsNotFound(err) {
-		return Session{}, domain.ErrUnauthenticated
+		return Session{}, ErrUnauthenticated
 	}
 	if err != nil {
 		return Session{}, fmt.Errorf("get session: %w", err)

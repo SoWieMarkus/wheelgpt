@@ -43,7 +43,7 @@ install:
 generate:
 	sqlc generate
 	$(SWAG) fmt
-	$(SWAG) init -g cmd/wheelgpt/main.go -o api/openapi --parseInternal --requiredByDefault --outputTypes go,json,yaml
+	$(SWAG) init -d cmd/wheelgpt,internal -g main.go -o api/openapi --parseInternal --parseDependencyLevel 1 --requiredByDefault --outputTypes go,json,yaml
 	cd website && npm run generate:api
 
 ## fmt: format Go and website code
