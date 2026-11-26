@@ -2,25 +2,28 @@ import { Link, NavLink, Outlet, useLocation } from "react-router";
 import { useEffect } from "react";
 import { loginUrl } from "../api/client";
 import { useMe } from "../api/hooks";
+import { languages, useI18n } from "../i18n";
 import { Avatar } from "./ui";
 
 export function Layout() {
   const { data: session, isPending } = useMe();
   const { pathname, hash } = useLocation();
+  const { t } = useI18n();
 
   useEffect(() => scrollToTarget(pathname, hash), [pathname, hash]);
 
   return (
     <div className="page">
       <a className="skip" href="#main">
-        Skip to content
+        {t.layout.skip}
       </a>
       <header className="site-header">
         <div className="wrap site-header__inner">
-          <Link to="/" className="wordmark" aria-label="WheelGPT home">
+          <Link to="/" className="wordmark" aria-label={t.layout.home}>
             WheelGPT
           </Link>
-          <nav className="site-nav" aria-label="Main">
+          <nav className="site-nav" aria-label={t.layout.mainNav}>
+            <LanguageSwitch />
             {session ? (
               <NavLink to="/dashboard" className="site-nav__me">
                 <Avatar
@@ -32,7 +35,7 @@ export function Layout() {
               </NavLink>
             ) : !isPending ? (
               <a href={loginUrl()} className="button button--small button--twitch">
-                Log in with Twitch
+                {t.layout.login}
               </a>
             ) : null}
           </nav>
@@ -45,31 +48,48 @@ export function Layout() {
 
       <footer className="site-footer">
         <div className="wrap site-footer__inner">
-          <p>
-            Made for the Trackmania community by{" "}
-            <a href="https://github.com/SoWieMarkus">SoWieMarkus</a>. Not affiliated with Ubisoft
-            Nadeo or Twitch.
-          </p>
+          <p>{t.layout.footer(<a href="https://github.com/SoWieMarkus">SoWieMarkus</a>)}</p>
           <ul className="site-footer__links">
             <li>
-              <a href="https://github.com/SoWieMarkus/wheelgpt">Source code</a>
+              <a href="https://github.com/SoWieMarkus/wheelgpt">{t.layout.source}</a>
             </li>
             <li>
-              <a href="https://openplanet.dev/plugin/wheelgpt-plugin">Openplanet plugin</a>
+              <a href="https://openplanet.dev/plugin/wheelgpt-plugin">{t.layout.plugin}</a>
             </li>
             <li>
-              <a href="/api/docs/">API</a>
+              <a href="/api/docs/">{t.layout.api}</a>
             </li>
             <li>
-              <Link to="/imprint">Imprint</Link>
+              <Link to="/imprint">{t.layout.imprint}</Link>
             </li>
             <li>
-              <Link to="/privacy">Privacy</Link>
+              <Link to="/privacy">{t.layout.privacy}</Link>
             </li>
           </ul>
         </div>
       </footer>
     </div>
+  );
+}
+
+function LanguageSwitch() {
+  const { lang, setLang, t } = useI18n();
+  return (
+    <fieldset className="lang-switch">
+      <legend className="visually-hidden">{t.layout.language}</legend>
+      {languages.map((l) => (
+        <button
+          key={l}
+          type="button"
+          lang={l}
+          className="lang-switch__option"
+          aria-pressed={l === lang}
+          onClick={() => setLang(l)}
+        >
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </fieldset>
   );
 }
 

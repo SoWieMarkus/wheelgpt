@@ -13,10 +13,12 @@ import {
 } from "../api/hooks";
 import type { BotConnection, Channel, Settings } from "../api/types";
 import { Avatar, CopyField, ErrorNotice, LiveBadge, Loading, Notice } from "../components/ui";
+import { useI18n } from "../i18n";
 import { formatDate } from "../lib/format";
 
 export function Dashboard() {
   const me = useMe();
+  const { t } = useI18n();
 
   if (me.isPending) {
     return (
@@ -43,7 +45,7 @@ export function Dashboard() {
           <h1>{channel.displayName}</h1>
           <p className="muted">
             <LiveBadge live={channel.isLive} /> ·{" "}
-            <Link to={`/c/${channel.login}`}>Public leaderboard</Link> ·{" "}
+            <Link to={`/c/${channel.login}`}>{t.dashboard.publicBoard}</Link> ·{" "}
             <a href={`https://twitch.tv/${channel.login}`}>twitch.tv/{channel.login}</a>
           </p>
         </div>
@@ -62,15 +64,13 @@ export function Dashboard() {
 }
 
 function LoggedOut() {
+  const { t } = useI18n();
   return (
     <div className="wrap section narrow">
-      <h1>Your dashboard</h1>
-      <p className="lede">
-        Log in with your Twitch account to connect the bot, get your plugin token and change how the
-        guessing game works in your channel.
-      </p>
+      <h1>{t.dashboard.loggedOutTitle}</h1>
+      <p className="lede">{t.dashboard.loggedOutLede}</p>
       <a href={loginUrl("/dashboard")} className="button button--twitch">
-        Log in with Twitch
+        {t.layout.login}
       </a>
     </div>
   );
@@ -79,6 +79,7 @@ function LoggedOut() {
 function LogoutButton() {
   const logout = useLogout();
   const navigate = useNavigate();
+  const { t } = useI18n();
   return (
     <button
       type="button"
@@ -86,7 +87,7 @@ function LogoutButton() {
       disabled={logout.isPending}
       onClick={() => logout.mutate(undefined, { onSettled: () => void navigate("/") })}
     >
-      Log out
+      {t.dashboard.logout}
     </button>
   );
 }
@@ -118,20 +119,15 @@ function Section({
 
 function DevMode({ channel }: { channel: Channel }) {
   const live = useLiveSwitch();
+  const { t } = useI18n();
   return (
-    <Section
-      title="Dev mode"
-      tone="dev"
-      intro="This server runs in dev mode. Pretend to be live to test the plugin without streaming."
-    >
+    <Section title={t.dashboard.devTitle} tone="dev" intro={t.dashboard.devIntro}>
       <p className="status-line">
         <span className={`dot dot--${channel.isLive ? "live" : "disabled"}`} aria-hidden="true" />
-        {channel.isLive ? "Pretending to be live" : "Offline"}
+        {channel.isLive ? t.dashboard.devLive : t.dashboard.devOffline}
       </p>
       <p className="muted small">
-        {channel.isLive
-          ? "The plugin's map, room and personal bests are accepted. Ending the stream clears them like a real stream end."
-          : "While offline the plugin's data is rejected."}
+        {channel.isLive ? t.dashboard.devLiveHelp : t.dashboard.devOfflineHelp}
       </p>
       {live.error && <ErrorNotice error={live.error} />}
       <button
@@ -140,7 +136,7 @@ function DevMode({ channel }: { channel: Channel }) {
         disabled={live.isPending}
         onClick={() => live.mutate(!channel.isLive)}
       >
-        {channel.isLive ? "End stream" : "Go live"}
+        {channel.isLive ? t.dashboard.endStream : t.dashboard.goLive}
       </button>
     </Section>
   );
@@ -148,43 +144,32 @@ function DevMode({ channel }: { channel: Channel }) {
 
 // ---------------------------------------------------------------- bot
 
-const chatStatus: Record<string, string> = {
-  enabled: "Reading your chat",
-  unknown: "Twitch didn't answer",
-  needs_authorization: "Twitch refused access to your chat",
-  disabled: "Disconnected",
-  off: "Connected, but not listening to chat",
-};
+function relogin(text: string) {
+  return <a href={loginUrl("/dashboard")}>{text}</a>;
+}
 
 function BotSection({ bot }: { bot: BotConnection }) {
   const toggle = useBotConnection();
   const status = bot.enabled ? bot.chatSubscription : "disabled";
+  const { t } = useI18n();
 
   return (
-    <Section title="Bot" intro="WheelGPT answers in your Twitch chat as long as it is connected.">
+    <Section title={t.dashboard.botTitle} intro={t.dashboard.botIntro}>
       <p className="status-line">
         <span className={`dot dot--${status}`} aria-hidden="true" />
-        {chatStatus[status] ?? status}
+        {t.dashboard.chatStatus[status] ?? status}
       </p>
       {status === "off" && (
-        <p className="muted small">
-          This server doesn't subscribe to Twitch chats (<code>EVENTSUB_SYNC</code> is off), so chat
-          commands don't reach it. That's normal for local development: Twitch can only deliver chat
-          to a public https address.
-        </p>
+        <p className="muted small">{t.dashboard.eventsubOff(<code>EVENTSUB_SYNC</code>)}</p>
       )}
-      {status === "unknown" && <p className="muted small">Try connecting again in a moment.</p>}
+      {status === "unknown" && <p className="muted small">{t.dashboard.tryAgainLater}</p>}
       {bot.enabled && bot.chatSubscription === "needs_authorization" && (
-        <Notice tone="warn" title="One more step">
-          Log in again so Twitch lets the bot into your chat, or type <code>/mod wheelgpt</code> in
-          your chat. <a href={loginUrl("/dashboard")}>Log in again</a>
+        <Notice tone="warn" title={t.dashboard.oneMoreStep}>
+          {t.dashboard.needsAuth(<code>/mod wheelgpt</code>, relogin)}
         </Notice>
       )}
       {!bot.authorized && bot.chatSubscription !== "needs_authorization" && (
-        <p className="muted small">
-          You signed up before the new login. The bot keeps working as long as it is a moderator in
-          your channel; <a href={loginUrl("/dashboard")}>log in again</a> to switch over for good.
-        </p>
+        <p className="muted small">{t.dashboard.legacyAuth(relogin)}</p>
       )}
       {toggle.error && <ErrorNotice error={toggle.error} />}
       <button
@@ -193,7 +178,11 @@ function BotSection({ bot }: { bot: BotConnection }) {
         disabled={toggle.isPending}
         onClick={() => toggle.mutate(!bot.enabled)}
       >
-        {toggle.isPending ? "Working…" : bot.enabled ? "Disconnect the bot" : "Connect the bot"}
+        {toggle.isPending
+          ? t.dashboard.working
+          : bot.enabled
+            ? t.dashboard.disconnect
+            : t.dashboard.connect}
       </button>
     </Section>
   );
@@ -206,38 +195,31 @@ function TokenSection() {
   const create = useCreatePluginToken();
   const exists = info.data?.exists ?? false;
   const legacy = info.data?.legacyTokenActive ?? false;
+  const { t, lang } = useI18n();
 
   return (
     <Section
-      title="Plugin token"
-      intro={
-        <>
-          The Openplanet plugin sends your map, room and personal bests with it. Paste it in{" "}
-          <em>Settings → WheelGPT → Token</em> and keep it to yourself.
-        </>
-      }
+      title={t.dashboard.tokenTitle}
+      intro={t.dashboard.tokenIntro(<em>{t.dashboard.tokenPath}</em>)}
     >
       {create.data ? (
         <>
-          <CopyField label="Your new token (shown once)" value={create.data.token} secret />
-          <p className="muted small">Copy it now. We only store a fingerprint of it.</p>
+          <CopyField label={t.dashboard.newToken} value={create.data.token} secret />
+          <p className="muted small">{t.dashboard.copyNow}</p>
         </>
       ) : info.isPending ? (
         <Loading />
       ) : exists ? (
         <p className="muted small">
-          Created {info.data?.createdAt && formatDate(info.data.createdAt)}
-          {info.data?.lastUsedAt
-            ? `, last used ${formatDate(info.data.lastUsedAt)}`
-            : ", not used yet"}
-          .
+          {t.dashboard.tokenCreated(
+            info.data?.createdAt ? formatDate(info.data.createdAt, lang) : "",
+            info.data?.lastUsedAt ? formatDate(info.data.lastUsedAt, lang) : undefined,
+          )}
         </p>
       ) : legacy ? (
-        <p className="muted small">
-          Your token from the old website still works. A new token replaces it.
-        </p>
+        <p className="muted small">{t.dashboard.legacyToken}</p>
       ) : (
-        <p className="muted small">You don't have a token yet.</p>
+        <p className="muted small">{t.dashboard.noToken}</p>
       )}
       {create.error && <ErrorNotice error={create.error} />}
       <button
@@ -245,11 +227,11 @@ function TokenSection() {
         className="button button--secondary"
         disabled={create.isPending}
         onClick={() => {
-          if (exists && !confirm("The current token stops working. Create a new one?")) return;
+          if (exists && !confirm(t.dashboard.confirmNewToken)) return;
           create.mutate();
         }}
       >
-        {exists || legacy ? "Create a new token" : "Create a token"}
+        {exists || legacy ? t.dashboard.createNewToken : t.dashboard.createToken}
       </button>
     </Section>
   );
@@ -263,6 +245,7 @@ function SettingsSection({ settings }: { settings: Settings }) {
   const dirty = JSON.stringify(draft) !== JSON.stringify(settings);
   const error = update.error instanceof ApiError ? update.error : undefined;
   const fields = error?.fieldErrors ?? {};
+  const { t } = useI18n();
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -270,10 +253,10 @@ function SettingsSection({ settings }: { settings: Settings }) {
   };
 
   return (
-    <Section title="Guessing" intro="How the guessing game works in your channel.">
+    <Section title={t.dashboard.settingsTitle} intro={t.dashboard.settingsIntro}>
       <form className="form" onSubmit={submit}>
         <div className="field">
-          <label htmlFor="delay">Announcement delay</label>
+          <label htmlFor="delay">{t.dashboard.delay}</label>
           <div className="field__input">
             <input
               id="delay"
@@ -287,17 +270,16 @@ function SettingsSection({ settings }: { settings: Settings }) {
               }
               aria-describedby="delay-help"
             />
-            <span>seconds</span>
+            <span>{t.dashboard.seconds}</span>
           </div>
           <p id="delay-help" className="field__help">
-            Wait this long before posting a PB, so chat doesn't see it before your stream does.
-            Match it to your stream delay.
+            {t.dashboard.delayHelp}
           </p>
           {fields.guessDelaySeconds && <p className="field__error">{fields.guessDelaySeconds}</p>}
         </div>
 
         <div className="field">
-          <label htmlFor="minage">Last-second guesses</label>
+          <label htmlFor="minage">{t.dashboard.minAge}</label>
           <div className="field__input">
             <input
               id="minage"
@@ -311,11 +293,10 @@ function SettingsSection({ settings }: { settings: Settings }) {
               }
               aria-describedby="minage-help"
             />
-            <span>seconds</span>
+            <span>{t.dashboard.seconds}</span>
           </div>
           <p id="minage-help" className="field__help">
-            Ignore guesses placed or changed less than this long before the PB. Stops people from
-            guessing while they watch you cross the finish.
+            {t.dashboard.minAgeHelp}
           </p>
           {fields.guessMinAgeSeconds && <p className="field__error">{fields.guessMinAgeSeconds}</p>}
         </div>
@@ -327,19 +308,17 @@ function SettingsSection({ settings }: { settings: Settings }) {
             onChange={(e) => setDraft({ ...draft, public: e.currentTarget.checked })}
           />
           <span>
-            <strong>List my channel on wheelgpt.dev</strong>
-            <span className="field__help">
-              Your leaderboard stays reachable by link either way.
-            </span>
+            <strong>{t.dashboard.listPublic}</strong>
+            <span className="field__help">{t.dashboard.listPublicHelp}</span>
           </span>
         </label>
 
         {update.error && Object.keys(fields).length === 0 && <ErrorNotice error={update.error} />}
         <div className="row">
           <button type="submit" className="button" disabled={!dirty || update.isPending}>
-            {update.isPending ? "Saving…" : "Save settings"}
+            {update.isPending ? t.dashboard.saving : t.dashboard.save}
           </button>
-          {update.isSuccess && !dirty && <span className="muted small">Saved.</span>}
+          {update.isSuccess && !dirty && <span className="muted small">{t.dashboard.saved}</span>}
         </div>
       </form>
     </Section>
@@ -350,16 +329,11 @@ function DangerZone({ login }: { login: string }) {
   const [confirmText, setConfirmText] = useState("");
   const remove = useDeleteChannel();
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   return (
-    <Section
-      title="Remove WheelGPT"
-      tone="danger"
-      intro="Removes the bot from your channel and deletes your settings, token and leaderboards. This can't be undone."
-    >
-      <p className="small">
-        Type <strong>{login}</strong> to confirm.
-      </p>
+    <Section title={t.dashboard.deleteTitle} tone="danger" intro={t.dashboard.deleteIntro}>
+      <p className="small">{t.dashboard.typeToConfirm(<strong>{login}</strong>)}</p>
       <form
         className="row"
         onSubmit={(e) => {
@@ -368,7 +342,7 @@ function DangerZone({ login }: { login: string }) {
         }}
       >
         <label className="visually-hidden" htmlFor="confirm-delete">
-          Channel name
+          {t.dashboard.channelName}
         </label>
         <input
           id="confirm-delete"
@@ -382,7 +356,7 @@ function DangerZone({ login }: { login: string }) {
           className="button button--danger"
           disabled={confirmText !== login || remove.isPending}
         >
-          Delete everything
+          {t.dashboard.deleteAll}
         </button>
       </form>
       {remove.error && <ErrorNotice error={remove.error} />}

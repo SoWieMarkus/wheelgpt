@@ -3,42 +3,41 @@ import { Link } from "react-router";
 import { loginUrl } from "../api/client";
 import { useChannels, useCommands, useMe, useStats } from "../api/hooks";
 import { Avatar, Emote, ErrorNotice, LiveBadge, Loading } from "../components/ui";
-import { plural } from "../lib/format";
+import { useI18n } from "../i18n";
 
 export function Landing() {
   const { data: session } = useMe();
+  const { t } = useI18n();
   return (
     <>
       <section className="intro wrap">
         <div className="intro__text">
-          <p className="eyebrow">A Twitch bot for Trackmania streams</p>
+          <p className="eyebrow">{t.landing.eyebrow}</p>
           <h1 className="visually-hidden">WheelGPT</h1>
           <p className="lede">
-            Jaaa hello guys! My name is WheelGPT! And especially mothers love me!{" "}
+            {t.landing.lede}
             <Emote name="HeyGuys" file="hey_guys" />
           </p>
           <p className="intro__more">
-            I am a Twitch bot made especially for Trackmania streamers. With me, your viewers can
-            always check which map you are currently playing. They can also guess your next personal
-            best time. To make everything run smoothly, you should install the{" "}
-            <a href="https://openplanet.dev/plugin/wheelgpt-plugin">OpenPlanet Plugin</a>. Curious?
-            Then add WheelGPT to your channel now!
+            {t.landing.intro(
+              <a href="https://openplanet.dev/plugin/wheelgpt-plugin">{t.landing.pluginName}</a>,
+            )}
           </p>
           <div className="intro__actions">
             {session ? (
               <Link to="/dashboard" className="button">
-                Open your dashboard
+                {t.landing.openDashboard}
               </Link>
             ) : (
               <a href={loginUrl()} className="button button--twitch">
-                Log in with Twitch
+                {t.layout.login}
               </a>
             )}
             <a
               href="https://openplanet.dev/plugin/wheelgpt-plugin"
               className="button button--secondary"
             >
-              Get the plugin
+              {t.landing.getPlugin}
             </a>
           </div>
         </div>
@@ -46,16 +45,13 @@ export function Landing() {
       </section>
 
       <section className="wrap section" aria-labelledby="commands">
-        <h2 id="commands">Chat commands</h2>
-        <p className="section__lede">
-          Times are written as <code>h:mm:ss.xxx</code>. Hours and minutes are optional, the
-          milliseconds are not. A perfect guess is worth 5 points, the closest guess 1 point.
-        </p>
+        <h2 id="commands">{t.landing.commandsTitle}</h2>
+        <p className="section__lede">{t.landing.commandsLede(<code>h:mm:ss.xxx</code>)}</p>
         <Commands />
       </section>
 
       <section className="wrap section" id="streamers" aria-labelledby="streamers-title">
-        <h2 id="streamers-title">Streamers using WheelGPT</h2>
+        <h2 id="streamers-title">{t.landing.streamersTitle}</h2>
         <Streamers />
       </section>
     </>
@@ -63,13 +59,6 @@ export function Landing() {
 }
 
 type Badge = "mod" | "vip" | "sub" | "streamer";
-
-const badgeNames: Record<Badge, string> = {
-  mod: "Moderator",
-  vip: "VIP",
-  sub: "Subscriber",
-  streamer: "Broadcaster",
-};
 
 /** One chat line with Twitch badges, like v1 showed them. */
 function Line({
@@ -85,6 +74,7 @@ function Line({
   bot?: boolean;
   children: ReactNode;
 }) {
+  const badgeNames = useI18n().t.landing.badges;
   return (
     <li className={bot ? "chat__bot" : undefined}>
       {badges.map((b) => (
@@ -104,17 +94,19 @@ function Line({
 }
 
 function ChatSample() {
+  const { t } = useI18n();
+  const c = t.landing.chat;
   return (
-    <figure className="chat" aria-label="Example of a Twitch chat with WheelGPT">
+    <figure className="chat" aria-label={t.landing.chatLabel}>
       <ol className="chat__lines">
         <Line user="kazoo_k" color="#c0392b" badges={["sub"]}>
           !guess 47.912
         </Line>
         <Line user="marbled" color="#2471a3">
-          !g 48.3 <span className="chat__hint">(needs ms)</span>
+          !g 48.3 <span className="chat__hint">{c.needsMs}</span>
         </Line>
         <Line user="WheelGPT" badges={["mod"]} bot>
-          @marbled hh:mm:ss.xxx (hours and minutes are optional)
+          @marbled {c.format}
         </Line>
         <Line user="tinytires" color="#1e8449" badges={["vip"]}>
           !guess 47.850 <Emote name="YEK" file="yek" />
@@ -133,12 +125,11 @@ function ChatSample() {
           47.904 | trackmania.io/…
         </Line>
         <Line user="WheelGPT" badges={["mod"]} bot>
-          NEW PERSONAL BEST 47.881 <Emote name="dinkDonk" file="dink_donk" /> That's{" "}
+          {c.pb} <Emote name="dinkDonk" file="dink_donk" /> {c.thats}{" "}
           <Emote name="AuthorTime" file="author_medal" /> <Emote name="ok" file="ok" />
         </Line>
         <Line user="WheelGPT" badges={["mod"]} bot>
-          Nobody guessed it correctly but @tinytires guessed 47.850 (-0.031){" "}
-          <Emote name="ok" file="ok" /> (+1 point)
+          {c.nobody} <Emote name="ok" file="ok" /> {c.point}
         </Line>
       </ol>
     </figure>
@@ -147,6 +138,7 @@ function ChatSample() {
 
 function Commands() {
   const { data, error, isPending, refetch } = useCommands();
+  const { t } = useI18n();
   if (isPending) return <Loading />;
   if (error) return <ErrorNotice error={error} retry={() => void refetch()} />;
   return (
@@ -154,9 +146,9 @@ function Commands() {
       <table className="table commands">
         <thead>
           <tr>
-            <th scope="col">Command</th>
-            <th scope="col">What it does</th>
-            <th scope="col">Who</th>
+            <th scope="col">{t.landing.table.command}</th>
+            <th scope="col">{t.landing.table.what}</th>
+            <th scope="col">{t.landing.table.who}</th>
           </tr>
         </thead>
         <tbody>
@@ -166,8 +158,8 @@ function Commands() {
                 <code>{c.usage}</code>
                 <OtherNames command={c} />
               </td>
-              <td>{c.description}</td>
-              <td className="muted">{c.access === "everyone" ? "everyone" : `${c.access}s`}</td>
+              <td>{t.landing.commands[c.name] ?? c.description}</td>
+              <td className="muted">{t.landing.access[c.access] ?? c.access}</td>
             </tr>
           ))}
         </tbody>
@@ -179,14 +171,21 @@ function Commands() {
 /** Names of a command that its usage example doesn't show already. */
 function OtherNames({ command }: { command: { name: string; aliases: string[]; usage: string } }) {
   const shown = command.usage.split(/[\s,]+/)[0]?.slice(1);
+  const { t } = useI18n();
   const others = [command.name, ...command.aliases].filter((n) => n !== shown);
   if (others.length === 0) return null;
-  return <span className="muted small"> also {others.map((n) => `!${n}`).join(", ")}</span>;
+  return (
+    <span className="muted small">
+      {" "}
+      {t.landing.table.also} {others.map((n) => `!${n}`).join(", ")}
+    </span>
+  );
 }
 
 function Streamers() {
   const channels = useChannels();
   const stats = useStats();
+  const { t } = useI18n();
 
   if (channels.isPending) return <Loading />;
   if (channels.error) {
@@ -195,11 +194,9 @@ function Streamers() {
   const list = channels.data.items;
   return (
     <>
-      {stats.data && (
-        <p className="section__lede">{plural(stats.data.channels, "channel")} use WheelGPT.</p>
-      )}
+      {stats.data && <p className="section__lede">{t.landing.channelCount(stats.data.channels)}</p>}
       {list.length === 0 ? (
-        <p className="muted">Nobody is listed yet. You could be the first.</p>
+        <p className="muted">{t.landing.noStreamers}</p>
       ) : (
         <ul className="streamers">
           {list.map((c) => (

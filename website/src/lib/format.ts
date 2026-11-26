@@ -20,31 +20,24 @@ function pad(n: number): string {
   return String(n).padStart(2, "0");
 }
 
-/** "2026-11" → "November 2026". */
-export function monthLabel(key: string): string {
+/** "2026-11" → "November 2026" (or the given locale's equivalent). */
+export function monthLabel(key: string, locale = "en"): string {
   const [year, month] = key.split("-").map(Number);
   if (!year || !month) return key;
-  return new Date(Date.UTC(year, month - 1, 1)).toLocaleString("en", {
+  return new Date(Date.UTC(year, month - 1, 1)).toLocaleString(locale, {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
   });
 }
 
-export function periodLabel(key: string, current?: string): string {
-  if (key === "all-time") return "All time";
-  if (key === current) return "This month";
-  return monthLabel(key);
+export function formatDate(iso: string, locale = "en", withTime = true): string {
+  const options: Intl.DateTimeFormatOptions = withTime
+    ? { dateStyle: "medium", timeStyle: "short" }
+    : { dateStyle: "medium" };
+  return new Intl.DateTimeFormat(locale, options).format(new Date(iso));
 }
 
-const dateFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" });
-const dayFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
-
-export function formatDate(iso: string, withTime = true): string {
-  const d = new Date(iso);
-  return withTime ? dateFormat.format(d) : dayFormat.format(d);
-}
-
-export function plural(n: number, one: string, many = `${one}s`): string {
-  return `${n.toLocaleString("en")} ${n === 1 ? one : many}`;
+export function formatNumber(n: number, locale = "en"): string {
+  return n.toLocaleString(locale);
 }

@@ -3,7 +3,8 @@ import { Link, useParams, useSearchParams } from "react-router";
 import { ApiError } from "../api/client";
 import { BOARD_PAGE_SIZE, useBoard, useChannel, useMap, usePeriods, useRoom } from "../api/hooks";
 import { Avatar, ErrorNotice, LiveBadge, Loading, Medals, Notice } from "../components/ui";
-import { periodLabel, plural } from "../lib/format";
+import { useI18n } from "../i18n";
+import { formatNumber, monthLabel } from "../lib/format";
 
 const PER_PAGE = BOARD_PAGE_SIZE;
 
@@ -11,6 +12,7 @@ export function Channel() {
   const { channel = "" } = useParams();
   const [params, setParams] = useSearchParams();
   const [search, setSearch] = useState(params.get("q") ?? "");
+  const { t, lang } = useI18n();
 
   const info = useChannel(channel);
   const periods = usePeriods(channel);
@@ -18,6 +20,12 @@ export function Channel() {
   const room = useRoom(channel);
 
   const current = periods.data?.current;
+  const periodLabel = (key: string) =>
+    key === "all-time"
+      ? t.periods.allTime
+      : key === current
+        ? t.periods.thisMonth
+        : monthLabel(key, lang);
   const period = params.get("period") ?? current;
   const page = Math.max(1, Number(params.get("page")) || 1);
   const q = params.get("q") ?? "";
@@ -35,10 +43,11 @@ export function Channel() {
   if (info.error instanceof ApiError && info.error.status === 404) {
     return (
       <div className="wrap section narrow">
-        <h1>Channel not found</h1>
+        <h1>{t.channel.notFoundTitle}</h1>
         <p>
-          <strong>{channel}</strong> doesn't use WheelGPT.{" "}
-          <Link to="/#streamers">See who does.</Link>
+          {t.channel.notFound(<strong>{channel}</strong>, (text) => (
+            <Link to="/#streamers">{text}</Link>
+          ))}
         </p>
       </div>
     );
@@ -60,7 +69,7 @@ export function Channel() {
           <>
             <Avatar src={ch.profileImage} name={ch.displayName} size={72} />
             <div>
-              <p className="eyebrow">Guessing leaderboard</p>
+              <p className="eyebrow">{t.channel.eyebrow}</p>
               <h1>{ch.displayName}</h1>
               <p className="muted">
                 <LiveBadge live={ch.isLive} /> ·{" "}
@@ -74,10 +83,10 @@ export function Channel() {
       </header>
 
       {map.data && (
-        <aside className="now-driving" aria-label="Current map">
-          <p className="small muted">Driving right now</p>
+        <aside className="now-driving" aria-label={t.channel.currentMap}>
+          <p className="small muted">{t.channel.driving}</p>
           <p className="map-name">{map.data.name}</p>
-          <p className="muted small">by {map.data.author}</p>
+          <p className="muted small">{t.channel.by(map.data.author)}</p>
           <Medals medals={map.data.medals} />
           <p className="small">
             {map.data.tmxUrl && (
@@ -89,7 +98,7 @@ export function Channel() {
             {room.data && (
               <>
                 {" "}
-                · Room <strong>{room.data.name}</strong> ({room.data.numberOfPlayers}/
+                · {t.channel.room} <strong>{room.data.name}</strong> ({room.data.numberOfPlayers}/
                 {room.data.maxPlayers})
               </>
             )}
@@ -98,7 +107,7 @@ export function Channel() {
       )}
 
       <div className="board-controls">
-        <div className="tabs" role="tablist" aria-label="Period">
+        <div className="tabs" role="tablist" aria-label={t.channel.period}>
           {tabs.map((p) => (
             <button
               key={p}
@@ -108,20 +117,20 @@ export function Channel() {
               className="tab"
               onClick={() => set({ period: p === current ? undefined : p, page: undefined })}
             >
-              {periodLabel(p, current)}
+              {periodLabel(p)}
             </button>
           ))}
           {older.length > 0 && (
             <select
-              aria-label="Older months"
+              aria-label={t.channel.olderMonths}
               className="tab-select"
               value={period && older.includes(period) ? period : ""}
               onChange={(e) => set({ period: e.currentTarget.value || undefined, page: undefined })}
             >
-              <option value="">Older…</option>
+              <option value="">{t.channel.older}</option>
               {older.map((p) => (
                 <option key={p} value={p}>
-                  {periodLabel(p, current)}
+                  {periodLabel(p)}
                 </option>
               ))}
             </select>
@@ -135,12 +144,12 @@ export function Channel() {
           }}
         >
           <label className="visually-hidden" htmlFor="board-q">
-            Find a viewer
+            {t.channel.findViewer}
           </label>
           <input
             id="board-q"
             type="search"
-            placeholder="Find a viewer"
+            placeholder={t.channel.findViewer}
             value={search}
             maxLength={50}
             onChange={(e) => setSearch(e.currentTarget.value)}
@@ -157,16 +166,14 @@ export function Channel() {
       ) : board.data.items.length === 0 ? (
         <Notice>
           {q
-            ? `Nobody called “${q}” has points in this period.`
+            ? t.channel.nobodyCalled(q)
             : period === current
-              ? "No points this month yet. The first personal best of the month starts the race."
-              : "No points in this period."}
+              ? t.channel.noPointsMonth
+              : t.channel.noPoints}
         </Notice>
       ) : (
         <>
-          <p className="muted small">
-            {plural(total, "guesser")} with points · perfect guess 5 points, closest guess 1 point
-          </p>
+          <p className="muted small">{t.channel.summary(total)}</p>
           <div className="table-scroll">
             <table className="table board">
               <thead>
@@ -174,12 +181,12 @@ export function Channel() {
                   <th scope="col" className="num">
                     #
                   </th>
-                  <th scope="col">Viewer</th>
+                  <th scope="col">{t.channel.viewer}</th>
                   <th scope="col" className="num">
-                    Points
+                    {t.channel.points}
                   </th>
                   <th scope="col" className="num">
-                    Perfect
+                    {t.channel.perfect}
                   </th>
                 </tr>
               </thead>
@@ -191,7 +198,7 @@ export function Channel() {
                   >
                     <td className="num rank">{e.position}</td>
                     <td>{e.displayName}</td>
-                    <td className="num">{e.points.toLocaleString("en")}</td>
+                    <td className="num">{formatNumber(e.points, lang)}</td>
                     <td className="num muted">{e.perfectGuesses || "–"}</td>
                   </tr>
                 ))}
@@ -199,25 +206,23 @@ export function Channel() {
             </table>
           </div>
           {pages > 1 && (
-            <nav className="pager" aria-label="Pages">
+            <nav className="pager" aria-label={t.channel.pages}>
               <button
                 type="button"
                 className="button button--secondary button--small"
                 disabled={page <= 1}
                 onClick={() => set({ page: String(page - 1) })}
               >
-                Previous
+                {t.channel.previous}
               </button>
-              <span className="muted small">
-                Page {page} of {pages}
-              </span>
+              <span className="muted small">{t.channel.pageOf(page, pages)}</span>
               <button
                 type="button"
                 className="button button--secondary button--small"
                 disabled={page >= pages}
                 onClick={() => set({ page: String(page + 1) })}
               >
-                Next
+                {t.channel.next}
               </button>
             </nav>
           )}

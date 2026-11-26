@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import type { Medals as MedalTimes } from "../api/types";
+import { useI18n } from "../i18n";
 import { formatTime } from "../lib/format";
 
 export function Avatar({ src, name, size = 40 }: { src?: string; name: string; size?: number }) {
@@ -18,8 +19,9 @@ export function Avatar({ src, name, size = 40 }: { src?: string; name: string; s
 }
 
 export function LiveBadge({ live }: { live: boolean }) {
-  if (!live) return <span className="live live--off">offline</span>;
-  return <span className="live">live</span>;
+  const { t } = useI18n();
+  if (!live) return <span className="live live--off">{t.ui.offline}</span>;
+  return <span className="live">{t.ui.live}</span>;
 }
 
 export function Time({ ms, className = "" }: { ms: number; className?: string }) {
@@ -29,6 +31,7 @@ export function Time({ ms, className = "" }: { ms: number; className?: string })
 const medalNames = ["champion", "author", "gold", "silver", "bronze"] as const;
 
 export function Medals({ medals }: { medals: MedalTimes }) {
+  const { t } = useI18n();
   return (
     <dl className="medals">
       {medalNames.map((name) => {
@@ -38,7 +41,7 @@ export function Medals({ medals }: { medals: MedalTimes }) {
           <div key={name} className="medals__item">
             <dt>
               <span className={`medal medal--${name}`} aria-hidden="true" />
-              {name}
+              {t.ui.medals[name]}
             </dt>
             <dd>
               <Time ms={ms} />
@@ -67,21 +70,23 @@ export function Notice({
   );
 }
 
-export function Loading({ label = "Loading…" }: { label?: string }) {
+export function Loading({ label }: { label?: string }) {
+  const { t } = useI18n();
   return (
     <p className="loading" aria-live="polite">
-      {label}
+      {label ?? t.ui.loading}
     </p>
   );
 }
 
 export function ErrorNotice({ error, retry }: { error: Error; retry?: () => void }) {
+  const { t } = useI18n();
   return (
-    <Notice tone="error" title="That didn't work.">
+    <Notice tone="error" title={t.ui.errorTitle}>
       {error.message}{" "}
       {retry && (
         <button type="button" className="link-button" onClick={retry}>
-          Try again
+          {t.ui.retry}
         </button>
       )}
     </Notice>
@@ -98,6 +103,7 @@ export function CopyField({
   label: string;
   secret?: boolean;
 }) {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
   const [shown, setShown] = useState(!secret);
   return (
@@ -118,9 +124,9 @@ export function CopyField({
             <button
               type="button"
               className="copy__eye"
-              aria-label={shown ? "Hide token" : "Show token"}
+              aria-label={shown ? t.ui.hideToken : t.ui.showToken}
               aria-pressed={shown}
-              title={shown ? "Hide" : "Show"}
+              title={shown ? t.ui.hide : t.ui.show}
               onClick={() => setShown((v) => !v)}
             >
               <EyeIcon crossed={shown} />
@@ -138,7 +144,7 @@ export function CopyField({
           });
         }}
       >
-        {copied ? "Copied" : "Copy"}
+        {copied ? t.ui.copied : t.ui.copy}
       </button>
     </div>
   );

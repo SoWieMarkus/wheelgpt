@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatDiff, formatTime, monthLabel, periodLabel, plural } from "./format";
+import { formatDiff, formatNumber, formatTime, monthLabel } from "./format";
 
 describe("formatTime", () => {
   it.each([
@@ -21,18 +21,17 @@ describe("formatDiff", () => {
   });
 });
 
-describe("periods", () => {
-  it("labels months", () => {
+describe("monthLabel", () => {
+  it("labels months in the given locale", () => {
     expect(monthLabel("2026-11")).toBe("November 2026");
-    expect(periodLabel("all-time")).toBe("All time");
-    expect(periodLabel("2026-11", "2026-11")).toBe("This month");
-    expect(periodLabel("2026-10", "2026-11")).toBe("October 2026");
+    expect(monthLabel("2026-03", "de")).toBe("März 2026");
+    expect(monthLabel("all-time")).toBe("all-time");
   });
 });
 
-describe("plural", () => {
-  it("picks the right form", () => {
-    expect(plural(1, "point")).toBe("1 point");
-    expect(plural(1200, "point")).toBe("1,200 points");
+describe("formatNumber", () => {
+  it("groups digits per locale", () => {
+    expect(formatNumber(1200)).toBe("1,200");
+    expect(formatNumber(1200, "de")).toBe("1.200");
   });
 });
